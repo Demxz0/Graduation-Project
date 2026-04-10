@@ -17,12 +17,13 @@ function Home() {
         textAlign: "center",
         padding: "40px",
       }}>
+        {/* backgroung img*/}
         <img src={image} alt="background" style={{
           position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
-          
+          opacity: 0.5,
           height: "100%",
           objectFit: "cover",
           pointerEvents: "none",
@@ -55,23 +56,23 @@ function Home() {
       <div style={{ background: "#f4f4ff", width: "100%", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", maxWidth: "800px", width: "100%", padding: "40px", direction: "rtl" }}>
           {[
-            { icon: "🧩", iconBg: "#fff3e0", title: "الاضطرابات", desc: "أفهم اضطرابات الصحة النفسية ومعانيها بوضوح" },
-            { icon: "⚠️", iconBg: "#f3e8ff", title: "مخاطر جيل Z", desc: "افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك" },
-            { icon: "🧠", iconBg: "#e8f5e9", title: "أكتشف دماغك", desc: "استكشف كيفية عمل دماغك وما يؤثر على صحتك" },
-            { icon: "🌱", iconBg: "#e8f0ff", title: "التعافي", desc: " انت لست وحدك طلب المساعدة هو علامة قوة" },
+            { icon: "🧩", iconBg: "#ddbcd0", title: "الاضطرابات", desc: "أفهم اضطرابات الصحة النفسية ومعانيها بوضوح" },
+            { icon: "⚠️", iconBg: "#f4d6a9", title: "مخاطر جيل Z", desc: "افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك" },
+            { icon: "🧠", iconBg: "#abc3d1", title: "أكتشف دماغك", desc: "استكشف كيفية عمل دماغك وما يؤثر على صحتك" },
+            { icon: "🌱", iconBg: "#c8d5c4", title: "التعافي", desc: " انت لست وحدك طلب المساعدة هو علامة قوة" },
           ].map((card, i) => (
-            <div key={i} style={{ background: "white", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl" }}
+            <div key={i} style={{ background: "#fafaff", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl",border: "2px solid #ddd2ef", }}
               onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.02)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(155,127,212,0.2)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)"; }}>
 
               {/* الصورة والعنوان بصف واحد */}
               <div style={{ display: "flex", alignItems: "center", gap: "12px", direction: "rtl" }}>
                 <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: card.iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>{card.icon}</div>
-                <div style={{ fontWeight: "700", fontSize: "20px", color: "#2d2d2d" }}>{card.title}</div>
+                <div style={{ fontWeight: "700", fontSize: "20px", color: "#493054" }}>{card.title}</div>
               </div>
 
               {/* الوصف تحت */}
-              <div style={{ fontSize: "15px", color: "#888", textAlign: "right", lineHeight: "1.6", width: "100%" }}>{card.desc}</div>
+              <div style={{ fontSize: "15px", color: "#6f5779", textAlign: "right", lineHeight: "1.6", width: "100%", fontFamily: "'Tajawal', sans-serif",paddingRight: "60px"   }}>{card.desc}</div>
             </div>
           ))}
         </div>

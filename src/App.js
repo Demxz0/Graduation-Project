@@ -84,7 +84,7 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* باقي الصفحات رح تضيفها هون لما تعملها */}
+        {/*  الصفحات  هون لم  */}
       </Routes>
 
     </div>
