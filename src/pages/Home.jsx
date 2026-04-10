@@ -1,7 +1,9 @@
 import '../App.css';
 import image from '../image.png';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+   const navigate = useNavigate();
   return (
     <div>
 
@@ -56,12 +58,13 @@ function Home() {
       <div style={{ background: "#f4f4ff", width: "100%", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", maxWidth: "800px", width: "100%", padding: "40px", direction: "rtl" }}>
           {[
-            { icon: "🧩", iconBg: "#ddbcd0", title: "الاضطرابات", desc: "أفهم اضطرابات الصحة النفسية ومعانيها بوضوح" },
-            { icon: "⚠️", iconBg: "#f4d6a9", title: "مخاطر جيل Z", desc: "افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك" },
-            { icon: "🧠", iconBg: "#abc3d1", title: "أكتشف دماغك", desc: "استكشف كيفية عمل دماغك وما يؤثر على صحتك" },
-            { icon: "🌱", iconBg: "#c8d5c4", title: "التعافي", desc: " انت لست وحدك طلب المساعدة هو علامة قوة" },
+            { icon: "🧩", iconBg: "#ddbcd0", title: "الاضطرابات", desc: "أفهم اضطرابات الصحة النفسية ومعانيها بوضوح" ,path: "/disease" },
+            { icon: "⚠️", iconBg: "#f4d6a9", title: "مخاطر جيل Z", desc: "افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك", path: "/khattar" },
+            { icon: "🧠", iconBg: "#abc3d1", title: "أكتشف دماغك", desc: "استكشف كيفية عمل دماغك وما يؤثر على صحتك", path: "/dimagh" },
+            { icon: "🌱", iconBg: "#c8d5c4", title: "التعافي", desc: " انت لست وحدك طلب المساعدة هو علامة قوة", path: "/taafi" },
           ].map((card, i) => (
-            <div key={i} style={{ background: "#fafaff", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl",border: "2px solid #ddd2ef", }}
+            <div key={i}
+            onClick={() => navigate(card.path)} style={{ background: "#fafaff", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl",border: "2px solid #ddd2ef", }}
               onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.02)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(155,127,212,0.2)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)"; }}>
 
