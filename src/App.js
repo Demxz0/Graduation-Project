@@ -3,6 +3,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import logo from './logo.png';
 import Home from './pages/Home';
 import Disease from './pages/Disease';
+import AnxietyDetail from './pages/AnxietyDetail';
 
 function App() {
   const location = useLocation();
@@ -10,7 +11,7 @@ function App() {
   const navLinks = [
     { name: "الرئيسية", path: "/" },
     { name: "الإختبار", path: "/ikhtbar" },
-    { name: "الأمراض", path: "/disease" },
+    { name: "الاضطرابات", path: "/disease" },
     { name: "الدماغ", path: "/dimagh" },
     { name: "التعافي", path: "/taafi" },
     { name: "عوامل الخطر", path: "/khattar" },
@@ -86,6 +87,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/disease" element={<Disease />} /> 
+        <Route path="/disease/anxiety" element={<AnxietyDetail />} />
        
       </Routes>
 
