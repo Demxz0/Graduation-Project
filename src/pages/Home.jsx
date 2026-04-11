@@ -3,7 +3,11 @@ import image from '../image.png';
 
 function Home() {
   return (
-    <div>
+    <div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100vh',
+}}>
 
       {/* Section */}
       <div style={{
@@ -30,13 +34,13 @@ function Home() {
         }} />
 
         <div style={{ position: "relative", zIndex: 1 }}>
-          <h1 style={{ fontSize: "60px", fontWeight: "400", color: "#493054", marginBottom: "20px", fontFamily: "'Lato', sans-serif" }}>
+          <h1 className="reveal" style={{ fontSize: "60px", fontWeight: "400", color: "#493054", marginBottom: "20px", fontFamily: "'Lato', sans-serif" }}>
             الوعي بالصحة النفسية
           </h1>
-          <p style={{ fontSize: "20px", color: "#6f5779", marginBottom: "54px", fontFamily: "'Lato', sans-serif" }}>
+          <p className="reveal" style={{ fontSize: "20px", color: "#6f5779", marginBottom: "54px", fontFamily: "'Lato', sans-serif" }}>
             رحلة للتعرف على صحتك النفسية بوضوح
           </p>
-          <div style={{ display: "flex", flexDirection: "row", gap: "16px", alignItems: "center", justifyContent: "center" }}>
+          <div className="reveal" style={{ display: "flex", flexDirection: "row", gap: "16px", alignItems: "center", justifyContent: "center" }}>
             <button style={{ padding: "14px 28px", fontSize: "18px", background: "#9b7fc7", border: "none", borderRadius: "50px", cursor: "pointer", color: "white", fontFamily: "'Tajawal', sans-serif" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(155,127,212,0.4)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
@@ -60,7 +64,7 @@ function Home() {
             { icon: "🧠", iconBg: "#e8f5e9", title: "أكتشف دماغك", desc: "استكشف كيفية عمل دماغك وما يؤثر على صحتك" },
             { icon: "🌱", iconBg: "#e8f0ff", title: "التعافي", desc: " انت لست وحدك طلب المساعدة هو علامة قوة" },
           ].map((card, i) => (
-            <div key={i} style={{ background: "white", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl" }}
+            <div className="reveal" key={i} style={{ background: "white", borderRadius: "20px", padding: "28px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", cursor: "pointer", direction: "rtl" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.02)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(155,127,212,0.2)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)"; }}>
 
@@ -77,6 +81,77 @@ function Home() {
         </div>
       </div>
 
+{/* ===== Footer ===== */}
+<footer style={{
+  background: '#e8dff2',
+  color: '#5c4467',
+  padding: '40px 60px',
+  direction: 'rtl',
+  fontFamily: "'Tajawal', sans-serif",
+}}>
+
+  {/* ملاحظة هامة */}
+  <p style={{
+    fontSize: '15px',
+    lineHeight: '1.8',
+    marginBottom: '20px',
+    borderBottom: '1px solid #8e7899',
+    paddingBottom: '20px',
+  }}>
+    <strong style={{ color: '#553c61' }}>ملاحظة هامة: </strong>
+    هذا المحتوى مخصص للأغراض التعليمية والتثقيفية فقط، ولا يغني عن الاستشارة الطبية أو النفسية المتخصصة.
+  </p>
+
+  {/* المصادر */}
+  <p style={{
+    fontSize: '13px',
+    color: '#858286',
+    lineHeight: '1.8',
+    marginBottom: '28px',
+  }}>
+    المصادر المرجعية المستخدمة في بناء هذا التقرير: الرابطة الأمريكية لعلم النفس (APA)، منظمة الصحة العالمية (WHO)، المعهد الوطني للصحة النفسية (NIMH)، ومايو كلينك (Mayo Clinic).
+  </p>
+
+  {/* كارد هل تحتاج مساعدة */}
+  <div style={{ animation: 'float 3s ease-in-out infinite',
+    background: 'linear-gradient(135deg , #e3dbf1, #d4c5e8)',
+    border: '1px solid #8e7899',
+    borderRadius: '16px',
+    padding: '20px 24px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+  }}>
+    <h3 style={{
+      color: '#553c61',
+      fontSize: '17px',
+      fontWeight: '700',
+      marginBottom: '10px',
+    }}>
+      <span style={{ color: '#5c4467', marginLeft: '8px' }}>💜</span>
+      هل تحتاج إلى مساعدة؟
+    </h3>
+    <p style={{
+      fontSize: '14px',
+      color: '#5c4467',
+      lineHeight: '1.7',
+      margin: 0,
+    }}>
+      إذا كنت أنت أو أي شخص تعرفه يعاني من آثار صدمة نفسية، يرجى التواصل مع متخصص في الصحة النفسية أو خطوط الدعم المتاحة في بلدك.
+    </p>
+  </div>
+
+  {/* حقوق */}
+  <p style={{
+    textAlign: 'center',
+    fontSize: '12px',
+    color: '#5c4467',
+    marginTop: '24px',
+    paddingTop: '16px',
+    margin: '24px 0 0',
+  }}>
+    © 2025 أُجِليك — جميع الحقوق محفوظة
+  </p>
+
+</footer>
     </div>
   );
 }

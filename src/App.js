@@ -3,9 +3,39 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import logo from './logo.png';
 import Home from './pages/Home';
 
+import { useEffect } from 'react';
+
+function useGlobalScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    }, 100);
+
+    return () => observer.disconnect();
+  }, []);
+}
+
 function App() {
   const location = useLocation();
-
+useGlobalScrollReveal();
   const navLinks = [
     { name: "الرئيسية", path: "/" },
     { name: "الإختبار", path: "/ikhtbar" },
@@ -14,6 +44,7 @@ function App() {
     { name: "التعافي", path: "/taafi" },
     { name: "عوامل الخطر", path: "/khattar" },
   ];
+
 
   return (
     <div style={{
