@@ -1,7 +1,9 @@
 import '../App.css';
 import image from '../image.png';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate();
   return (
     <div style={{
   display: 'flex',
@@ -42,7 +44,8 @@ function Home() {
           </p>
           <div className="reveal" style={{ display: "flex", flexDirection: "row", gap: "16px", alignItems: "center", justifyContent: "center" }}>
             <button style={{ padding: "14px 28px", fontSize: "18px", background: "#9b7fc7", border: "none", borderRadius: "50px", cursor: "pointer", color: "white", fontFamily: "'Tajawal', sans-serif" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(155,127,212,0.4)"; }}
+             onClick={() => navigate('/ikhtbar')}
+             onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(155,127,212,0.4)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
               ابدأ الاختبار ✨
             </button>
