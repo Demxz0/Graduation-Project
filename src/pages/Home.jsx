@@ -145,40 +145,31 @@ function Home() {
             { id: 'boomers', name: 'Baby Boomers',       year: '١٩٤٦ – ١٩٦٤' },
             { id: 'x',       name: 'الجيل X',            year: '١٩٦٥ – ١٩٨٠' },
             { id: 'millennials', name: 'الجيل Y / الميلينيالز', year: '١٩٨١ – ١٩٩٦' },
-            { id: 'z',       name: 'جيل Z — أنت هنا',   year: '١٩٩٧ – ٢٠١٢' },
+            { id: 'z',       name: 'جيل Z — أنت هنا',   year: '١٩٩٧ – ٢٠١٢' , },
             { id: 'alpha',   name: 'الجيل Alpha',        year: '٢٠١٣ – الآن' },
           ].map((g) => {
             const isActive = activeGen === g.id;
             return (
               <div
                 key={g.id}
-                onClick={(e) => handleGenClick(g.id, e)}
+                onClick={(e) => { if (g.id === 'z') launchConfetti(e); }}
+
                 style={{
                   background: isActive ? '#5c4467' : 'white',
                   border: `2px solid ${isActive ? '#5c4467' : '#ebe6f7'}`,
                   borderRadius: '14px',
                   padding: '10px 18px',
                   textAlign: 'center',
-                  cursor: 'pointer',
+                  
                   minWidth: '110px',
                   transition: 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)',
                   transform: isActive ? 'translateY(-6px) scale(1.08)' : 'none',
-                  boxShadow: isActive ? '0 10px 30px rgba(92,68,103,0.3)' : 'none',
+                  boxShadow: isActive ? '0 10px 30px rgba(92,68,103,0.3)' : '0 4px 16px rgba(0,0,0,0.07)',
+                  
                 }}
-                onMouseEnter={e => {
-                  if (!isActive) {
-                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)';
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.15)';
-                    e.currentTarget.style.borderColor = '#9b7fc7';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!isActive) {
-                    e.currentTarget.style.transform = 'none';
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.borderColor = '#ebe6f7';
-                  }
-                }}
+               onMouseEnter={e => {
+  if (g.id === 'z') e.currentTarget.style.cursor = 'pointer';
+}}
               >
                 <div style={{ fontSize: '15px', fontWeight: '800', color: isActive ? 'white' : '#665a78' }}>{g.name}</div>
                 <div style={{ fontSize: '12px', color: isActive ? '#c4aee8' : '#9586b0' }}>{g.year}</div>
@@ -187,7 +178,7 @@ function Home() {
           })}
         </div>
 
-        {/* بوكس معلومات الجيل - floating */}
+        {/* بوكس معلومات الجيل */}
         <div className="reveal" style={{
           background: 'white',
           border: '2px solid #ebe6f7',
@@ -256,61 +247,114 @@ function Home() {
           ))}
         </div>
 
-        {/* تايملاين الأحداث */}
-        <h3 className="reveal" style={{ fontSize: '22px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '24px' }}>
-          📌 الأحداث التي شكّلت جيل Z
-        </h3>
-        <div className="reveal" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '14px',
-          maxWidth: '760px',
-          margin: '0 auto 56px',
-        }}>
-          {[
-            { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي' },
-            { year: '٢٠٠٨', event: 'الأزمة المالية العالمية' },
-            { year: '٢٠١٠', event: 'ثورة السوشيال ميديا' },
-            { year: '٢٠١٥', event: 'قلق المناخ والمستقبل' },
-            { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩' },
-            { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي' },
-          ].map((item, i) => (
-            <div
-              key={i}
-              style={{
-                background: 'white',
-                border: '2px solid #ebe6f7',
-                borderRadius: '14px',
-                padding: '14px 18px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                transition: 'all 0.4s cubic-bezier(0.25,0.46,0.45,0.94)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateX(-8px)';
-                e.currentTarget.style.boxShadow = '0 6px 24px rgba(107,79,160,0.15)';
-                e.currentTarget.style.borderColor = '#9b7fc7';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'translateX(0)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = '#ebe6f7';
-              }}
-            >
-              <span style={{
-                background: 'linear-gradient(135deg, #9b7fc7, #7c6fcd)',
-                color: 'white',
-                fontSize: '13px',
-                fontWeight: '800',
-                padding: '5px 10px',
-                borderRadius: '8px',
-                whiteSpace: 'nowrap',
-              }}>{item.year}</span>
-              <span style={{ fontSize: '14px', color: '#665a78', fontWeight: '700' }}>{item.event}</span>
-            </div>
-          ))}
-        </div>
+{/* ===== تايملاين الأحداث===== */}
+<h3 className="reveal" style={{ fontSize: '22px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '40px' }}>
+  📌 الأحداث التي شكّلت جيل Z
+</h3>
+
+<div className="reveal" style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)', 
+  gap: '30px 40px',
+  maxWidth: '900px',
+  margin: '0 auto 60px',
+  direction: 'rtl',
+  overflow: 'visible', 
+}}>
+ {[
+  { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
+  { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
+  { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
+  { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
+  { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
+  { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
+].map((item, i) => (
+  <div
+    key={i}
+    style={{
+      position: 'relative',
+      background: 'white',
+      borderRadius: '50px',
+      height: '65px',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 25px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+      border: '1px solid #f0f0f5',
+      cursor: 'pointer',
+      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.transform = 'translateY(-5px)';
+      e.currentTarget.style.boxShadow = `0 10px 25px ${item.color}66`;
+      e.currentTarget.style.borderColor = item.color;
+      
+      // دوران المعين
+      const diamond = e.currentTarget.querySelector('.diamond-shape');
+      if(diamond) diamond.style.transform = 'rotate(405deg)';
+      
+      const yearText = e.currentTarget.querySelector('.year-text');
+      if(yearText) yearText.style.transform = 'rotate(-405deg)';
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+      e.currentTarget.style.borderColor = '#f0f0f5';
+      
+      const diamond = e.currentTarget.querySelector('.diamond-shape');
+      if(diamond) diamond.style.transform = 'rotate(45deg)';
+      
+      const yearText = e.currentTarget.querySelector('.year-text');
+      if(yearText) yearText.style.transform = 'rotate(-45deg)';
+    }}
+  >
+    <span style={{ 
+      fontSize: '14px', 
+      color: '#665a78', 
+      fontWeight: '700',
+      flex: 1,
+      textAlign: 'right',
+      marginRight: '55px', 
+    }}>
+      {item.event}
+    </span>
+
+    {/* المعين */}
+    <div 
+      className="diamond-shape"
+      style={{
+        position: 'absolute',
+        right: '-12px',
+        width: '52px',
+        height: '52px',
+        background: item.color,
+        transform: 'rotate(45deg)',
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2,
+        transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+      }}
+    >
+      <span 
+        className="year-text"
+        style={{ 
+          color: '#493054', 
+          fontWeight: '900', 
+          fontSize: '14px',
+          transform: 'rotate(-45deg)', // هاد اللي بخلي النص جالس
+          transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          display: 'inline-block'
+        }}
+      >
+        {item.year}
+      </span>
+    </div>
+  </div>
+))}
+</div>
 
         {/* الإحصائيات */}
         <div className="reveal" style={{
@@ -398,6 +442,9 @@ function Home() {
           borderRadius: '16px',
           padding: '20px 24px',
           boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+          width: 'fit-content',
+margin: '0 auto',
+textAlign: 'center',
         }}>
           <h3 style={{ color: '#553c61', fontSize: '17px', fontWeight: '700', marginBottom: '10px' }}>
             <span style={{ color: '#5c4467', marginLeft: '8px' }}>💜</span>
