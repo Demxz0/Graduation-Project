@@ -40,7 +40,7 @@ useGlobalScrollReveal();
   const navLinks = [
     { name: "الرئيسية", path: "/" },
     { name: "الإختبار", path: "/ikhtbar" },
-    { name: "الأمراض", path: "/amrad" },
+    { name:" الإضطرابات", path: "/amrad" },
     { name: "الدماغ", path: "/dimagh" },
     { name: "التعافي", path: "/taafi" },
     { name: "عوامل الخطر", path: "/khattar" },

@@ -22,3 +22,8 @@ body {
   50%  { transform: translateY(-8px); }
   100% { transform: translateY(0px); }
 }
+
+@keyframes confettiFall {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
