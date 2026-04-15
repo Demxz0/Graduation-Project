@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 
+
 function Disease() {
   const navigate = useNavigate();
+ 
 
   const disorders = [
     { id: 1, label: "الاكتئاب",                              sub: "(Depression)",        border: "#ddbcd0", path: "/disease/depression" },
     { id: 2, label: "اضطراب القلق",                          sub: "(Anxiety)",            border: "#abc3d1", path: "/disease/anxiety" },
     { id: 3, label: "اضطراب ما بعد الصدمة",                  sub: "(PTSD)",               border: "#fee8c6", path: "/disease/ptsd" },
     { id: 4, label: "اضطراب نقص الانتباه مع فرط النشاط",    sub: "(ADHD)",               border: "#d6936a", path: "/disease/adhd" },
-    { id: 5, label: "اضطراب الأكل",                          sub: "(Eating Disorders)",  border: "#c8d5c4", path: "/disease/eating" },
+    { id: 5, label: "اضطراب الأكل", sub: "(Eating Disorders)", border: "#c8d5c4", path: "/disease/eating-disorder" },
   ];
 
   return (
