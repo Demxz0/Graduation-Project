@@ -3,7 +3,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import logo from './logo.png';
 import Home from './pages/Home';
 import Exam from './pages/Exam';
-
+import Khattar from './pages/Khattar';
 import { useEffect } from 'react';
 
 function useGlobalScrollReveal() {
@@ -117,6 +117,7 @@ useGlobalScrollReveal();
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ikhtbar" element={<Exam />} />
+        <Route path="/khattar" element={<Khattar />} />
         {/* باقي الصفحات رح تضيفها هون لما تعملها */}
       </Routes>
 
