@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-// ===== لوحة الألوان المتدرجة المبنية على #d6936a =====
-// #7a3f20 → #a85c38 → #d6936a → #e0aa88 → #eec5a8 → #f7e4d6 → #fdf6f2
+
 
 const s = {
   page: { background: "#f4f4ff", minHeight: "100vh", direction: "rtl", fontFamily: "'Tajawal', sans-serif" },
