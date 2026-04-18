@@ -14,7 +14,6 @@ function useReveal(delay = 0) {
           setTimeout(() => setVisible(true), delay);
           observer.unobserve(el);
         }
-        
       },
       { threshold: 0.1 }
     );
