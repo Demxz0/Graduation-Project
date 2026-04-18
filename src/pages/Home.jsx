@@ -97,31 +97,6 @@ function Home() {
         </div>
       </div>
 
-      {/* ===== الكاردز الأربعة ===== */}
-      <div style={{ background: '#f4f4ff', width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', maxWidth: '800px', width: '100%', padding: '40px', direction: 'rtl' }}>
-          {[
-            { icon: '🧩', iconBg: '#fff3e0', title: 'الاضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
-            { icon: '⚠️', iconBg: '#f3e8ff', title: 'مخاطر جيل Z', desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
-            { icon: '🧠', iconBg: '#e8f5e9', title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
-            { icon: '🌱', iconBg: '#e8f0ff', title: 'التعافي', desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
-          ].map((card, i) => (
-            <div
-              className="reveal"
-              key={i}
-              style={{ background: 'white', borderRadius: '20px', padding: '28px 24px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', cursor: 'pointer', direction: 'rtl', transition: 'all 0.3s ease' }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(155,127,212,0.2)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)'; }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', direction: 'rtl' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: card.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>{card.icon}</div>
-                <div style={{ fontWeight: '700', fontSize: '20px', color: '#2d2d2d' }}>{card.title}</div>
-              </div>
-              <div style={{ fontSize: '15px', color: '#888', textAlign: 'right', lineHeight: '1.6', width: '100%' }}>{card.desc}</div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ===== سيكشن تعرف أكثر ===== */}
       <div id="learnMore" style={{
@@ -406,6 +381,42 @@ function Home() {
 
       </div>
 
+      
+      {/* ===== الكاردز الأربعة ===== */}
+     <div style={{ 
+  // التعديل هنا: استبدال اللون الثابت بالتدرج اللوني
+  background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
+  width: '100%', 
+  minHeight: '100vh', 
+  display: 'flex', 
+  alignItems: 'center', 
+  justifyContent: 'center' 
+}}>
+       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', maxWidth: '800px', width: '100%', padding: '40px', direction: 'rtl' }}>
+          {[
+            { icon: '🧩', iconBg: '#fff3e0', title: 'الاضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
+            { icon: '⚠️', iconBg: '#f3e8ff', title: 'مخاطر جيل Z', desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
+            { icon: '🧠', iconBg: '#e8f5e9', title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
+            { icon: '🌱', iconBg: '#e8f0ff', title: 'التعافي', desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
+          ].map((card, i) => (
+            <div
+              className="reveal"
+              key={i}
+              style={{ background: 'white', borderRadius: '20px', padding: '28px 24px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', cursor: 'pointer', direction: 'rtl', transition: 'all 0.3s ease' }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(155,127,212,0.2)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)'; }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', direction: 'rtl' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: card.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>{card.icon}</div>
+                <div style={{ fontWeight: '700', fontSize: '20px', color: '#2d2d2d' }}>{card.title}</div>
+              </div>
+              <div style={{ fontSize: '15px', color: '#888', textAlign: 'right', lineHeight: '1.6', width: '100%' }}>{card.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
       {/* ===== Footer ===== */}
       <footer style={{
         background: '#e8dff2',
@@ -442,7 +453,7 @@ function Home() {
           borderRadius: '16px',
           padding: '20px 24px',
           boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-          width: 'fit-content',
+          
 margin: '0 auto',
 textAlign: 'center',
         }}>

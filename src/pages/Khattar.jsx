@@ -117,7 +117,6 @@ function useRevealOnScroll() {
           observer.unobserve(el);
         }
       },
-      
       { threshold: 0.12 }
     );
     observer.observe(el);
@@ -400,7 +399,6 @@ function RiskFactors() {
     </>
   );
 }
-
 
 function RememberCard() {
   const [ref, visible] = useRevealOnScroll();
