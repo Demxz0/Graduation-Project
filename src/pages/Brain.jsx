@@ -14,6 +14,7 @@ function useReveal(delay = 0) {
           setTimeout(() => setVisible(true), delay);
           observer.unobserve(el);
         }
+        
       },
       { threshold: 0.1 }
     );
@@ -29,15 +30,16 @@ const brainStructures = [
     title: 'الدماغ الأمامي والمخ',
     titleEn: 'Forebrain & Cerebrum',
     desc: 'الجزء الأكبر والأكثر تطوراً. المسؤول عن الوظائف العليا. يتكون من نصفي كرة مخيين يرتبطان بالجسم الثفلي، الذي يتيح التواصل بين الطرفين.',
-    icon: '🧠',
+    
     color: '#9b7fc7',
     bg: '#f5f0ff',
+    
   },
   {
     title: 'الدماغ المتوسط',
     titleEn: 'Midbrain',
     desc: 'يعمل كمحطة ترحيل للإشارات الحسية والحركية بين المخ وجذع الدماغ. يلعب دوراً في تنظيم عمليات الانتباه والتعلم.',
-    icon: '⚡',
+    
     color: '#6e91a7',
     bg: '#f0f7ff',
   },
@@ -45,7 +47,7 @@ const brainStructures = [
     title: 'الدماغ الخلفي',
     titleEn: 'Hindbrain',
     desc: 'يشمل المخيخ وجذع الدماغ الذي يتحكم في الوظائف اللاإرادية الضرورية للحياة كالتنفس وضربات القلب.',
-    icon: '💫',
+    
     color: '#b47799',
     bg: '#fff0f7',
   },
@@ -90,8 +92,7 @@ const limbicSystem = [
   {
     title: 'اللوزة الدماغية',
     titleEn: 'Amygdala',
-    icon: '⚡',
-    iconBg: '#fff0e6',
+   
     badge: 'مركز الخوف',
     badgeColor: '#d6936a',
     desc: 'مركز الخوف والعدوان. تعمل كنظام إنذار مبكر لتقييم التهديدات وتنشيط الاستجابة لها. في الاضطرابات النفسية تطلق إنذارات كاذبة أو مبالغ فيها.',
@@ -100,8 +101,7 @@ const limbicSystem = [
   {
     title: 'الحصين',
     titleEn: 'Hippocampus',
-    icon: '📚',
-    iconBg: '#e8f5ff',
+   
     badge: 'مركز الذاكرة',
     badgeColor: '#6e91a7',
     desc: 'المسؤول عن التعلم وتكوين الذكريات طويلة الأمد، وهو من أكثر المناطق حساسية لهرمونات الإجهاد. التوتر المزمن يؤدي إلى تقلص حجمه مما يفسر مشاكل الذاكرة في الاكتئاب.',
@@ -110,8 +110,7 @@ const limbicSystem = [
   {
     title: 'المهاد',
     titleEn: 'Thalamus',
-    icon: '📡',
-    iconBg: '#f0e8ff',
+   
     badge: 'بوابة الحواس',
     badgeColor: '#9b7fc7',
     desc: 'يستقبل المعلومات من الحواس ويعيد إرسالها إلى المخ للمعالجة. بوابة للمعلومات الحسية.',
@@ -120,8 +119,7 @@ const limbicSystem = [
   {
     title: 'تحت المهاد',
     titleEn: 'Hypothalamus',
-    icon: '⚙️',
-    iconBg: '#f5fff0',
+    
     badge: 'المتحكم في المشاعر',
     badgeColor: '#4aab72',
     desc: 'بحجم حبة اللؤلؤ لكن قوته هائلة. يتحكم في الكيميائيات التي تؤثر في الخوف أو الغضب، ويدير الاستجابة البدنية للتوتر.',
@@ -218,9 +216,10 @@ function SectionHeader({ title, sub, color = '#9b7fc7' }) {
         transform: visible ? 'translateX(0)' : 'translateX(30px)',
         transition: 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
         direction: 'rtl',
+
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', justifyContent: 'flex-start' }}>
         <div style={{
           width: '13px', height: '13px', borderRadius: '50%',
           background: color, boxShadow: `0 0 10px ${color}80`,
@@ -229,7 +228,7 @@ function SectionHeader({ title, sub, color = '#9b7fc7' }) {
         }} />
         <h2 style={{ fontSize: '26px', fontWeight: '800', color: '#3a2555', margin: 0 }}>{title}</h2>
       </div>
-      {sub && <p style={{ fontSize: '15px', color: '#9586b0', lineHeight: '1.7', textAlign: 'right', maxWidth: '650px', marginRight: 'auto', marginLeft: 0 }}>{sub}</p>}
+      {sub && <p style={{ fontSize: '15px', color: '#9586b0', lineHeight: '1.7', textAlign: 'right', maxWidth: '650px', marginRight: 0, marginLeft: 'auto' }}>{sub}</p>}
     </div>
   );
 }
@@ -282,7 +281,7 @@ function Dimagh() {
             overflow: 'hidden',
           }}
         >
-          {/* دوائر زخرفية */}
+          {/* الدوائر*/}
           {[
             { top: '-80px', right: '-100px', size: 380, color: '#d4bfee20' },
             { bottom: '-60px', left: '-80px', size: 280, color: '#f0c0d818' },
@@ -326,7 +325,7 @@ function Dimagh() {
             transform: headerVisible ? 'translateY(0)' : 'translateY(24px)',
             transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s',
           }}>
-            أكتشف دماغك
+            إكتشف دماغك
           </h1>
 
           <p style={{
@@ -336,7 +335,7 @@ function Dimagh() {
             transform: headerVisible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s',
           }}>
-            تعرّف على الجيل الذي يؤلد في عالم رقمي — وكيف يشكّل ذلك صحته النفسية
+            تعرّف على الجيل الذي وُلد في عالم رقمي — وكيف شكّل ذلك صحته النفسية
           </p>
 
           <div style={{
@@ -382,7 +381,7 @@ function Dimagh() {
                 borderRadius: '0 22px 22px 0',
               }} />
               <p style={{ fontSize: '15px', color: '#5a4a7a', lineHeight: '2.1', margin: 0, textAlign: 'right' }}>
-                لا تقتصر دراسة الدماغ على التشريح الفيزيائي فقط، بل تشمل أيضاً العمليات الكيميائية والكهربائية المعقدة التي تحدد الحالة النفسية والعقلية للفرد. سيتم استعراض التفاصيل الدقيقة لأجزاء الدماغ التي تتدخل في الصحة النفسية.
+                لا تقتصر دراسة الدماغ على التشريح الفيزيائي فقط، بل تشمل أيضاً العمليات الكيميائية والكهربائية المعقدة التي تحدد الحالة النفسية والعقلية للفرد. في هذه الصفحة سيتم استعراض التفاصيل الدقيقة لأجزاء الدماغ التي تتدخل في الصحة النفسية.
               </p>
             </div>
           </RevealCard>
@@ -391,6 +390,7 @@ function Dimagh() {
           <SectionHeader
             title="البنية التشريحية الكبرى للدماغ"
             sub="يتم تقسيم الدماغ تشريحياً إلى ثلاث وحدات أساسية. كل وحدة تمتلك مسؤوليات متخصصة تساهم في تكوين التجربة النفسية للفرد."
+          
           />
 
           <div style={{
@@ -544,7 +544,6 @@ function Dimagh() {
                     e.currentTarget.style.transform = 'translateY(-5px)';
                     e.currentTarget.style.boxShadow = `0 14px 38px ${item.color}22`;
                     e.currentTarget.style.borderColor = item.color + '55';
-                    // تحريك الأيقونة
                     const icon = e.currentTarget.querySelector('.licon');
                     if (icon) { icon.style.transform = 'scale(1.15) rotate(-5deg)'; }
                   }}
@@ -556,23 +555,14 @@ function Dimagh() {
                     if (icon) { icon.style.transform = 'scale(1) rotate(0deg)'; }
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', justifyContent: 'flex-end' }}>
-                    <div>
-                      <div style={{ fontWeight: '800', fontSize: '17px', color: '#3a2555' }}>{item.title}</div>
-                      <div style={{ fontSize: '12px', color: item.color, fontStyle: 'italic' }}>{item.titleEn}</div>
-                    </div>
-                    <div className="licon" style={{
-                      width: '46px', height: '46px', borderRadius: '14px',
-                      background: item.iconBg,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '22px', flexShrink: 0,
-                      transition: 'transform 0.3s ease',
-                    }}>
-                      {item.icon}
-                    </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', justifyContent: 'flex-start' }}>
+  <div style={{ textAlign: 'right' }}>
+    <div style={{ fontWeight: '800', fontSize: '17px', color: '#3a2555' }}>{item.title}</div>
+    <div style={{ fontSize: '12px', color: item.color, fontStyle: 'italic' }}>{item.titleEn}</div>
+  </div>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px' }}>
                     <span style={{
                       padding: '3px 12px', borderRadius: '50px',
                       background: item.badgeColor + '20',
@@ -746,25 +736,39 @@ function Dimagh() {
                     border: '2px solid #ebe6f7',
                     borderRadius: '20px',
                     padding: '24px 28px',
-                    transition: 'all 0.3s ease',
+                    transition: 'all 0.35s cubic-bezier(0.34, 1.3, 0.64, 1)',
                     boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+                    cursor: 'default',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.boxShadow = `0 10px 32px ${method.color}18`;
-                    e.currentTarget.style.borderColor = method.color + '45';
+                    e.currentTarget.style.transform = 'translateY(-6px)';
+                    e.currentTarget.style.boxShadow = `0 18px 44px ${method.color}28, 0 4px 12px ${method.color}15`;
+                    e.currentTarget.style.borderColor = method.color + '70';
+                    e.currentTarget.style.background = method.iconBg || '#faf8ff';
+                    const title = e.currentTarget.querySelector('.recovery-title');
+                    if (title) title.style.color = method.color;
+                    const icon = e.currentTarget.querySelector('.recovery-icon');
+                    if (icon) { icon.style.transform = 'scale(1.15) rotate(-6deg)'; icon.style.background = method.color + '22'; }
                   }}
                   onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
                     e.currentTarget.style.borderColor = '#ebe6f7';
+                    e.currentTarget.style.background = 'white';
+                    const title = e.currentTarget.querySelector('.recovery-title');
+                    if (title) title.style.color = '#3a2555';
+                    const icon = e.currentTarget.querySelector('.recovery-icon');
+                    if (icon) { icon.style.transform = 'scale(1) rotate(0deg)'; icon.style.background = method.iconBg || '#f0f0ff'; }
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px', justifyContent: 'flex-end' }}>
-                    <div style={{ fontWeight: '800', fontSize: '18px', color: '#3a2555' }}>{method.title}</div>
-                    <div style={{
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px', justifyContent: 'flex-start' }}>
+                    <div className="recovery-title" style={{ fontWeight: '800', fontSize: '18px', color: '#3a2555', transition: 'color 0.3s ease' }}>{method.title}</div>
+                    <div className="recovery-icon" style={{
                       width: '46px', height: '46px', borderRadius: '14px',
                       background: method.iconBg,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '22px', flexShrink: 0,
+                      transition: 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease',
                     }}>
                       {method.icon}
                     </div>
@@ -785,7 +789,7 @@ function Dimagh() {
                           borderRadius: '14px',
                           padding: '14px 18px',
                         }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px', justifyContent: 'flex-end' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px', justifyContent: 'flex-start' }}>
                             <div style={{ fontWeight: '700', fontSize: '15px', color: '#3a2555' }}>{sub.title}</div>
                             <span style={{ fontSize: '20px' }}>{sub.icon}</span>
                           </div>
