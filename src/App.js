@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import Home from './pages/Home';
 import Exam from './pages/Exam';
@@ -37,16 +37,45 @@ function useGlobalScrollReveal() {
 
 function App() {
   const location = useLocation();
-useGlobalScrollReveal();
+  const navigate = useNavigate();
+  useGlobalScrollReveal();
+
   const navLinks = [
-    { name: "الرئيسية", path: "/" },
-    { name: "الإختبار", path: "/ikhtbar" },
-    { name:" الإضطرابات", path: "/amrad" },
-    { name: "الدماغ", path: "/dimagh" },
-    { name: "التعافي", path: "/taafi" },
-    { name: "عوامل الخطر", path: "/khattar" },
+    { name: "الرئيسية",    path: "/",        scrollTo: null },
+    { name: "الإختبار",    path: "/ikhtbar",  scrollTo: null },
+    { name: "الإضطرابات", path: "/",         scrollTo: "disorders-section" },
+    { name: "الدماغ",      path: "/",         scrollTo: "brain-section" },
+    { name: "التعافي",     path: "/",         scrollTo: "recovery-section" },
+    { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section" },
   ];
 
+ function handleNavClick(link) {
+    if (link.name === "الرئيسية") {
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    if (link.scrollTo) {
+      const scrollAndHighlight = () => {
+        const el = document.getElementById(link.scrollTo);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => {
+            window.dispatchEvent(new Event(`highlight-${link.scrollTo}`));
+          }, 600);
+        }
+      };
+      if (location.pathname !== '/') {
+        navigate('/');
+        setTimeout(scrollAndHighlight, 150);
+      } else {
+        scrollAndHighlight();
+      }
+    } else {
+      navigate(link.path);
+    }
+  }
 
   return (
     <div style={{
@@ -83,45 +112,50 @@ useGlobalScrollReveal();
         {/* navItems */}
         <div style={{ display: "flex", gap: "8px", marginLeft: "28px" }}>
           {navLinks.map(link => (
-            <Link
+            <button
               key={link.name}
-              to={link.path}
+              onClick={() => handleNavClick(link)}
               style={{
-                color: location.pathname === link.path ? "#6b4fa0" : "#737373",
-                textDecoration: "none",
+                color: location.pathname === link.path && !link.scrollTo ? "#6b4fa0" : "#737373",
                 fontSize: "18px",
                 padding: "6px 16px",
-                transition: "0.3s",
-                borderRadius: "0",
-                borderBottom: location.pathname === link.path ? "2px solid #6b4fa0" : "none",
                 paddingBottom: "2px",
+                transition: "0.3s",
+                background: "transparent",
+                border: "none",
+                borderBottom: location.pathname === link.path && !link.scrollTo
+                  ? "2px solid #6b4fa0"
+                  : "2px solid transparent",
                 display: "inline-block",
-
+                cursor: "pointer",
+                fontFamily: "'Lato', 'Tajawal', sans-serif",
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.color = "#6b4fa0";
                 e.currentTarget.style.background = "#ede8ff";
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.color = location.pathname === link.path ? "#6b4fa0" : "#737373";
+                e.currentTarget.style.color = location.pathname === link.path && !link.scrollTo
+                  ? "#6b4fa0" : "#737373";
                 e.currentTarget.style.background = "transparent";
               }}
             >
               {link.name}
-            </Link>
+            </button>
           ))}
         </div>
 
       </nav>
 
       {/* Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ikhtbar" element={<Exam />} />
-        <Route path="/khattar" element={<Khattar />} />
-        <Route path="/dimagh" element={<Brain />} />
-        {/* باقي الصفحات رح تضيفها هون لما تعملها */}
-      </Routes>
+     <Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/ikhtbar" element={<Exam />} />
+  <Route path="/khattar" element={<Khattar />} />
+  <Route path="/dimagh" element={<Brain />} />
+  <Route path="/disorders" element={<div>قريباً</div>} />
+  <Route path="/recovery" element={<div>قريباً</div>} />
+</Routes>
 
     </div>
   );

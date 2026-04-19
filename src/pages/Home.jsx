@@ -1,7 +1,8 @@
 import '../App.css';
 import image from '../image.png';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 
 const genData = {
   z: {
@@ -34,6 +35,107 @@ function launchConfetti(e) {
   }
 }
 
+function NavCard({ card, navigate }) {
+  const [hovered, setHovered] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
+
+  useEffect(() => {
+    const handler = () => {
+      setHighlighted(true);
+      setTimeout(() => setHighlighted(false), 1200);
+    };
+    window.addEventListener(`highlight-${card.sectionId}`, handler);
+    return () => window.removeEventListener(`highlight-${card.sectionId}`, handler);
+  }, [card.sectionId]);
+
+  const isActive = hovered || highlighted;
+
+  return (
+    <div
+      id={card.sectionId}
+      className="reveal"
+      onClick={() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        navigate(card.route);
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '32px',
+        direction: 'rtl',
+        cursor: 'pointer',
+        padding: '8px 0',
+        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
+        transform: isActive ? 'translateX(-6px)' : 'translateX(0)',
+        width: '100%',
+      }}
+    >
+      {/* البوكس الأبيض */}
+      <div style={{
+        background: isActive ? card.iconBg : 'white',
+        border: `2px solid ${isActive ? card.accentColor + '40' : '#ebe6f7'}`,
+        borderRadius: '22px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '18px',
+        flexShrink: 0,
+       width: '400px',
+       padding: '40px 44px',
+        boxShadow: isActive
+          ? `0 12px 32px ${card.accentColor}25`
+          : '0 2px 16px rgba(0,0,0,0.07)',
+        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
+        transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
+      }}>
+        {/* العنوان */}
+        <div style={{
+          fontWeight: '800',
+          fontSize: '28px',
+          color: isActive ? card.accentColor : '#2d1f4a',
+          transition: 'color 0.3s',
+          fontFamily: "'Tajawal', sans-serif",
+          whiteSpace: 'nowrap',
+          flex: 1,
+          textAlign: 'right',
+        }}>
+          {card.title}
+        </div>
+
+        {/* الأيقونة */}
+        <div style={{
+          width: '80px',
+          height: '80px',
+          fontSize: '38px',
+          borderRadius: '16px',
+          background: card.iconBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          transition: 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transform: isActive ? 'rotate(-8deg) scale(1.12)' : 'none',
+        }}>
+          {card.icon}
+        </div>
+      </div>
+
+      {/* الوصف */}
+      <div style={{
+        fontSize: '27px',
+        color: '#9586b0',
+        lineHeight: '1.8',
+        textAlign: 'right',
+        fontFamily: "'Tajawal', sans-serif",
+        flex: 1,
+      }}>
+        {card.desc}
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const [activeGen, setActiveGen] = useState('z');
@@ -46,12 +148,12 @@ function Home() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
 
       {/* ===== Hero Section ===== */}
       <div style={{
         position: 'relative',
-        overflow: 'hidden',
+        overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -59,7 +161,10 @@ function Home() {
         minHeight: '100vh',
         textAlign: 'center',
         padding: '40px',
+         marginBottom:'20px',
       }}>
+       
+     
         <img src={image} alt="background" style={{
           position: 'absolute',
           top: 0, left: 0,
@@ -70,31 +175,84 @@ function Home() {
         }} />
 
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <h1 className="reveal" style={{ fontSize: '60px', fontWeight: '400', color: '#493054', marginBottom: '20px', fontFamily: "'Lato', sans-serif" }}>
+          <h1 className="reveal" style={{
+            fontSize: '90px',
+            fontWeight: '400',
+            color: '#493054',
+            marginBottom: '28px',
+            fontFamily: "'Tajawal', sans-serif",
+            lineHeight: '1.3',
+          }}>
             الوعي بالصحة النفسية
           </h1>
-          <p className="reveal" style={{ fontSize: '20px', color: '#6f5779', marginBottom: '54px', fontFamily: "'Lato', sans-serif" }}>
+          <p className="reveal" style={{
+            fontSize: '24px',
+            color: '#6f5779',
+            fontFamily: "'Tajawal', sans-serif",
+            lineHeight: '1.7',
+          }}>
             رحلة للتعرف على صحتك النفسية بوضوح
           </p>
-          <div className="reveal" style={{ display: 'flex', flexDirection: 'row', gap: '16px', alignItems: 'center', justifyContent: 'center' }}>
-            <button
-              style={{ padding: '14px 28px', fontSize: '18px', background: '#9b7fc7', border: 'none', borderRadius: '50px', cursor: 'pointer', color: 'white', fontFamily: "'Tajawal', sans-serif", transition: 'all 0.3s ease' }}
-              onClick={() => navigate('/ikhtbar')}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(155,127,212,0.4)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
-              ابدأ الاختبار ✨
-            </button>
-            <button
-              style={{ padding: '14px 28px', fontSize: '18px', background: 'white', border: '2px solid #e0d6f5', borderRadius: '50px', cursor: 'pointer', color: '#493054', fontFamily: "'Tajawal', sans-serif", transition: 'all 0.3s ease' }}
-              onClick={() => document.getElementById('learnMore').scrollIntoView({ behavior: 'smooth' })}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(155,127,212,0.4)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
-              تعرف أكثر 📚
-            </button>
+        </div>
+
+        {/* سهم الـ scroll */}
+        <div
+          onClick={() => document.getElementById('learnMore').scrollIntoView({ behavior: 'smooth' })}
+          style={{
+            position: 'absolute',
+            bottom: '70px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            zIndex: 1,
+          }}
+        >
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: '#9b7fc7',
+              animation: `dotBounce 1.4s ease-in-out infinite`,
+              animationDelay: `${i * 0.2}s`,
+            }} />
+          ))}
+          <div style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            background: 'rgba(155, 127, 199, 0.15)',
+            backdropFilter: 'blur(8px)',
+            border: '2px solid rgba(155, 127, 199, 0.4)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '18px',
+            color: '#9b7fc7',
+            animation: 'arrowBounce 1.6s ease-in-out infinite',
+            marginTop: '4px',
+          }}>
+            ↓
           </div>
         </div>
+
+        <style>{`
+          @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(10px); }
+          }
+          @keyframes dotBounce {
+            0%, 100% { opacity: 0.2; transform: translateY(0px); }
+            50% { opacity: 0.7; transform: translateY(4px); }
+          }
+          @keyframes confettiFall {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+          }
+        `}</style>
       </div>
 
 
@@ -381,41 +539,33 @@ function Home() {
 
       </div>
 
-      
-      {/* ===== الكاردز الأربعة ===== */}
-     <div style={{ 
-  // التعديل هنا: استبدال اللون الثابت بالتدرج اللوني
-  background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
-  width: '100%', 
-  minHeight: '100vh', 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center' 
-}}>
-       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', maxWidth: '800px', width: '100%', padding: '40px', direction: 'rtl' }}>
+    {/* ===== الكاردز الأربعة ===== */}
+      <div style={{ 
+        background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
+        width: '100%',
+        padding: '80px 60px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '60px',
+          maxWidth: '700px',
+          width: '100%',
+        }}>
           {[
-            { icon: '🧩', iconBg: '#fff3e0', title: 'الاضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
-            { icon: '⚠️', iconBg: '#f3e8ff', title: 'مخاطر جيل Z', desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
-            { icon: '🧠', iconBg: '#e8f5e9', title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
-            { icon: '🌱', iconBg: '#e8f0ff', title: 'التعافي', desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
+            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disorders', title: 'الاضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
+            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#f59e0b', sectionId: 'khattar-section',   route: '/khattar',  title: 'مخاطر جيل Z',  desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
+            { icon: '🧠', iconBg: '#e8f5e9', accentColor: '#4aab72', sectionId: 'brain-section',     route: '/dimagh',   title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
+            { icon: '🌱', iconBg: '#f0fff4', accentColor: '#6e91a7', sectionId: 'recovery-section',  route: '/recovery', title: 'التعافي',      desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
           ].map((card, i) => (
-            <div
-              className="reveal"
-              key={i}
-              style={{ background: 'white', borderRadius: '20px', padding: '28px 24px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', cursor: 'pointer', direction: 'rtl', transition: 'all 0.3s ease' }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(155,127,212,0.2)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)'; }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', direction: 'rtl' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: card.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px' }}>{card.icon}</div>
-                <div style={{ fontWeight: '700', fontSize: '20px', color: '#2d2d2d' }}>{card.title}</div>
-              </div>
-              <div style={{ fontSize: '15px', color: '#888', textAlign: 'right', lineHeight: '1.6', width: '100%' }}>{card.desc}</div>
-            </div>
+            <NavCard key={i} card={card} navigate={navigate} />
           ))}
         </div>
       </div>
-
+ 
 
       {/* ===== Footer ===== */}
       <footer style={{

@@ -7,7 +7,6 @@ export function useScrollReveal(options = {}) {
     const el = ref.current;
     if (!el) return;
 
-    // نحط العنصر مخفي في البداية
     el.style.opacity = '0';
     el.style.transform = 'translateY(40px)';
     el.style.transition = `opacity 0.6s ease, transform 0.6s ease`;
@@ -18,7 +17,7 @@ export function useScrollReveal(options = {}) {
         if (entry.isIntersecting) {
           el.style.opacity = '1';
           el.style.transform = 'translateY(0)';
-          observer.unobserve(el); // بكفي بعد ما ظهر مرة
+          observer.unobserve(el); 
         }
       },
       { threshold: 0.15 }
