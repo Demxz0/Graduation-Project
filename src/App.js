@@ -36,6 +36,12 @@ function useGlobalScrollReveal() {
   }, []);
 }
 
+import Disease from './pages/Disease';
+import AnxietyDetail from './pages/AnxietyDetail';
+import ADHDDetail from './pages/ADHDDetail'; 
+import EatingDisorderDetail from './pages/EatingDisorderDetail';
+import PTSDDetail from './pages/PTSDDetail';
+import DepressionDetail from './pages/DepressionDetail';
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -161,6 +167,14 @@ borderBottom: activeLink === link.name
   <Route path="/disorders" element={<div>قريباً</div>} />
   <Route path="/recovery" element={<div>قريباً</div>} />
 </Routes>
+
+        <Route path="/" element={<Home />} />
+        <Route path="/disease" element={<Disease />} /> 
+        <Route path="/disease/anxiety" element={<AnxietyDetail />} />
+        <Route path="/disease/adhd" element={<ADHDDetail />} />
+        <Route path="/disease/eating-disorder" element={<EatingDisorderDetail />} />
+        <Route path="/disease/ptsd" element={<PTSDDetail />} />
+        <Route path="/disease/depression" element={<DepressionDetail />} />
 
     </div>
   );
