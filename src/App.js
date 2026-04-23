@@ -5,7 +5,8 @@ import Home from './pages/Home';
 import Exam from './pages/Exam';
 import Khattar from './pages/Khattar';
 import Brain from './pages/Brain';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 
 function useGlobalScrollReveal() {
   useEffect(() => {
@@ -38,45 +39,48 @@ function useGlobalScrollReveal() {
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState("الرئيسية");
   useGlobalScrollReveal();
 
   const navLinks = [
     { name: "الرئيسية",    path: "/",        scrollTo: null },
-    { name: "الإختبار",    path: "/ikhtbar",  scrollTo: null },
+    { name: "الإختبار",    path: "/",  scrollTo: "exam-section" },
     { name: "الإضطرابات", path: "/",         scrollTo: "disorders-section" },
     { name: "الدماغ",      path: "/",         scrollTo: "brain-section" },
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section" },
     { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section" },
   ];
 
- function handleNavClick(link) {
-    if (link.name === "الرئيسية") {
-      navigate('/');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    
-    if (link.scrollTo) {
-      const scrollAndHighlight = () => {
-        const el = document.getElementById(link.scrollTo);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(() => {
-            window.dispatchEvent(new Event(`highlight-${link.scrollTo}`));
-          }, 600);
-        }
-      };
-      if (location.pathname !== '/') {
-        navigate('/');
-        setTimeout(scrollAndHighlight, 150);
-      } else {
-        scrollAndHighlight();
-      }
-    } else {
-      navigate(link.path);
-    }
-  }
 
+function handleNavClick(link) {
+  setActiveLink(link.name); 
+
+  if (link.name === "الرئيسية") {
+    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  
+  if (link.scrollTo) {
+    const scrollAndHighlight = () => {
+      const el = document.getElementById(link.scrollTo);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          window.dispatchEvent(new Event(`highlight-${link.scrollTo}`));
+        }, 600);
+      }
+    };
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(scrollAndHighlight, 150);
+    } else {
+      scrollAndHighlight();
+    }
+  } else {
+    navigate(link.path);
+  }
+}
   return (
     <div style={{
       minHeight: "100vh",
@@ -116,16 +120,17 @@ function App() {
               key={link.name}
               onClick={() => handleNavClick(link)}
               style={{
-                color: location.pathname === link.path && !link.scrollTo ? "#6b4fa0" : "#737373",
+                color: activeLink === link.name ? "#6b4fa0" : "#737373",
+borderBottom: activeLink === link.name
+  ? "2px solid #6b4fa0"
+  : "2px solid transparent",
                 fontSize: "18px",
                 padding: "6px 16px",
                 paddingBottom: "2px",
                 transition: "0.3s",
                 background: "transparent",
                 border: "none",
-                borderBottom: location.pathname === link.path && !link.scrollTo
-                  ? "2px solid #6b4fa0"
-                  : "2px solid transparent",
+                
                 display: "inline-block",
                 cursor: "pointer",
                 fontFamily: "'Lato', 'Tajawal', sans-serif",

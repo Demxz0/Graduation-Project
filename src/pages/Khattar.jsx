@@ -139,7 +139,7 @@ function RiskCard({ factor, index }) {
         background: hovered ? factor.bg : 'white',
         border: `2px solid ${hovered ? factor.color + '60' : factor.borderColor}`,
         borderRadius: '20px',
-        padding: '28px 24px',
+        padding: '30px 15px',
         position: 'relative',
         cursor: 'default',
         transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -224,7 +224,7 @@ function RiskCard({ factor, index }) {
         {factor.desc}
       </div>
 
-      {/* خط سفلي ملوّن يظهر عند الهوفر */}
+      {/* خط  ملوّن يظهر عند الهوفر */}
       <div style={{
         position: 'absolute',
         bottom: 0,
@@ -266,7 +266,7 @@ function RiskFactors() {
         .risk-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
+          gap: 60px;
         }
         @media (max-width: 900px) {
           .risk-grid { grid-template-columns: repeat(2, 1fr); }
@@ -342,7 +342,7 @@ function RiskFactors() {
             ومع هذا الارتباط ظهرت مجموعة من التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية و جودة الحياة.
           </p>
 
-          {/* خط زخرفي */}
+          {/* خط ملون*/}
           <div style={{
             width: '120px',
             height: '3px',

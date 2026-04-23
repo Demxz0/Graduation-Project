@@ -89,19 +89,7 @@ function NavCard({ card, navigate }) {
         transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
         transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
       }}>
-        {/* العنوان */}
-        <div style={{
-          fontWeight: '800',
-          fontSize: '28px',
-          color: isActive ? card.accentColor : '#2d1f4a',
-          transition: 'color 0.3s',
-          fontFamily: "'Tajawal', sans-serif",
-          whiteSpace: 'nowrap',
-          flex: 1,
-          textAlign: 'right',
-        }}>
-          {card.title}
-        </div>
+       
 
         {/* الأيقونة */}
         <div style={{
@@ -118,6 +106,19 @@ function NavCard({ card, navigate }) {
           transform: isActive ? 'rotate(-8deg) scale(1.12)' : 'none',
         }}>
           {card.icon}
+        </div>
+         {/* العنوان */}
+        <div style={{
+          fontWeight: '800',
+          fontSize: '28px',
+          color: isActive ? card.accentColor : '#2d1f4a',
+          transition: 'color 0.3s',
+          fontFamily: "'Tajawal', sans-serif",
+          whiteSpace: 'nowrap',
+          flex: 1,
+          textAlign: 'right',
+        }}>
+          {card.title}
         </div>
       </div>
 
@@ -477,7 +478,7 @@ function Home() {
           color: '#493054', 
           fontWeight: '900', 
           fontSize: '14px',
-          transform: 'rotate(-45deg)', // هاد اللي بخلي النص جالس
+          transform: 'rotate(-45deg)', 
           transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
           display: 'inline-block'
         }}
@@ -540,6 +541,7 @@ function Home() {
       </div>
 
     {/* ===== الكاردز الأربعة ===== */}
+      
       <div style={{ 
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
         width: '100%',
@@ -548,6 +550,7 @@ function Home() {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -555,12 +558,23 @@ function Home() {
           maxWidth: '700px',
           width: '100%',
         }}>
+          <h1 className="reveal" style={{
+            fontSize: '35px',
+            fontWeight:'800',
+            color: '#6f5779',
+            fontFamily: "'Tajawal', sans-serif",
+            lineHeight: '1.7',
+            
+          }}>
+            أقسام أُجليك:
+          </h1>
           {[
-            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disorders', title: 'الاضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
-            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#f59e0b', sectionId: 'khattar-section',   route: '/khattar',  title: 'مخاطر جيل Z',  desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
+            { icon: '📝', iconBg: '#eae6fa', accentColor: '#ad9af8', sectionId: 'exam-section', route: '/ikhtbar', title: 'الإختبارات', desc:'أجرِ إختبار الصحة النفسية لتعرف نسبة تعرضك للإضطراب' },
+            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disorders', title: 'الإضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
             { icon: '🧠', iconBg: '#e8f5e9', accentColor: '#4aab72', sectionId: 'brain-section',     route: '/dimagh',   title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
             { icon: '🌱', iconBg: '#f0fff4', accentColor: '#6e91a7', sectionId: 'recovery-section',  route: '/recovery', title: 'التعافي',      desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
-          ].map((card, i) => (
+            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#f59e0b', sectionId: 'khattar-section',   route: '/khattar',  title: 'مخاطر جيل Z',  desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
+            ].map((card, i) => (
             <NavCard key={i} card={card} navigate={navigate} />
           ))}
         </div>
