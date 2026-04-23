@@ -570,7 +570,7 @@ function Home() {
           </h1>
           {[
             { icon: '📝', iconBg: '#eae6fa', accentColor: '#ad9af8', sectionId: 'exam-section', route: '/ikhtbar', title: 'الإختبارات', desc:'أجرِ إختبار الصحة النفسية لتعرف نسبة تعرضك للإضطراب' },
-            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disorders', title: 'الإضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
+            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
             { icon: '🧠', iconBg: '#e8f5e9', accentColor: '#4aab72', sectionId: 'brain-section',     route: '/dimagh',   title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
             { icon: '🌱', iconBg: '#f0fff4', accentColor: '#6e91a7', sectionId: 'recovery-section',  route: '/recovery', title: 'التعافي',      desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
             { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#f59e0b', sectionId: 'khattar-section',   route: '/khattar',  title: 'مخاطر جيل Z',  desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
