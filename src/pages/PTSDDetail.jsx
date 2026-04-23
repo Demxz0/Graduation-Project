@@ -234,7 +234,7 @@ export default function PTSDDetail() {
       {/* Hero */}
       <div style={s.heroSection}>
         <div style={s.breadcrumb}>الاضطرابات النفسية &gt; اضطراب ما بعد الصدمة</div>
-        <h1 style={s.heroTitle}>الأحداث تنتهي... ويبقى الأثر</h1>
+        <h1 className="responsive-title-hero" style={{ fontSize: "44.5px", fontWeight: "700", color: "#574144", marginBottom: "16px", textShadow: "2px 2px 12px rgba(87, 65, 68, 0.4)", fontFamily: "'Tajawal', sans-serif" }}>الأحداث تنتهي... ويبقى الأثر</h1>
         <p style={s.heroSub}>
           PTSD ليس ضعفاً، هو استجابة دماغك لتجربة قاسية، يعيش معه{" "}
           <strong style={{ color: "#574144" }}>أكثر من 300 مليون شخص</strong>{" "}
@@ -248,7 +248,7 @@ export default function PTSDDetail() {
       <div style={s.sectionWrapper}>
         <div style={s.sectionLabel}>التعريف</div>
         <h2 style={s.sectionTitle}>ما هو <span style={s.sectionTitleHighlight}>اضطراب ما بعد الصدمة</span>؟</h2>
-        <div style={s.defGrid}>
+        <div className="responsive-grid-2" style={{ gap: "20px" }}>
           <div style={s.defCard("#e8d0d2")}>
             <div style={s.defCardBar("#8a6366")} />
             <div style={s.defCardTitle}>الاستجابة الطبيعية للصدمة</div>
@@ -273,7 +273,7 @@ export default function PTSDDetail() {
         <div style={s.sectionLabel}>الأنواع</div>
         <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
         <p style={{ fontSize: "14px", color: "#a88285", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في استجابته للصدمة.</p>
-        <div style={s.typesGrid}>
+        <div className="responsive-grid-2" style={{ gap: "16px" }}>
           {types.map((t) => (
             <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -316,7 +316,7 @@ export default function PTSDDetail() {
             <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div style={s.symptomsGrid}>
+        <div className="responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
             <div key={i} style={s.symptomCard()}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(87,65,68,0.15)"; }}
@@ -376,7 +376,7 @@ export default function PTSDDetail() {
         <div style={s.sectionLabel}>آليات التكيف</div>
         <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
         <p style={{ fontSize: "14px", color: "#a88285", textAlign: "right", marginBottom: "24px" }}>استجابات تبدو منطقية للبقاء بأمان على المدى القصير — لكنها تُديم الصدمة وتُعمّقها على المدى الطويل.</p>
-        <div style={s.copingGrid}>
+        <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
             <div key={i} style={s.copingCard}
               onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #a88285"; }}
@@ -411,7 +411,7 @@ export default function PTSDDetail() {
         <div style={s.sectionLabel}>السمات الشخصية</div>
         <h2 style={s.sectionTitle}>PTSD يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span></h2>
         <p style={{ fontSize: "14px", color: "#a88285", textAlign: "right", marginBottom: "24px" }}>العيش مع صدمة مزمنة يُحدث تغييرات عميقة في الشخصية وطريقة رؤية العالم.</p>
-        <div style={s.traitsGrid}>
+        <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
             <div key={i} style={s.traitCard(t.color)}>
               <div style={s.traitBar(t.bar)} />
@@ -448,7 +448,7 @@ export default function PTSDDetail() {
         </div>
         <div style={{ ...s.causeBlock, marginTop: "28px" }}>
           <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b2a2c", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك وعقلك؟</div>
-          <div style={s.resultBox}>
+          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #e8d0d2", gap: "32px" }}>
             <div>
               <div style={s.resultColTitle}>في لحظات الفلاشباك</div>
               {["تسارع حاد في ضربات القلب", "ضيق في التنفس والشعور بالاختناق", "تعرق وارتجاف في الجسم", "شعور كامل بأن الصدمة تقع الآن"].map((t, i) => (

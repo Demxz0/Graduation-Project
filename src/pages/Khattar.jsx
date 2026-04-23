@@ -276,10 +276,9 @@ function RiskFactors() {
         }
       `}</style>
 
-      <div style={{
+      <div className="responsive-padding-main" style={{
         minHeight: '100vh',
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)',
-        padding: '60px 32px 80px',
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
       }}>
@@ -305,8 +304,7 @@ function RiskFactors() {
             ⚠️
           </div>
 
-          <h1 style={{
-            fontSize: '46px',
+          <h1 className="responsive-title-section" style={{
             fontWeight: '800',
             color: '#3a2555',
             marginBottom: '14px',

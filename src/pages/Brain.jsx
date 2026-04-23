@@ -318,8 +318,8 @@ function Dimagh() {
             transition: 'opacity 0.7s ease 0.1s',
           }}>🧠</div>
 
-          <h1 style={{
-            fontSize: '50px', fontWeight: '800', color: '#3a2555',
+          <h1 className="responsive-title-section" style={{
+             fontWeight: '800', color: '#3a2555',
             marginBottom: '14px', letterSpacing: '-0.5px',
             opacity: headerVisible ? 1 : 0,
             transform: headerVisible ? 'translateY(0)' : 'translateY(24px)',
@@ -393,9 +393,7 @@ function Dimagh() {
           
           />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+          <div className="responsive-grid-3" style={{
             gap: '20px',
             marginBottom: '52px',
           }}>
@@ -520,9 +518,7 @@ function Dimagh() {
             color="#c97099"
           />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+          <div className="responsive-grid-2" style={{
             gap: '18px',
             marginBottom: '52px',
           }}>
@@ -635,9 +631,7 @@ function Dimagh() {
           {/* النواقل العصبية */}
           <SectionHeader title="الاتصال المشبكي والنواقل العصبية" color="#9b7fc7" />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+          <div className="responsive-grid-2" style={{
             gap: '16px',
             marginBottom: '28px',
           }}>

@@ -46,7 +46,16 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("الرئيسية");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
   useGlobalScrollReveal();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const navLinks = [
     { name: "الرئيسية",    path: "/",        scrollTo: null },
@@ -60,6 +69,7 @@ function App() {
 
 function handleNavClick(link) {
   setActiveLink(link.name); 
+  setIsMobileMenuOpen(false);
 
   if (link.name === "الرئيسية") {
     navigate('/');
@@ -100,55 +110,106 @@ function handleNavClick(link) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        width: "100vw",
+        width: "100%",
         margin: "0",
         padding: "0px 8px",
-        height: "60px",
+        height: isMobile ? "auto" : "60px",
+        minHeight: "60px",
         background: "rgba(255,255,255,0.85)",
         backdropFilter: "blur(14px)",
         borderBottom: "1px solid #e0d6f5",
         position: "sticky",
         top: "0",
         zIndex: 1000,
-        boxShadow: "0 8px 25px rgba(0,0,0,0.05)"
+        boxShadow: "0 8px 25px rgba(0,0,0,0.05)",
+        flexWrap: isMobile ? "wrap" : "nowrap",
       }}>
 
         {/* logo */}
-        <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
+        <div style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          marginRight: "20px",
+          order: isMobile ? 1 : 0,
+        }}>
           <img src={logo} alt="logo" style={{ width: "50px", height: "50px" }} />
-          <span style={{ fontSize: "26px", fontWeight: "800", color: "#493054" }}>أُجِليك</span>
+          <span style={{ 
+            fontSize: isMobile ? "20px" : "26px", 
+            fontWeight: "800", 
+            color: "#493054" 
+          }}>أُجِليك</span>
         </div>
 
+        {/* Mobile hamburger menu */}
+        {isMobile && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              fontSize: "24px",
+              cursor: "pointer",
+              marginLeft: "auto",
+              padding: "8px",
+              display: "flex",
+              alignItems: "center",
+              order: 2,
+            }}
+          >
+            {isMobileMenuOpen ? "✕" : "☰"}
+          </button>
+        )}
+
         {/* navItems */}
-        <div style={{ display: "flex", gap: "8px", marginLeft: "28px" }}>
+        <div 
+          className="responsive-nav-links" 
+          style={{ 
+            marginLeft: isMobile ? "0" : "auto", 
+            marginRight: isMobile ? "0" : "10px", 
+            paddingRight: isMobile ? "0" : "10px",
+            order: isMobile ? 3 : 0,
+            width: isMobile ? "100%" : "auto",
+            display: isMobileMenuOpen || !isMobile ? "flex" : "none",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? "0" : "8px",
+            padding: isMobile ? "10px" : "0",
+            borderTop: isMobile ? "1px solid #e0d6f5" : "none",
+            backgroundColor: isMobile ? "rgba(255,255,255,0.95)" : "transparent",
+          }}>
           {navLinks.map(link => (
             <button
               key={link.name}
               onClick={() => handleNavClick(link)}
               style={{
                 color: activeLink === link.name ? "#6b4fa0" : "#737373",
-borderBottom: activeLink === link.name
-  ? "2px solid #6b4fa0"
-  : "2px solid transparent",
-                fontSize: "18px",
-                padding: "6px 16px",
-                paddingBottom: "2px",
+                borderBottom: activeLink === link.name
+                  ? isMobile ? "2px solid #6b4fa0" : "2px solid #6b4fa0"
+                  : "2px solid transparent",
+                fontSize: isMobile ? "14px" : "18px",
+                padding: isMobile ? "10px 12px" : "6px 16px",
+                paddingBottom: isMobile ? "10px" : "2px",
                 transition: "0.3s",
                 background: "transparent",
-                border: "none",
-                
-                display: "inline-block",
+                border: isMobile ? "none" : "none",
+                borderBottom: isMobile ? "1px solid #ebe6f7" : (activeLink === link.name ? "2px solid #6b4fa0" : "2px solid transparent"),
+                display: "block",
                 cursor: "pointer",
                 fontFamily: "'Lato', 'Tajawal', sans-serif",
+                width: isMobile ? "100%" : "auto",
+                textAlign: "right",
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.color = "#6b4fa0";
-                e.currentTarget.style.background = "#ede8ff";
+                if (!isMobile) {
+                  e.currentTarget.style.color = "#6b4fa0";
+                  e.currentTarget.style.background = "#ede8ff";
+                }
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.color = location.pathname === link.path && !link.scrollTo
-                  ? "#6b4fa0" : "#737373";
-                e.currentTarget.style.background = "transparent";
+                if (!isMobile) {
+                  e.currentTarget.style.color = location.pathname === link.path && !link.scrollTo
+                    ? "#6b4fa0" : "#737373";
+                  e.currentTarget.style.background = "transparent";
+                }
               }}
             >
               {link.name}

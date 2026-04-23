@@ -38,6 +38,13 @@ function launchConfetti(e) {
 function NavCard({ card, navigate }) {
   const [hovered, setHovered] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -62,40 +69,42 @@ function NavCard({ card, navigate }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         display: 'flex',
-        alignItems: 'center',
-        gap: '32px',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '16px' : '32px',
         direction: 'rtl',
         cursor: 'pointer',
-        padding: '8px 0',
+        padding: isMobile ? '16px 0' : '8px 0',
         transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
         transform: isActive ? 'translateX(-6px)' : 'translateX(0)',
         width: '100%',
       }}
     >
       {/* البوكس الأبيض */}
-      <div style={{
+      <div className="nav-card-container" style={{
         background: isActive ? card.iconBg : 'white',
         border: `2px solid ${isActive ? card.accentColor + '40' : '#ebe6f7'}`,
         borderRadius: '22px',
         display: 'flex',
         alignItems: 'center',
-        gap: '18px',
+        gap: isMobile ? '12px' : '18px',
         flexShrink: 0,
-       width: '400px',
-       padding: '40px 44px',
         boxShadow: isActive
           ? `0 12px 32px ${card.accentColor}25`
           : '0 2px 16px rgba(0,0,0,0.07)',
         transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
         transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
+        width: isMobile ? '100%' : 'auto',
+        padding: isMobile ? '16px 12px' : '0',
+        justifyContent: isMobile ? 'flex-start' : 'center',
       }}>
        
 
         {/* الأيقونة */}
         <div style={{
-          width: '80px',
-          height: '80px',
-          fontSize: '38px',
+          width: isMobile ? '60px' : '80px',
+          height: isMobile ? '60px' : '80px',
+          fontSize: isMobile ? '28px' : '38px',
           borderRadius: '16px',
           background: card.iconBg,
           display: 'flex',
@@ -110,11 +119,11 @@ function NavCard({ card, navigate }) {
          {/* العنوان */}
         <div style={{
           fontWeight: '800',
-          fontSize: '28px',
+          fontSize: isMobile ? '18px' : '28px',
           color: isActive ? card.accentColor : '#2d1f4a',
           transition: 'color 0.3s',
           fontFamily: "'Tajawal', sans-serif",
-          whiteSpace: 'nowrap',
+          whiteSpace: isMobile ? 'normal' : 'nowrap',
           flex: 1,
           textAlign: 'right',
         }}>
@@ -124,12 +133,13 @@ function NavCard({ card, navigate }) {
 
       {/* الوصف */}
       <div style={{
-        fontSize: '27px',
+        fontSize: isMobile ? '14px' : '27px',
         color: '#9586b0',
         lineHeight: '1.8',
         textAlign: 'right',
         fontFamily: "'Tajawal', sans-serif",
         flex: 1,
+        width: isMobile ? '100%' : 'auto',
       }}>
         {card.desc}
       </div>
@@ -176,21 +186,26 @@ function Home() {
         }} />
 
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <h1 className="reveal" style={{
-            fontSize: '90px',
+          <h1 className="reveal responsive-title-hero" style={{
             fontWeight: '400',
             color: '#493054',
             marginBottom: '28px',
             fontFamily: "'Tajawal', sans-serif",
             lineHeight: '1.3',
+            maxWidth: '90%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}>
             الوعي بالصحة النفسية
           </h1>
           <p className="reveal" style={{
-            fontSize: '24px',
+            fontSize: 'clamp(16px, 4vw, 24px)',
             color: '#6f5779',
             fontFamily: "'Tajawal', sans-serif",
             lineHeight: '1.7',
+            maxWidth: '90%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}>
             رحلة للتعرف على صحتك النفسية بوضوح
           </p>
@@ -266,7 +281,7 @@ function Home() {
       }}>
 
         {/* العنوان */}
-        <h2 className="reveal" style={{ fontSize: '38px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px' }}>
+        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px' }}>
           من هو جيل Z؟
         </h2>
         <p className="reveal" style={{ fontSize: '16px', color: '#6f5779', textAlign: 'center', marginBottom: '48px', lineHeight: '1.7' }}>
@@ -337,9 +352,7 @@ function Home() {
         </div>
 
         {/* الكاردز الستة */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+        <div className="responsive-grid-2" style={{
           gap: '20px',
           maxWidth: '760px',
           margin: '0 auto 56px',
@@ -386,14 +399,14 @@ function Home() {
   📌 الأحداث التي شكّلت جيل Z
 </h3>
 
-<div className="reveal" style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)', 
-  gap: '30px 40px',
+<div className="reveal timeline-grid" style={{
   maxWidth: '900px',
   margin: '0 auto 60px',
   direction: 'rtl',
-  overflow: 'visible', 
+  overflow: 'visible',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '20px',
 }}>
  {[
   { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
@@ -412,11 +425,12 @@ function Home() {
       height: '65px',
       display: 'flex',
       alignItems: 'center',
-      padding: '0 25px',
+      padding: '0 20px 0 70px',
       boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
       border: '1px solid #f0f0f5',
       cursor: 'pointer',
       transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+      overflow: 'hidden',
     }}
     onMouseEnter={e => {
       e.currentTarget.style.transform = 'translateY(-5px)';
@@ -448,7 +462,6 @@ function Home() {
       fontWeight: '700',
       flex: 1,
       textAlign: 'right',
-      marginRight: '55px', 
     }}>
       {item.event}
     </span>
@@ -458,7 +471,7 @@ function Home() {
       className="diamond-shape"
       style={{
         position: 'absolute',
-        right: '-12px',
+        left: '8px',
         width: '52px',
         height: '52px',
         background: item.color,
@@ -470,6 +483,7 @@ function Home() {
         zIndex: 2,
         transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
         boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+        flexShrink: 0,
       }}
     >
       <span 
@@ -477,7 +491,7 @@ function Home() {
         style={{ 
           color: '#493054', 
           fontWeight: '900', 
-          fontSize: '14px',
+          fontSize: '12px',
           transform: 'rotate(-45deg)', 
           transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
           display: 'inline-block'
@@ -502,7 +516,7 @@ function Home() {
           <div style={{ fontSize: '20px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '28px' }}>
             📊 معلومات موثّقة عن الصحة النفسية لجيل Z
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
+          <div className="responsive-grid-3" style={{ gap: '16px', marginBottom: '16px' }}>
             {[
               { num: '75%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
               { num: '55%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
@@ -542,10 +556,9 @@ function Home() {
 
     {/* ===== الكاردز الأربعة ===== */}
       
-      <div style={{ 
+      <div className="responsive-padding-main" style={{ 
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
         width: '100%',
-        padding: '80px 60px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

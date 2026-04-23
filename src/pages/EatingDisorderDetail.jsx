@@ -227,7 +227,7 @@ export default function EatingDisorderDetail() {
       {/* Hero */}
       <div style={s.heroSection}>
         <div style={s.breadcrumb}>الاضطرابات النفسية &gt; اضطرابات الأكل</div>
-        <h1 style={s.heroTitle}>اضطرابات الأكل... صراع مع الطعام والجسد</h1>
+        <h1 className="responsive-title-hero" style={{ fontSize: "44.5px", fontWeight: "700", color: "#7a4d68", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 77, 104, 0.25)", fontFamily: "'Tajawal', sans-serif" }}>اضطرابات الأكل... صراع مع الطعام والجسد</h1>
         <p style={s.heroSub}>
           ليست ضعفًا، بل اضطراب يؤثر على{" "}
           <strong style={{ color: "#7a4d68" }}>ملايين الأشخاص حول العالم</strong>
@@ -240,7 +240,7 @@ export default function EatingDisorderDetail() {
       <div style={s.sectionWrapper}>
         <div style={s.sectionLabel}>التعريف</div>
         <h2 style={s.sectionTitle}>ما هي <span style={s.sectionTitleHighlight}>اضطرابات الأكل</span>؟</h2>
-        <div style={s.defGrid}>
+        <div className="responsive-grid-2" style={{ gap: "20px" }}>
           <div style={s.defCard("#eddae8")}>
             <div style={s.defCardBar("#9e728a")} />
             <div style={s.defCardTitle}>اضطراب الأكل</div>
@@ -261,7 +261,7 @@ export default function EatingDisorderDetail() {
         <div style={s.sectionLabel}>الأنواع</div>
         <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
         <p style={{ fontSize: "14px", color: "#c29ab5", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
-        <div style={s.typesGrid}>
+        <div className="responsive-grid-2" style={{ gap: "16px" }}>
           {types.map((t) => (
             <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -304,7 +304,7 @@ export default function EatingDisorderDetail() {
             <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div style={s.symptomsGrid}>
+        <div className="responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
             <div key={i} style={s.symptomCard()}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(122,77,104,0.18)"; }}
@@ -371,7 +371,7 @@ export default function EatingDisorderDetail() {
         <div style={s.sectionLabel}>آليات التكيف</div>
         <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
         <p style={{ fontSize: "14px", color: "#c29ab5", textAlign: "right", marginBottom: "24px" }}>هي استجابات سلوكية وعاطفية مختلة يلجأ إليها الفرد. رغم أنها قد توفر راحة مؤقتة إلا أنها تزيد من تأثير الاضطراب وتُفاقم عواقبه على المدى الطويل.</p>
-        <div style={s.copingGrid}>
+        <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
             <div key={i} style={s.copingCard}
               onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #9e728a"; }}
@@ -406,7 +406,7 @@ export default function EatingDisorderDetail() {
         <div style={s.sectionLabel}>السمات الشخصية</div>
         <h2 style={s.sectionTitle}>اضطرابات الأكل <span style={s.sectionTitleHighlight}>يُغيِّر</span> شخصيتك</h2>
         <p style={{ fontSize: "14px", color: "#c29ab5", textAlign: "right", marginBottom: "24px" }}>المعاناة مع اضطرابات الأكل ليست مجرد سلوك، بل تنعكس على سماتك وتعاملك اليومي.</p>
-        <div style={s.traitsGrid}>
+        <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
             <div key={i} style={s.traitCard(t.color)}>
               <div style={s.traitBar(t.bar)} />
@@ -445,7 +445,7 @@ export default function EatingDisorderDetail() {
 
         <div style={{ ...s.causeBlock, marginTop: "28px" }}>
           <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b2435", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك؟</div>
-          <div style={s.resultBox}>
+          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #eddae8", gap: "32px" }}>
             <div>
               <div style={s.resultColTitle}>في حالات سوء التغذية (فقدان الشهية)</div>
               {["بطء شديد في ضربات القلب.", "شعور دائم بالبرودة حتى في الصيف.", "خمول وإرهاق ذهني مستمر.", "هشاشة في العظام وجفاف الجلد."].map((t, i) => (
