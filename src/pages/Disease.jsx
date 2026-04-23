@@ -1,16 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 
-
 function Disease() {
   const navigate = useNavigate();
- 
 
   const disorders = [
-    { id: 1, label: "الاكتئاب",                              sub: "(Depression)",        border: "#ddbcd0", path: "/disease/depression" },
-    { id: 2, label: "اضطراب القلق",                          sub: "(Anxiety)",            border: "#abc3d1", path: "/disease/anxiety" },
-    { id: 3, label: "اضطراب ما بعد الصدمة",                  sub: "(PTSD)",               border: "#fee8c6", path: "/disease/ptsd" },
-    { id: 4, label: "اضطراب نقص الانتباه مع فرط النشاط",    sub: "(ADHD)",               border: "#d6936a", path: "/disease/adhd" },
-    { id: 5, label: "اضطراب الأكل", sub: "(Eating Disorders)", border: "#c8d5c4", path: "/disease/eating-disorder" },
+    { id: 1, label: "اضطراب الأكل",                           sub: "(Eating Disorders)", border: "#ddbcd0", path: "/disease/eating-disorder" },
+    { id: 2, label: "اضطراب نقص الانتباه مع فرط النشاط",     sub: "(ADHD)",              border: "#abc3d1", path: "/disease/adhd" },
+    { id: 3, label: "اضطراب ما بعد الصدمة",                   sub: "(PTSD)",              border: "#574144", path: "/disease/ptsd" },
+    { id: 4, label: "اضطراب القلق",                           sub: "(Anxiety)",           border: "#d6936a", path: "/disease/anxiety" },
+    { id: 5, label: "الاكتئاب",                               sub: "(Depression)",        border: "#545454", path: "/disease/depression" },
   ];
 
   return (
@@ -78,7 +76,7 @@ function Disease() {
               borderRadius: "50px",
               opacity: 0.7,
             }} />
-            <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b3b6b", marginBottom: "8px" }}>
+            <div style={{ fontSize: "16px", fontWeight: "700", color: "#493054n", marginBottom: "8px" }}>
               {d.label}
             </div>
             <div style={{ fontSize: "13px", color: "#8888aa" }}>
