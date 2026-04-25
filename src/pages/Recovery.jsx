@@ -523,66 +523,83 @@ function Recovery() {
               خطوات عملية وعلمية تدعم رحلتك نحو حياة أكثر توازناً
             </p>
           </RevealCard>
+<div
+  className="strategies-grid"
+  style={{
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '16px',
+    marginBottom: '52px',
+    direction: 'rtl', 
+  }}
+>
+  {strategies.map((s, i) => (
+    <RevealCard key={i} delay={i * 100 + 200}>
+      <div
+        className="strategy-card"
+        style={{
+          background: 'white',
+          border: '2px solid #ebe6f7',
+          borderRadius: '18px',
+          padding: '24px',
+          transition: 'all 0.3s ease',
+          cursor: 'default',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+          position: 'relative',
+          overflow: 'visible', 
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.transform = 'translateX(-5px)';
+          e.currentTarget.style.boxShadow = `0 10px 30px ${s.color}18`;
+          e.currentTarget.style.borderColor = s.color + '55';
+          e.currentTarget.style.background = s.bg;
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = 'translateX(0)';
+          e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
+          e.currentTarget.style.borderColor = '#ebe6f7';
+          e.currentTarget.style.background = 'white';
+        }}
+      >
+        <div style={{
+          position: 'absolute', 
+          top: '-16px',       
+          right: '20px',       
+          width: '36px',      
+          height: '36px', 
+          borderRadius: '50%',
+          background: s.color, 
+          color: 'white',
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          fontSize: '15px', 
+          fontWeight: '900',
+          boxShadow: `0 4px 12px ${s.color}50`,
+          zIndex: 10,         
+        }}>
+          {s.num}
+        </div>
 
-          <div
-            className="strategies-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '16px',
-              marginBottom: '52px',
-            }}
-          >
-            {strategies.map((s, i) => (
-              <RevealCard key={i} delay={i * 100 + 200}>
-                <div
-                  className="strategy-card"
-                  style={{
-                    background: 'white',
-                    border: '2px solid #ebe6f7',
-                    borderRadius: '18px',
-                    padding: '24px',
-                    transition: 'all 0.3s ease',
-                    cursor: 'default',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'translateX(-5px)';
-                    e.currentTarget.style.boxShadow = `0 10px 30px ${s.color}18`;
-                    e.currentTarget.style.borderColor = s.color + '55';
-                    e.currentTarget.style.background = s.bg;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = 'translateX(0)';
-                    e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
-                    e.currentTarget.style.borderColor = '#ebe6f7';
-                    e.currentTarget.style.background = 'white';
-                  }}
-                >
-                  <div style={{
-                    position: 'absolute', top: '-12px', left: '16px',
-                    width: '32px', height: '32px', borderRadius: '50%',
-                    background: s.color, color: 'white',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '14px', fontWeight: '800',
-                    boxShadow: `0 4px 12px ${s.color}50`,
-                  }}>
-                    {s.num}
-                  </div>
-                  <div style={{ fontWeight: '800', fontSize: '16px', color: '#3a2555', marginBottom: '10px', marginTop: '8px', textAlign: 'right' }}>
-                    {s.title}
-                  </div>
-                  <div style={{ fontSize: '13px', color: '#7a6a98', lineHeight: '1.75', textAlign: 'right' }}>
-                    {s.desc}
-                  </div>
-                </div>
-              </RevealCard>
-            ))}
-          </div>
+        <div style={{ 
+          fontWeight: '800', 
+          fontSize: '16px', 
+          color: '#3a2555', 
+          marginBottom: '10px', 
+          marginTop: '12px', 
+          textAlign: 'right' 
+        }}>
+          {s.title}
+        </div>
+        <div style={{ fontSize: '13px', color: '#7a6a98', lineHeight: '1.75', textAlign: 'right' }}>
+          {s.desc}
+        </div>
+      </div>
+    </RevealCard>
+  ))}
+</div>
 
-          {/* ===== قسم اللعبة ===== */}
+   {/* ===== قسم اللعبة ===== */}
           <RevealCard delay={100} style={{ marginBottom: '28px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <div style={{
@@ -593,7 +610,7 @@ function Recovery() {
               <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a2555', margin: 0 }}>استمتع وتعلّم</h2>
             </div>
             <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginRight: '24px' }}>
-              تجربة تفاعلية لأمّد داخل عالم رمزي واسع من الصحة النفسية
+              تجربة تفاعلية تأخذك في رحلة داخل عالم رمزي واسع عن الصحة النفسية
             </p>
           </RevealCard>
 
@@ -610,7 +627,7 @@ function Recovery() {
                 لعبة نفسية من منظور الشخص الأول
               </h3>
               <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', textAlign: 'right', marginBottom: '20px' }}>
-                تأخذك في رحلة داخل عالم رمزي واسع، حيث كل منطقة تمثل كل اضطراباً نفسياً مختلفاً. يتقدم اللاعب عبر تحديات مستوحاة من الواقع، باستخدام أساليب مبنية علمياً للتعامل مع هذه الاضطرابات والتخفيف منها. تميز اللعبة بأحوال هادئة ومؤثرة من خلال:
+              تأخذك في رحلة داخل عالم رمزي واسع، حيث تمثل كل منطقة اضطرابًا نفسيًا مختلفًا. يتقدم اللاعب عبر تجاوز تحديات مستوحاة من الواقع، باستخدام أساليب مثبتة علميًا للتعامل مع هذه الاضطرابات والتخفيف منها. 
               </p>
 
               {/* مميزات اللعبة */}
@@ -646,11 +663,11 @@ function Recovery() {
                   النسخة الحالية (Demo):
                 </div>
                 <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', margin: '0 0 10px' }}>
-                  تقدم منطقة واحدة تركز على اضطراب القلق، داخل منزل يحتوي على عدة غرف. كل منها يمثل نوعاً من القلق. يتعين على اللاعب حل الألغاز، واستكشاف الملاحظات الصوتية والمكتوبة التي تقدم محتوى توعوياً حول القلق وطرق التعامل معه.
-                </p>
+                 تقدم منطقة واحدة تركز على اضطراب القلق، داخل منزل يحتوي على عدة غرف، كل منها يمثل نوًعا من القلق.يتعين على اللاعب حل الألغاز، واستكشاف الملاحظات الصوتية والمكتوبة التي تقدم محتوى توعوًيا حول القلق وطرق التعامل معه.
+                 </p>
                 <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', margin: 0 }}>
-                  يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى اللاعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع. ويُنقص عبر اتخاذ قرارات صحية واستخدام تقنيات مثل التنفس السليم.
-                </p>
+                 يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى الالعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع، وينخفض عبر اتخاذ قرارات صحيحة واستخدام تقنيات مثل التنفس السليم
+                 </p>
               </div>
 
               {/* منطقة اللعبة */}

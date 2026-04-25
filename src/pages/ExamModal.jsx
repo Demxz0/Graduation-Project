@@ -262,7 +262,6 @@ function ExamModal({ disorderId, onClose }) {
   const navigate = useNavigate();
   const exam = examData[disorderId];
 
-  // مرحلة المودال: 'intro' | 'questions' | 'result'
   const [phase, setPhase] = useState('intro');
 
   const [currentQ, setCurrentQ] = useState(0);
@@ -275,6 +274,10 @@ function ExamModal({ disorderId, onClose }) {
   // ===== احتساب النتيجة =====
   function calcResult() {
     const total = answers.reduce((sum, val) => sum + (val ?? 0), 0);
+
+    const maxScore = exam.questions.length * 2;
+
+    const dynamicPercent = Math.round((total / maxScore) * 100);
 
     if (disorderId === 'depression') {
       if ((answers[8] ?? 0) >= 1) {
@@ -297,7 +300,7 @@ function ExamModal({ disorderId, onClose }) {
           levelColor: '#8e7899',
           title: 'الأعراض لا تتوافق بشكل كامل مع معايير الاكتئاب',
           desc: 'معايير DSM-5 تشترط أعراضاً محددة بجانب المجموع.',
-          percent: 30,
+          percent: dynamicPercent,
           recommendation: 'إذا كنت تشعر بضيق، لا تتردد في استشارة مختص.',
         };
       }
@@ -317,8 +320,13 @@ function ExamModal({ disorderId, onClose }) {
       }
     }
 
-    return exam.results.find(r => total >= r.range[0] && total <= r.range[1])
+    const matchedResult = exam.results.find(r => total >= r.range[0] && total <= r.range[1])
       || exam.results[0];
+
+    return {
+      ...matchedResult,
+      percent: dynamicPercent,
+    };
   }
 
   function selectAnswer(value) {
