@@ -54,15 +54,15 @@ const pillars = [
     icon: '🎯',
     iconBg: '#fce4ec',
     title: 'الهدف',
-    desc: 'أنشطة ذات معنى كل يوم تُطيل حافزاً للاستمرار والنمو',
+    desc: 'أنشطة ذات معنى يومي تُعطي حافزًا للاستمرار والنمو',
     color: '#e57399',
     border: '#f4b8cc',
   },
    {
-    icon: '💛',
+    icon: '🤝',
     iconBg: '#fffde7',
     title: 'المجتمع',
-    desc: 'علاقات ودعم اجتماعي يُخفف العبء ويُعزز الشعور بالانتماء',
+    desc: 'علاقات ودعم اجتماعي يُخفف العزلة ويُعزز الشعور بالانتماء',
     color: '#f4c842',
     border: '#f4e8a8',
   },
@@ -328,7 +328,7 @@ function Recovery() {
               <p style={{ fontSize: '15px', color: '#5a4a7a', lineHeight: '2.1', margin: 0, textAlign: 'right' }}>
                 التعافي من الاضطرابات النفسية ليس أمراً مستحيلاً، بل هو واقع يعيشه كثير من الناس حول العالم. من ملايين الأفراد بتجارب مشابهة، وتمكنوا من بناء حياة مستقرة وذات معنى رغم التحديات.
                 <br /><br />
-                <span style={{ color: '#9b7fc7', fontWeight: '700' }}>التعافي لا يعني بالضرورة اختفاء الأعراض</span> (هدفاً). بل القدرة على إدارتها والعيش بشكل متوازن. تُشير الأبحاث إلى أن الدعم الاجتماعي، والعلاج الصحيح، ونمط الحياة الصحي يمكن أن يُحدث فرقاً كبيراً في رحلة التعافي.
+                <span style={{ color: '#9b7fc7', fontWeight: '700' }}>التعافي لا يعني بالضرورة اختفاء الأعراض تماماً</span> . بل القدرة على إدارتها والعيش بشكل متوازن. تُشير الأبحاث إلى أن الدعم الاجتماعي، والعلاج الصحيح، ونمط الحياة الصحي يمكن أن يُحدث فرقاً كبيراً في رحلة التعافي.
               </p>
             </div>
           </RevealCard>
@@ -339,7 +339,7 @@ function Recovery() {
               ما هو التعافي النفسي؟
             </h3>
             <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginBottom: '20px' }}>
-              تم نعد التعافي على أنه اختفاء الأعراض فقط، بل أصبح مفهوماً أوسع يشمل جودة الحياة والقدرة على التكيف
+              لم يعد التعافي يُفهم فقط على أنه اختفاء الأعراض، بل أصبح مفهومًا أوسع يشمل جودة الحياة والقدرة على التكيف
             </p>
           </RevealCard>
 
@@ -353,8 +353,8 @@ function Recovery() {
                 icon:'⚕️',
                 label: 'التعافي السريري',
                 en: 'Clinical Recovery',
-                desc: 'يركز على تقليل الأعراض وتحسين الحالة وفق تقييم الطبيب المتخصص. يُقاس بمعايير موضوعية وعلمية، ويتابع من خلال برامج علاجية منتظمة.',
-                iconBg: '#6e91a7',
+                desc:'يركز على تقليل الأعراض وتحسّن الحالة وفق تقييم الطبيب المتخصص. يُقاس بمعايير موضوعية وعلمية، ويُتابع من خلال برامج علاجية منظمة.' ,
+                color: '#cab7eb',
                 bg: '#f0f7fb',
                 delay: 320,
               },
@@ -362,8 +362,8 @@ function Recovery() {
                 icon:"🌱",
                 label: 'التعافي الشخصي',
                 en: 'Personal Recovery',
-                desc: 'رحلة فردية تهدف إلى بناء حياة ذات معنى، حتى مع وجود بعض الأعراض. يعتمد على القوة الداخلية والأهداف الشخصية والتعامل الإيجابي مع التحديات.',
-                iconBg: '#9b7fc7',
+                desc: 'رحلة فردية تهدف إلى بناء حياة ذات معنى، حتى مع وجود بعض الأعراض. يعتمد على القوة الداخلية، والأهداف الشخصية، والتعامل الإيجابي مع التحديات.',
+                color: '#aacca0',
                 bg: '#f8f4ff',
                 delay: 250,
               },
@@ -397,20 +397,22 @@ function Recovery() {
                   {/* شريط علوي */}
                   <div style={{
                     display: 'flex', justifyContent: 'flex-start', alignItems: 'center',
-                    marginBottom: '16px', gap: '8px',
+                    marginBottom: '16px', gap: '12px',
                   }}>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '17px', fontWeight: '800', color: '#3a2555' }}>{type.label}</div>
-                      <div style={{ fontSize: '12px', color: type.color, fontStyle: 'italic' }}>{type.en}</div>
-                    </div>
-                    <div style={{
-                      width: '36px', height: '36px', borderRadius: '50%',
+                     <div style={{
+                      width: '44px', height: '44px',borderRadius: '12px',
                       background: type.color, color: 'white',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '16px', fontWeight: '900', flexShrink: 0,
                     }}>
                       {type.icon}
                     </div>
+
+                    <div style={{ textAlign: 'right' }}>
+                     <div style={{ fontSize: '17px', fontWeight: '800', color: '#3a2555' }}>{type.label}</div>
+                     <div style={{ fontSize: '12px', color: type.color, fontStyle: 'italic' }}>{type.en}</div>
+                    </div>
+                   
                   </div>
                   <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.8', margin: 0, textAlign: 'right' }}>
                     {type.desc}
@@ -431,7 +433,7 @@ function Recovery() {
               <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a2555', margin: 0 }}>كيف يحدث التعافي؟</h2>
             </div>
             <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginRight: '24px' }}>
-              تُوجّه الجهات الصحية النفسية كعملية كفيلية تُساعد الشخص على تحسين ضحاه، واتخاذ قراراته بنفسه، والوصول إلى إمكاناته
+             تُعرّفه الجهات الصحية العالمية كعملية تغيير تساعد الشخص على تحسين صحته، واتخاذ قراراته بنفسه، والوصول إلى إمكاناته
             </p>
           </RevealCard>
 
@@ -449,7 +451,9 @@ function Recovery() {
               <div style={{ fontSize: '28px', flexShrink: 0, animation: 'float-anim 3.5s ease-in-out infinite' }}>💡</div>
               <div>
                 <p style={{ fontSize: '15px', color: '#6b5a8a', lineHeight: '1.85', margin: 0 }}>
-                  التعافي ليس مجرد اختفاء الأعراض. (هدفاً) لكن التعافي الحقيقي أعمق من ذلك — هو بناء مرونة نفسية تساعد على مواجهة الضغوط، تقليل الانتكاسات، والاستمرار في الحياة بشكل طبيعي.
+                 
+التعافي ليس مجرد اختفاء الأعراض. قد تنخفض الأعراض لفترة (هدأة)، لكن التعافي الحقيقي أعمق من ذلك — هو بناء مرونة نفسية تساعد على مواجهة الضغوط، تقليل الانتكاسات، والاستمرار في الحياة بشكل طبيعي.
+
                 </p>
               </div>
             </div>
