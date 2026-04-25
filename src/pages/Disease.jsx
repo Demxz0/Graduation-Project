@@ -72,8 +72,7 @@ function Disease() {
         maxWidth: isMobile ? "100%" : "800px",
         width: "100%",
         justifyContent: "center",
-        gap: "24px",
-        maxWidth: "900px",
+        
         zIndex: 1
       }}>
         {disorders.map(d => (
@@ -112,7 +111,7 @@ function Disease() {
             onMouseLeave={e => {
               e.currentTarget.style.transform = "scale(1)";
               e.currentTarget.style.boxShadow = "none";
-              perspective: "1000px"
+             
             }}
           >
             <div style={{
