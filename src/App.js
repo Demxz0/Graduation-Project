@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Exam from './pages/Exam';
 import Khattar from './pages/Khattar';
 import Brain from './pages/Brain';
+import Recovery from './pages/Recovery';
 import { useEffect, useState } from 'react';
 
 import Disease from './pages/Disease';
@@ -225,7 +226,7 @@ function handleNavClick(link) {
   <Route path="/ikhtbar" element={<Exam />} />
   <Route path="/khattar" element={<Khattar />} />
   <Route path="/dimagh" element={<Brain />} />
-  <Route path="/recovery" element={<div>قريباً</div>} />
+  <Route path="/recovery" element={<Recovery />} />
 
         <Route path="/disease" element={<Disease />} /> 
         <Route path="/disease/anxiety" element={<AnxietyDetail />} />
