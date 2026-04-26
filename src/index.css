@@ -1,5 +1,86 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Lato:wght@400;700;800&display=swap');
 
+/* ================== ANIMATION SYSTEM ================== */
+
+:root {
+  --anim-fast:   200ms;
+  --anim-normal: 300ms;
+  --anim-slow:   520ms;
+  --anim-ease:         cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --anim-ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --lift-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+  --rest-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+}
+
+/* 1 — Scroll Entrance */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-hidden { opacity: 0; transform: translateY(28px); }
+.section-visible {
+  animation: fadeInUp var(--anim-slow) var(--anim-ease) both;
+}
+
+/* 3 — Staggered Card Entry */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* 4 — Tab Content Switch */
+@keyframes tabContentIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tab-content-animate {
+  animation: tabContentIn 240ms var(--anim-ease) both;
+}
+
+/* 5 — Accordion Expand */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.accordion-expand {
+  animation: slideDown 260ms var(--anim-ease) both;
+  overflow: hidden;
+}
+
+/* 7 — Hero Section */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(-18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-animate-title {
+  animation: heroIn 580ms var(--anim-ease) 80ms  both;
+}
+.hero-animate-sub {
+  animation: heroIn 580ms var(--anim-ease) 260ms both;
+}
+.hero-animate-badge {
+  animation: heroIn 580ms var(--anim-ease) 160ms both;
+}
+
+/* 2 — Unified Card Lift (hover) */
+.card-lift {
+  transition:
+    transform var(--anim-fast) var(--anim-ease),
+    box-shadow var(--anim-fast) var(--anim-ease);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lift-shadow);
+}
+
+/* 6 — Button Press */
+.btn-press {
+  transition: transform var(--anim-fast) var(--anim-ease);
+}
+.btn-press:active {
+  transform: scale(0.95);
+}
+
 body {
   margin: 0;
   font-family: 'Tajawal', sans-serif;

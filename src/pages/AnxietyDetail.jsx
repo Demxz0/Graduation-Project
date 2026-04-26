@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-
+import { useScrollReveal } from "../useScrollReveal";
 
 const s = {
   page: { background: "#f4f4ff", minHeight: "100vh", direction: "rtl", fontFamily: "'Tajawal', sans-serif" },
@@ -18,20 +17,20 @@ const s = {
   defCard: (borderColor) => ({ background: "#fafaff", borderRadius: "16px", padding: "24px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden", boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)" }),
   defCardBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: color, borderRadius: "16px 16px 0 0" }),
   defCardTitle: { fontSize: "18px", fontWeight: "700", color: "#3d1f4b", marginBottom: "10px" },
-  defCardText: { fontSize: "14px", color: "#5d5c5d", lineHeight: "1.8" },
-  typesGrid: { 
-    display: "grid", 
-    gridTemplateColumns: "1fr 1fr", 
-    gap: "24px", 
-    alignItems: "flex-start" 
+  defCardText: { fontSize: "14px", color: "#5d5c5d", lineHeight: "1.8", fontWeight: "700", },
+  typesGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "24px",
+    alignItems: "flex-start"
   },
+
   typeCard: (borderColor, active) => ({
     background: active ? "#fafaff" : "white",
     borderRadius: "14px",
     padding: "24px 24px 20px",
-    border: "2px solid #ddd2ef",
+    border: "none",
     cursor: "pointer",
-    transition: "transform 0.2s, box-shadow 0.2s",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -39,58 +38,60 @@ const s = {
     gap: "16px",
     position: "relative",
     overflow: "hidden",
-    boxShadow: active ? "0 8px 24px rgba(0,0,0,0.06)" : "0 2px 12px rgba(214,147,106,0.08)",
+    boxShadow: active
+      ? "0 12px 28px rgba(0, 0, 0, 0.2)"
+      : "0 6px 16px rgba(0, 0, 0, 0.12)",
   }),
   typeNum: (color) => ({ fontSize: "28px", fontWeight: "700", color, opacity: 0.35 }),
   typeLabel: { fontSize: "16px", fontWeight: "700", color: "#3b2415" },
   typeSub: { fontSize: "12px", color: "#5d5c5d" },
-  tabRow: { display: "flex", gap: "0", marginBottom: "28px", borderBottom: "2px solid #d6936a" },
+  tabRow: { display: "flex", gap: "0", marginBottom: "28px", borderBottom: "1px solid #e4b495" },
   tab: (active) => ({
     padding: "10px 20px", fontSize: "15px", cursor: "pointer", fontFamily: "'Tajawal', sans-serif",
-    color: active ? "#7a3f20" : "#e0aa88", background: "none", border: "none",
-    borderBottom: active ? "2px solid #7a3f20" : "2px solid transparent",
-    marginBottom: "-2px", transition: "0.2s, transform 0.2s", fontWeight: active ? "700" : "400",
+    fontWeight: "700",
+    color: active ? "#493054" : "#b099bc", background: "none", border: "none",
+    borderBottom: active ? "3px solid #d6936a" : "3px solid transparent",
+    marginBottom: "-2px", transition: "0.2s", fontWeight: active ? "700" : "400",
   }),
   symptomsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" },
   symptomCard: (active) => ({
-    background: "white", borderRadius: "12px", padding: "16px 20px",
-    border: "1.5px solid #eec5a8",
-    fontSize: "15px", color: "#3b2415", display: "flex", alignItems: "center", gap: "10px",
-    transition: "transform 0.2s, box-shadow 0.2s",
-    boxShadow: "0 4px 12px rgba(214,147,106,0.1)",
+    background: "white", borderRadius: "18px", padding: "16px 20px",
+    border: "1.5px solid #d69369",
+    fontSize: "15px", fontWeight: "700", color: "#552269", display: "flex", alignItems: "center", gap: "10px",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
   }),
-  dot: (color) => ({ width: "8px", height: "8px", borderRadius: "50%", background: color, flexShrink: 0 }),
+  dot: (color) => ({ width: "8px", height: "8px", borderRadius: "50%", background: "#d69369", flexShrink: 0 }),
   causeBlock: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "16px", border: "1.5px solid #eec5a8", position: "relative" },
   causeBlockHighlight: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "16px", border: "2px solid #a85c38" },
-  causeTitle: { fontSize: "17px", fontWeight: "700", color: "#3b2415", marginBottom: "14px", textAlign: "right" },
-  causeLine: { fontSize: "14px", color: "#6b4a38", lineHeight: "2", borderBottom: "1px solid #faf0ea", padding: "6px 0", textAlign: "right" },
+  causeTitle: { fontSize: "17px", fontWeight: "700", color: "#552269", marginBottom: "14px", textAlign: "right" },
+  causeLine: { fontSize: "14px", color: "#5d5c5d", fontWeight: "700", lineHeight: "2", borderBottom: "0.3px solid #552269", padding: "8px 0", textAlign: "right" },
   tagRow: { display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "12px", justifyContent: "flex-end" },
-  tag: (color) => ({ background: color, borderRadius: "30px", padding: "6px 16px", fontSize: "13px", color: "#3b2415" }),
+  tag: (color) => ({ background: color, borderRadius: "30px", padding: "6px 16px", fontSize: "13px", color: "#552269" }),
   copingGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" },
-  copingCard: { background: "white", borderRadius: "14px", padding: "20px", border: "1.5px solid #eec5a8", transition: "border 0.2s" },
+  copingCard: { background: "white", borderRadius: "14px", padding: "18px", border: "none", boxShadow: "0 6px 10px -2px rgba(30,15,45,0.22)" },
   copingIcon: { fontSize: "22px", marginBottom: "8px" },
-  copingTitle: { fontSize: "15px", fontWeight: "700", color: "#3b2415", marginBottom: "4px" },
+  copingTitle: { fontSize: "15px", fontWeight: "700", color: "#552269", marginBottom: "4px" },
   copingEn: { fontSize: "11px", color: "#5d5c5d", marginBottom: "10px" },
-  copingText: { fontSize: "13px", color: "#a85c38", lineHeight: "1.7" },
-  copingCardWide: { gridColumn: "span 3", background: "white", borderRadius: "14px", padding: "20px 28px", border: "1.5px solid #eec5a8", transition: "border 0.2s" },
+  copingText: { fontSize: "13px", color: "#5d5c5d", lineHeight: "1.7" },
+  copingCardWide: { gridColumn: "span 3", background: "white", borderRadius: "14px", padding: "18px 24px", border: "none", boxShadow: "0 6px 10px -2px rgba(30,15,45,0.22)" },
   traitsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "14px" },
-  traitCard: (borderColor) => ({ background: "white", borderRadius: "14px", padding: "18px 16px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
-  traitBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "5px", background: color }),
-  traitTitle: { fontSize: "14px", fontWeight: "700", color: "#3b2415", marginBottom: "4px" },
-  traitEn: { fontSize: "11px", color: "#5d5c5d", marginBottom: "8px" },
-  traitText: { fontSize: "12px", color: "#a85c38", lineHeight: "1.6" },
+  traitCard: (borderColor) => ({ background: "white", borderRadius: "14px", padding: "18px 16px", border: `1.5px solid ${borderColor}`, position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.07)" }),
+  traitBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: color }),
+  traitTitle: { fontSize: "15px", fontWeight: "700", color: "#552269", marginBottom: "4px" },
+  traitEn: { fontSize: "11px", color: "#9d8aaa", marginBottom: "8px" },
+  traitText: { fontSize: "13px", color: "#5d5c5d", lineHeight: "1.7" },
   brainList: { display: "flex", flexDirection: "column", gap: "12px" },
   brainCard: (active) => ({
     background: "white", borderRadius: "14px", padding: "20px 28px",
-    border: active ? "2px solid #a85c38" : "1.5px solid #eec5a8",
+    border: "1px solid #f0f0f0", boxShadow: "0 4px 12px rgba(0,0,0,0.03)", position: "relative",
     display: "flex", alignItems: "flex-start", gap: "20px",
   }),
-  brainNum: (bg) => ({ minWidth: "40px", height: "40px", borderRadius: "50%", background: bg, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px" }),
-  brainTitle: { fontSize: "16px", fontWeight: "700", color: "#3b2415", marginBottom: "4px" },
-  brainText: { fontSize: "13px", color: "#6b4a38", lineHeight: "1.7" },
-  resultBox: { background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #eec5a8", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" },
+  brainNum: (bg) => ({ minWidth: "40px", height: "40px", borderRadius: "50%", background: "linear-gradient(135deg, #f4d6a9 0%, #945435 100%)", color: "#3d1f4b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px" }),
+  brainTitle: { fontSize: "16px", fontWeight: "700", color: "#552269", marginBottom: "4px" },
+  brainText: { fontSize: "13px", color: "#5d5c5d", lineHeight: "1.7" },
+  resultBox: { background: "#ddc9bc", borderRadius: "50px", padding: "4px 0", border: "1px solid #e1844a", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", lineHeight: "1.6", },
   resultColTitle: { fontSize: "14px", fontWeight: "700", color: "#7a3f20", marginBottom: "14px" },
-  resultItem: { fontSize: "14px", color: "#3b2415", lineHeight: "2", display: "flex", alignItems: "center", gap: "8px" },
+  resultItem: { fontSize: "14px", color: "#5d5c5d", fontWeight: "700", lineHeight: "2.8", display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid rgba(85, 34, 105, 0.15)", padding: "15px 0" },
   resultDot: (c) => ({ width: "6px", height: "6px", borderRadius: "50%", background: c, flexShrink: 0 }),
 };
 
@@ -174,14 +175,14 @@ const copingCards = [
 ];
 
 const traitCards = [
-  { title: "العصابية العالية", en: "High Neuroticism", text: "الميل الشديد لتجربة المشاعر السلبية – السمة الأبرز ارتباطاً بالقلق.", color: "#f5e8dc", bar: "#7a3f20" },
-  { title: "الكمالية والمثالية", en: "Perfectionism", text: "دافع مهووس للكمال لتجنب الفشل أو الرفض، غالباً 'قلق عالي الأداء'.", color: "#eeddd0", bar: "#a85c38" },
-  { title: "الانطوائية والانسحاب", en: "Introversion", text: "الميل للهروب للداخل والانسحاب من التفاعلات الاجتماعية، غالباً مع خجل شديد.", color: "#e8d5c8", bar: "#d6936a" },
-  { title: "فرط اليقظة المزمن", en: "Chronic Hypervigilance", text: "شخصية تعيش في حالة رادار دائم، تمسح البيئة وتتوقع الخطر في كل زاوية.", color: "#f5e8dc", bar: "#7a3f20" },
-  { title: "التصلب والسيطرة", en: "Rigidity & Control", text: "فرض سيطرة صارمة على كل التفاصيل لتجنب المفاجآت وتقليل التوتر الداخلي.", color: "#eeddd0", bar: "#a85c38" },
-  { title: "الاعتمادية", en: "Dependency", text: "الميل للاعتماد المفرط على الآخرين للحصول على الطمأنينة وإدارة المواقف الصعبة.", color: "#e8d5c8", bar: "#d6936a" },
-  { title: "السمات الاجتنابية", en: "Avoidant Traits", text: "ميل مرضي لتجنب العزلة. رعب من الانتقاد وانخفاض ملحوظ في الثقة بالنفس.", color: "#f5e8dc", bar: "#7a3f20" },
-  { title: "انخفاض التوافقية", en: "Decreased Agreeableness", text: "بسبب الضغط الداخلي والتهيج المستمر، قد تصبح الشخصية أقل مرونة مع الآخرين.", color: "#eeddd0", bar: "#a85c38" },
+  { title: "العصابية العالية", en: "High Neuroticism", text: "الميل الشديد لتجربة المشاعر السلبية – السمة الأبرز ارتباطاً بالقلق.", color: "#fff3ec", bar: "#d6936a", border: "#f0c8a8" },
+  { title: "الكمالية والمثالية", en: "Perfectionism", text: "دافع مهووس للكمال لتجنب الفشل أو الرفض، غالباً 'قلق عالي الأداء'.", color: "#fceef5", bar: "#c8789a", border: "#f0b8d4" },
+  { title: "الانطوائية والانسحاب", en: "Introversion", text: "الميل للهروب للداخل والانسحاب من التفاعلات الاجتماعية، غالباً مع خجل شديد.", color: "#eaf5f8", bar: "#5c9ab5", border: "#a8d4e4" },
+  { title: "فرط اليقظة المزمن", en: "Chronic Hypervigilance", text: "شخصية تعيش في حالة رادار دائم، تمسح البيئة وتتوقع الخطر في كل زاوية.", color: "#f2eefb", bar: "#8b7cc0", border: "#c8b8e8" },
+  { title: "التصلب والسيطرة", en: "Rigidity & Control", text: "فرض سيطرة صارمة على كل التفاصيل لتجنب المفاجآت وتقليل التوتر الداخلي.", color: "#fff3ec", bar: "#d6936a", border: "#f0c8a8" },
+  { title: "الاعتمادية", en: "Dependency", text: "الميل للاعتماد المفرط على الآخرين للحصول على الطمأنينة وإدارة المواقف الصعبة.", color: "#eaf8f1", bar: "#5caa84", border: "#a8dcc4" },
+  { title: "السمات الاجتنابية", en: "Avoidant Traits", text: "ميل مرضي لتجنب العزلة. رعب من الانتقاد وانخفاض ملحوظ في الثقة بالنفس.", color: "#eaeff8", bar: "#6880c0", border: "#b0c4e8" },
+  { title: "انخفاض التوافقية", en: "Decreased Agreeableness", text: "بسبب الضغط الداخلي والتهيج المستمر، قد تصبح الشخصية أقل مرونة مع الآخرين.", color: "#eaf5f8", bar: "#5c9ab5", border: "#a8d4e4" },
 ];
 
 const treatments = [
@@ -196,36 +197,41 @@ export default function AnxietyDetail() {
   const [expandedType, setExpandedType] = useState(null);
   const [expandedTreatment, setExpandedTreatment] = useState(null);
 
+  const defRef      = useScrollReveal({ delay: "0s" });
+  const typesRef    = useScrollReveal({ delay: "0.05s" });
+  const symptomsRef = useScrollReveal({ delay: "0.05s" });
+  const causesRef   = useScrollReveal({ delay: "0.05s" });
+  const copingRef   = useScrollReveal({ delay: "0.05s" });
+  const traitsRef   = useScrollReveal({ delay: "0.05s" });
+  const brainRef    = useScrollReveal({ delay: "0.05s" });
+  const treatRef    = useScrollReveal({ delay: "0.05s" });
+
   return (
     <div style={s.page}>
 
       {/* Hero */}
       <div style={s.heroSection}>
-        <div style={s.breadcrumb}>الاضطرابات النفسية &gt; القلق</div>
-        <h1 className="responsive-title-section" style={{ fontWeight: "700", color: "#7a3f20", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 63, 32, 0.25)", fontFamily: "'Roca One', sans-serif" }}>القلق... إنذار بلا حريق</h1>
-        <p style={s.heroSub}>
+        <div className="hero-animate-badge" style={s.breadcrumb}>الاضطرابات النفسية &gt; القلق</div>
+        <h1 className="responsive-title-section hero-animate-title" style={{ fontWeight: "700", color: "#7a3f20", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 63, 32, 0.25)", fontFamily: "'Roca One', sans-serif" }}>القلق... إنذار بلا حريق</h1>
+        <p className="hero-animate-sub" style={s.heroSub}>
           القلق ليس مبالغة، هو اضطراب يحارب{" "}
           <strong style={{ color: "#d6936a" }}>359 مليون شخص</strong>{" "}
           حول العالم
         </p>
       </div>
 
-
-
       {/* التعريف */}
-      <div style={s.sectionWrapper}>
+      <div ref={defRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>التعريف</div>
         <h2 style={s.sectionTitle}>ما هو <span style={s.sectionTitleHighlight}>القلق</span>؟</h2>
         <div style={s.defGrid}>
-          <div style={s.defCard("#e4b49a")}>
-
+          <div className="card-lift" style={s.defCard("#e4b49a")}>
             <div style={s.defCardTitle}>القلق الطبيعي</div>
             <div style={s.defCardText}>شعور طبيعي عند الجميع، هو نظام إنذار مبكر في الدماغ يحميك من الأخطار المحتملة ليجعلك أكثر تركيزاً ويقظةً لتستطيع التخطيط وتجنب الأخطاء واكتساب الخبرة.</div>
           </div>
-          <div style={s.defCard("#e4b49a")}>
-
+          <div className="card-lift" style={s.defCard("#e4b49a")}>
             <div style={s.defCardTitle}>اضطراب القلق</div>
-            <div style={s.defCardText}>عطل في هذا النظام، يجعله يرسل إشعارات طوارئ مزيفة باستمرار حتى في أوقات الأمان، مما يسبب ضغطاً كبيراً وتعطلاً في الحياة اليومية.</div>
+            <div style={s.defCardText}>عطل في هذا نظام، يجعله يرسل إشعارات طوارئ مزيفة باستمرار حتى في أوقات الأمان، مما يسبب ضغطاً كبيراً وتعطلاً في الحياة اليومية.</div>
           </div>
         </div>
       </div>
@@ -233,19 +239,17 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* الأنواع */}
-      <div style={s.sectionWrapper}>
+      <div ref={typesRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>الأنواع</div>
         <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
         <p style={{ fontSize: "14px", color: "#3d1f4b", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
         <div style={s.typesGrid}>
-          {types.map((t) =>
-                (
-            <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
+          {types.map((t, i) => (
+            <div key={t.id} style={{ display: "flex", flexDirection: "column", animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 60}ms both` }}>
               <div
+                className="card-lift"
                 style={s.typeCard(typeColors[t.id - 1], expandedType === t.id)}
                 onClick={() => setExpandedType(expandedType === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.03)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(214,147,106,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(214,147,106,0.08)"; }}
               >
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: typeColors[t.id - 1], borderRadius: "14px 14px 0 0" }} />
                 <div style={{ fontSize: "28px", fontWeight: "700", color: typeColors[t.id - 1], opacity: 0.6, flexShrink: 0 }}>{t.id}</div>
@@ -255,9 +259,9 @@ export default function AnxietyDetail() {
                 </div>
               </div>
               {expandedType === t.id && (
-                <div style={{ background: "#fafaff", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#6b4a38", lineHeight: "1.9", border: "2px solid #ddd2ef", borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
-                  {typeDetails[t.id].map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < typeDetails[t.id].length - 1 ? "1px solid #faf0ea" : "none" }}>
+                <div className="accordion-expand" style={{ background: "#fafaff", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#552269", lineHeight: "1.9", border: "2px solid #ddd2ef", borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
+                  {typeDetails[t.id].map((line, idx) => (
+                    <div key={idx} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: idx < typeDetails[t.id].length - 1 ? "1px solid #faf0ea" : "none" }}>
                       <span style={{ color: "#aaa", flexShrink: 0 }}>—</span>
                       <span>{line}</span>
                     </div>
@@ -273,19 +277,19 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* الأعراض */}
-      <div style={s.sectionWrapper}>
+      <div ref={symptomsRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>الأعراض</div>
         <h2 style={s.sectionTitle}>كيف يظهر <span style={s.sectionTitleHighlight}>القلق</span> في جسدك؟</h2>
         <div style={s.tabRow}>
           {symptomTabs.map(tab => (
-            <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
+            <button key={tab} className="btn-press" style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div className="responsive-grid-2" style={{ gap: "12px" }}>
+        <div key={activeTab} className="tab-content-animate responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
-            <div key={i} style={s.symptomCard(false)}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(214,147,106,0.22)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(214,147,106,0.1)"; }}
+            <div key={i}
+              className="card-lift"
+              style={{ ...s.symptomCard(false), animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 55}ms both` }}
             >
               <div style={s.dot(item.color)} />
               {item.text}
@@ -297,39 +301,42 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* الأسباب */}
-      <div style={s.sectionWrapper}>
+      <div ref={causesRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>الأسباب</div>
         <h2 style={s.sectionTitle}>من أين يأتي <span style={s.sectionTitleHighlight}>القلق</span>؟</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#7a3f20", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>1</div>
-            <div style={{ ...s.causeBlock, flex: 1, marginBottom: 0 }}>
-              <div style={s.causeTitle}>العوامل الجينية والوراثية</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {/* Reason 1 */}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "0px", position: "relative" }}>
+            <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "linear-gradient(180deg, #3d1f4b 0%, #af6c86 100%)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "18px", flexShrink: 0, position: "absolute", right: "-20px", top: "20px", zIndex: 2, boxShadow: "0 4px 12px rgba(61,31,75,0.3)" }}>1</div>
+            <div style={{ flex: 1, background: "white", borderRadius: "16px", padding: "24px 42px 24px 24px", border: "2px solid #3d1f4b", boxShadow: "0 4px 16px rgba(61,31,75,0.08)" }}>
+              <div style={{ ...s.causeTitle, color: "#3d1f4b" }}>العوامل الجينية والوراثية</div>
               <div style={s.causeLine}>ينتقل الاستعداد للإصابة بالقلق عبر العائلة.</div>
               <div style={s.causeLine}>تصبح اللوزة الدماغية (مركز الخوف) مفرطة النشاط، بينما تضعف قشرة الفص الجبهي (المنطقة المنطقية) عن كبح هذا الخوف وتهدئته.</div>
-              <div style={s.causeLine}>نقص وراثي في النواقل العصبية المهدئة مثل GABA ومشاكل في تنظيم السيروتونين والنورإبينفرين، مما يجعل الدماغ في حالة تأهب دائم.</div>
+              <div style={{ ...s.causeLine, borderBottom: "none" }}>نقص وراثي في النواقل العصبية المهدئة مثل GABA ومشاكل في تنظيم السيروتونين والنورإبينفرين، مما يجعل الدماغ في حالة تأهب دائم.</div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#7a3f20", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>2</div>
-            <div style={{ ...s.causeBlockHighlight, flex: 1, marginBottom: 0 }}>
-              <div style={s.causeTitle}>العوامل البيئية والضغوطات</div>
-              <div style={{ fontSize: "14px", color: "#6b4a38", marginBottom: "12px", textAlign: "right" }}>البيئة التي تنشأ فيها والضغوط والصدمات التي تتعرض لها هي المحفز الذي يُشعل الاستعداد الجيني الكامن لديك، مثل:</div>
-              <div style={s.tagRow}>
-                {["الحماية الأبوية المفرطة", "التربية الاستبدادية القاسية", "اكتساب القلق من مراقبة آباء قلقين", "الإهمال العاطفي المستمر", "التعرض للإيذاء البدني أو النفسي", "إجبار الطفل على تلبية الاحتياجات العاطفية للبالغين", "الإجهاد والضغوط المزمنة", "غياب الرعاية الثابتة والموثوقة من الوالدين"].map((t, i) => (
-                  <span key={i} style={s.tag(["#f4e0cc", "#ddc8f4", "#c8d5f4", "#c8f4e0", "#f4c8c8", "#f4f0c8", "#c8f4f0", "#f4c8f0"][i % 8])}>{t}</span>
+          {/* Reason 2 */}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "0px", position: "relative" }}>
+            <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "linear-gradient(135deg, #5c7f94 0%, #abc3d0 100%)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "18px", flexShrink: 0, position: "absolute", right: "-20px", top: "20px", zIndex: 2, boxShadow: "0 4px 12px rgba(92,127,148,0.3)" }}>2</div>
+            <div style={{ flex: 1, background: "white", borderRadius: "16px", padding: "24px 42px 24px 24px", border: "2px solid #5c7f94", boxShadow: "0 4px 16px rgba(92,127,148,0.08)" }}>
+              <div style={{ ...s.causeTitle, color: "#5c7f94" }}>العوامل البيئية والضغوطات</div>
+              <div style={{ fontSize: "14px", color: "#6b4a38", marginBottom: "14px", textAlign: "right", lineHeight: "1.8" }}>البيئة التي تنشأ فيها والضغوط والصدمات التي تتعرض لها هي المحفز الذي يُشعل الاستعداد الجيني الكامن لديك، مثل:</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "12px", justifyContent: "flex-start" }}>
+                {["الحماية الأبوية المفرطة", "التربية الاستبدادية القاسية", "اكتساب القلق من مراقبة آباء قلقين", "الإهمال العاطفي المستمر", "التعرض للإيذاء البدني أو النفسي", "إجبار الطفل على تلبية الاحتياجات العاطفية للبالغين", "الإجهاد والضغوط المزمنة", "غياب الرعاية الثابتة والموثوقة من الوالدين"].map((t, idx) => (
+                  <span key={idx} style={{ background: "#edf3f6", borderRadius: "30px", padding: "6px 14px", fontSize: "13px", color: "#5d5c5d", border: "1.5px solid #5c7f94", fontWeight: "600", whiteSpace: "nowrap" }}>{t}</span>
                 ))}
               </div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#7a3f20", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>3</div>
-            <div style={{ ...s.causeBlock, flex: 1, marginBottom: 0 }}>
-              <div style={s.causeTitle}>العوامل الجسدية والوراثية</div>
+          {/* Reason 3 */}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "0px", position: "relative" }}>
+            <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "linear-gradient(90deg, #b84700 0%, #e1844a 100%)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "18px", flexShrink: 0, position: "absolute", right: "-20px", top: "20px", zIndex: 2, boxShadow: "0 4px 12px rgba(184,71,0,0.3)" }}>3</div>
+            <div style={{ flex: 1, background: "white", borderRadius: "16px", padding: "24px 42px 24px 24px", border: "2px solid #e1844a", boxShadow: "0 4px 16px rgba(225,132,74,0.08)" }}>
+              <div style={{ ...s.causeTitle, color: "#b84700" }}>العوامل الجسدية</div>
               <div style={s.causeLine}>مشاكل الغدة الدرقية: فرط نشاطها يسبب أعراضاً تحاكي نوبات الهلع تماماً.</div>
               <div style={s.causeLine}>التقلبات الحادة في الهرمونات الجنسية كالإستروجين والبروجستيرون أو التستوستيرون.</div>
               <div style={s.causeLine}>اختلال بكتيريا الأمعاء (الميكروبيوم)؛ قد يسبب التهابات عصبية تعبر إلى الدماغ مما يزيد من مستويات القلق.</div>
-              <div style={s.causeLine}>أمراض القلب – الأورام الكظرية – بعض الأدوية والمخدرات – أعراض الانسحاب من المواد المخدرة.</div>
+              <div style={{ ...s.causeLine, borderBottom: "none" }}>أمراض القلب – الأورام الكظرية – بعض الأدوية والمخدرات – أعراض الانسحاب من المواد المخدرة.</div>
             </div>
           </div>
         </div>
@@ -338,26 +345,20 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* آليات التكيف */}
-      <div style={s.sectionWrapper}>
+      <div ref={copingRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>آليات التكيف</div>
         <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
-        <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>هي استجابات سلوكية وعاطفية مختلفة يلجأ إليها الفرد للتهرب من الألم النفسي. رغم أنها قد توفر راحة مؤقتة إلا أنها تزيد من حدة القلق وتفاقمه على المدى الطويل.</p>
+        <p style={{ fontSize: "14px", color: "#3d1f4b", textAlign: "right", marginBottom: "24px" }}>هي استجابات سلوكية وعاطفية مختلفة يلجأ إليها الفرد للتهرب من الألم النفسي. رغم أنها قد توفر راحة مؤقتة إلا أنها تزيد من حدة القلق وتفاقمه على المدى الطويل.</p>
         <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
-            <div key={i} style={s.copingCard}
-              onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #a85c38"; }}
-              onMouseLeave={e => { e.currentTarget.style.border = "1.5px solid #eec5a8"; }}
-            >
+            <div key={i} className="card-lift" style={{ ...s.copingCard, animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 60}ms both` }}>
               <div style={s.copingIcon}>{c.icon}</div>
               <div style={s.copingTitle}>{c.title}</div>
               <div style={s.copingEn}>{c.en}</div>
               <div style={s.copingText}>{c.text}</div>
             </div>
           ))}
-          <div style={s.copingCardWide}
-            onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #b0a8d0"; }}
-            onMouseLeave={e => { e.currentTarget.style.border = "1.5px solid #e0ddf5"; }}
-          >
+          <div className="card-lift" style={s.copingCardWide}>
             <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
               <div style={{ fontSize: "22px" }}>🌀</div>
               <div>
@@ -373,15 +374,15 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* السمات الشخصية */}
-      <div style={s.sectionWrapper}>
+      <div ref={traitsRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>السمات الشخصية</div>
         <h2 style={s.sectionTitle}>القلق يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span></h2>
         <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>العيش مع قلق مزمن يحدث تغييرات في شخصيتك بمرور الوقت.</p>
         <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
-            <div key={i} style={s.traitCard(t.color)}>
-              <div style={s.traitBar(t.bar)} />
-              <div style={{ height: "8px" }} />
+            <div key={i} className="card-lift" style={{ ...s.traitCard(t.border), background: "white", position: "relative", overflow: "hidden", animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 55}ms both` }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: t.color }} />
+              <div style={{ height: "12px" }} />
               <div style={s.traitTitle}>{t.title}</div>
               <div style={s.traitEn}>{t.en}</div>
               <div style={s.traitText}>{t.text}</div>
@@ -393,18 +394,15 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* رحلة داخل الدماغ */}
-      <div style={s.sectionWrapper}>
+      <div ref={brainRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>علم الأعصاب</div>
         <h2 style={s.sectionTitle}>رحلة داخل <span style={s.sectionTitleHighlight}>دماغك</span></h2>
-        <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "28px" }}>ماذا يحدث بالضبط داخل دماغ شخص يعاني من اضطراب القلق؟</p>
+        <p style={{ fontSize: "14px", color: "#3d1f4b", textAlign: "right", marginBottom: "28px" }}>ماذا يحدث بالضبط داخل دماغ شخص يعاني من اضطراب القلق؟</p>
         <div style={s.brainList}>
           {brainSteps.map((step, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px", animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 60}ms both` }}>
               <div style={{ ...s.brainNum(step.bg), flexShrink: 0, marginTop: "4px" }}>{i + 1}</div>
-              <div style={{ ...s.brainCard(false), flex: 1, transition: "transform 0.2s, box-shadow 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateX(-6px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(214,147,106,0.12)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
+              <div className="card-lift" style={{ ...s.brainCard(false), flex: 1 }}>
                 <div>
                   <div style={s.brainTitle}>{step.title} · <span style={{ fontSize: "12px", color: "#5d5c5d", fontWeight: "400" }}>{step.en}</span></div>
                   <div style={s.brainText}>{step.text}</div>
@@ -413,19 +411,23 @@ export default function AnxietyDetail() {
             </div>
           ))}
         </div>
-        <div style={{ ...s.causeBlock, marginTop: "28px" }}>
-          <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b2415", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك؟</div>
-          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #eec5a8", gap: "32px" }}>
+        <div style={{ background: "#d6cbc9", borderRadius: "60px", padding: "15px 30px", border: "2px solid #eec5a8", marginTop: "28px", maxWidth: "800px", marginRight: "auto", marginLeft: "auto" }}>
+          <div style={{ fontSize: "16px", fontWeight: "700", color: "#552269", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك؟</div>
+          <div className="responsive-grid-2" style={{ gap: "32px" }}>
             <div>
-              <div style={s.resultColTitle}>في نوبات الهلع</div>
-              {["تسارع شديد في ضربات القلب", "ضيق أو تسارع في التنفس", "ألم أو ضغط في الصدر", "تعرق وارتجاف في اليدين والجسم", "دوار أو شعور بعدم التوازن"].map((t, i) => (
-                <div key={i} style={s.resultItem}><div style={s.resultDot("#7a3f20")} />{t}</div>
+              <div style={{ fontSize: "14px", fontWeight: "700", color: "#e1844a", marginBottom: "12px", textAlign: "right" }}>في نوبات الهلع</div>
+              {["تسارع شديد في ضربات القلب", "ضيق أو تسارع في التنفس", "ألم أو ضغط في الصدر", "تعرق وارتجاف في اليدين والجسم", "دوار أو شعور بعدم التوازن"].map((t, idx, arr) => (
+                <div key={idx} style={{ ...s.resultItem, borderBottom: idx < arr.length - 1 ? "0.3px solid #552269" : "none" }}>
+                  <div style={s.resultDot("#5d5c5d")} />{t}
+                </div>
               ))}
             </div>
             <div>
-              <div style={{ ...s.resultColTitle, color: "#a85c38" }}>في الاضطرابات الأخرى</div>
-              {["توتر في العضلات", "تسارع بسيط في ضربات القلب", "تنفس أسرع قليلاً", "شعور بعدم الارتياح أو الترقب", "صعوبة في التركيز"].map((t, i) => (
-                <div key={i} style={s.resultItem}><div style={s.resultDot("#d6936a")} />{t}</div>
+              <div style={{ fontSize: "14px", fontWeight: "700", color: "#e1844a", marginBottom: "12px", textAlign: "right" }}>في الاضطرابات الأخرى</div>
+              {["توتر في العضلات", "تسارع بسيط في ضربات القلب", "تنفس أسرع قليلاً", "شعور بعدم الارتياح أو الترقب", "صعوبة في التركيز"].map((t, idx, arr) => (
+                <div key={idx} style={{ ...s.resultItem, borderBottom: idx < arr.length - 1 ? "0.3px solid #552269" : "none" }}>
+                  <div style={s.resultDot("#5d5c5d")} />{t}
+                </div>
               ))}
             </div>
           </div>
@@ -435,37 +437,34 @@ export default function AnxietyDetail() {
       <hr style={s.divider} />
 
       {/* العلاج */}
-      <div style={s.sectionWrapper}>
+      <div ref={treatRef} style={s.sectionWrapper}>
         <div style={s.sectionLabel}>العلاج</div>
         <h2 style={s.sectionTitle}>طريقك نحو <span style={s.sectionTitleHighlight}>التعافي</span></h2>
         <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>لا يوجد علاج شافٍ – لكن الأعراض قابلة للإدارة بفعالية عالية جداً.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {treatments.map((t) => (
-            <div key={t.id}>
+          {treatments.map((t, i) => (
+            <div key={t.id} style={{ animation: `cardIn var(--anim-normal) var(--anim-ease) ${i * 70}ms both` }}>
               <div
+                className="card-lift btn-press"
                 style={{ background: "white", borderRadius: expandedTreatment === t.id ? "14px 14px 0 0" : "14px", padding: "20px 24px", border: `2px solid ${expandedTreatment === t.id ? t.color : "#eec5a8"}`, cursor: "pointer", transition: "border 0.2s", display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 onClick={() => setExpandedTreatment(expandedTreatment === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.border = `2px solid ${t.color}`; }}
-                onMouseLeave={e => { if (expandedTreatment !== t.id) e.currentTarget.style.border = "2px solid #eec5a8"; }}
               >
-                {/* اليمين: الأيقونة والكلمات */}
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <span style={{ fontSize: "24px", width: "44px", height: "44px", background: t.color, borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>{t.icon}</span>
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontSize: "11px", color: "#5d5c5d", marginBottom: "2px" }}>{t.en}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ fontSize: "17px", fontWeight: "700", color: "#3b3b6b" }}>{t.label}</div>
-                      {t.badge && <span style={{ fontSize: "11px", background: "#f5e8dc", color: "#7a3f20", borderRadius: "20px", padding: "2px 10px" }}>✦ {t.badge}</span>}
+                      {t.badge && <span style={{ fontSize: "11px", background: "#f5e8dc", color: "#7a3f20", borderRadius: "20px", padding: "2px 10px" }}>❆ {t.badge}</span>}
                     </div>
                   </div>
                 </div>
-                {/* اليسار: زر */}
                 <span style={{ fontSize: "22px", color: "#e0aa88" }}>{expandedTreatment === t.id ? "−" : "+"}</span>
               </div>
               {expandedTreatment === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "4px 24px 20px", border: `2px solid ${t.color}`, borderTop: "none" }}>
-                  {t.details.map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < t.details.length - 1 ? "1px solid #faf0ea" : "none", fontSize: "14px", color: "#6b4a38", lineHeight: "1.9", textAlign: "right" }}>
+                <div className="accordion-expand" style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "4px 24px 20px", border: `2px solid ${t.color}`, borderTop: "none" }}>
+                  {t.details.map((line, idx) => (
+                    <div key={idx} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: idx < t.details.length - 1 ? "1px solid #faf0ea" : "none", fontSize: "14px", color: "#6b4a38", lineHeight: "1.9", textAlign: "right" }}>
                       <span style={{ color: t.color, flexShrink: 0, fontSize: "16px" }}>•</span>
                       <span>{line}</span>
                     </div>
