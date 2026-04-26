@@ -731,16 +731,14 @@ function Recovery() {
                 ) : (
                   /* منطقة اللعبة عند البدء */
                   <div style={{ width: '100%', height: '100%', minHeight: '320px', position: 'relative' }}>
-                    {/* 
-                      هنا سيتم وضع iframe أو canvas للعبة Unity
-                      مثال:
+                    {
                       <iframe
                         ref={iframeRef}
-                        src="/game/index.html"
+                        src="https://demxz0.github.io/AnxietyRecoverBuild/"
                         style={{ width: '100%', height: '100%', minHeight: '320px', border: 'none' }}
                         title="Mental Health Game"
                       />
-                    */}
+                    }
                     <div style={{
                       width: '100%',
                       height: '100%',
