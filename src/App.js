@@ -47,19 +47,29 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("الرئيسية");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
   useGlobalScrollReveal();
 
-  const navLinks = [
-    { name: "عوامل الخطر", path: "/",        scrollTo: "khattar-section" },
-    { name: "التعافي",     path: "/",        scrollTo: "recovery-section" },
-    { name: "الدماغ",      path: "/",        scrollTo: "brain-section" },
-    { name: "الإضطرابات",  path: "/",        scrollTo: "disorders-section" },
-    { name: "الإختبار",    path: "/",        scrollTo: "exam-section" },
-    { name: "الرئيسية",    path: "/",        scrollTo: null },
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
+  const navLinks = [
+    { name: "الرئيسية",    path: "/",         scrollTo: null },
+    { name: "الإختبار",    path: "/",         scrollTo: "exam-section" },
+    { name: "الإضطرابات",  path: "/",         scrollTo: "disorders-section" },
+     { name: "الدماغ",      path: "/",         scrollTo: "brain-section" },
+    { name: "التعافي",     path: "/",         scrollTo: "recovery-section" },
+    { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section" },
   ];
+
   function handleNavClick(link) {
-    setActiveLink(link.name);
+    setActiveLink(link.name); 
+    setIsMobileMenuOpen(false);
 
     if (link.name === "الرئيسية") {
       navigate('/');
@@ -101,10 +111,11 @@ function App() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        width: "100vw",
+        width: "100%",
         margin: "0",
-        padding: "0 28px",
-        height: "60px",
+        padding: isMobile ? "0px 12px" : "0px 28px",
+        height: isMobile ? "auto" : "60px",
+        minHeight: "60px",
         background: "rgba(255,255,255,0.85)",
         backdropFilter: "blur(14px)",
         borderBottom: "1px solid #e0d6f5",
@@ -112,55 +123,90 @@ function App() {
         top: "0",
         zIndex: 1000,
         boxShadow: "0 8px 25px rgba(0,0,0,0.05)",
-        direction: "ltr",
+        flexWrap: isMobile ? "wrap" : "nowrap",
       }}>
 
-        {/* الروابط — يسار */}
-        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+        <div 
+          style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: "8px",
+            cursor: "pointer" 
+          }}
+          onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+        >
+          <img src={logo} alt="logo" style={{ width: isMobile ? "40px" : "46px", height: "auto" }} />
+          <span style={{ 
+            fontSize: isMobile ? "20px" : "24px", 
+            fontWeight: "800", 
+            color: "#493054", 
+            fontFamily: "'Tajawal', sans-serif" 
+          }}>أُجِليك</span>
+        </div>
+
+        {/* Mobile Toggle Button */}
+        {isMobile && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              fontSize: "24px",
+              cursor: "pointer",
+              padding: "10px",
+              color: "#493054"
+            }}
+          >
+            {isMobileMenuOpen ? "✕" : "☰"}
+          </button>
+        )}
+
+        <div 
+          style={{ 
+            display: isMobileMenuOpen || !isMobile ? "flex" : "none",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? "0" : "4px",
+            alignItems: "center",
+            width: isMobile ? "100%" : "auto",
+            backgroundColor: isMobile ? "rgba(255,255,255,0.98)" : "transparent",
+            padding: isMobile ? "10px 0" : "0",
+            borderTop: isMobile ? "1px solid #e0d6f5" : "none",
+          }}>
           {navLinks.map(link => (
             <button
               key={link.name}
               onClick={() => handleNavClick(link)}
               style={{
                 color: activeLink === link.name ? "#6b4fa0" : "#737373",
-                borderBottom: activeLink === link.name
-                  ? "2px solid #6b4fa0"
-                  : "2px solid transparent",
-                fontSize: "17px",
-                padding: "6px 14px",
-                paddingBottom: "2px",
+                fontSize: isMobile ? "15px" : "17px",
+                padding: isMobile ? "12px 20px" : "6px 14px",
                 transition: "0.3s",
                 background: "transparent",
                 border: "none",
-                borderBottom: activeLink === link.name ? "2px solid #6b4fa0" : "2px solid transparent",
-                display: "inline-block",
+                borderBottom: !isMobile && activeLink === link.name ? "2px solid #6b4fa0" : "2px solid transparent",
+                width: isMobile ? "100%" : "auto",
+                textAlign: "right",
                 cursor: "pointer",
-                fontFamily: "'Lato', 'Tajawal', sans-serif",
-                direction: "rtl",
+                fontFamily: "'Tajawal', sans-serif",
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.color = "#6b4fa0";
-                e.currentTarget.style.background = "#ede8ff";
-                e.currentTarget.style.borderRadius = "8px";
+                if (!isMobile) {
+                  e.currentTarget.style.color = "#6b4fa0";
+                  e.currentTarget.style.background = "#ede8ff";
+                  e.currentTarget.style.borderRadius = "8px";
+                }
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.color = activeLink === link.name ? "#6b4fa0" : "#737373";
-                e.currentTarget.style.background = "transparent";
+                if (!isMobile) {
+                  e.currentTarget.style.color = activeLink === link.name ? "#6b4fa0" : "#737373";
+                  e.currentTarget.style.background = "transparent";
+                }
               }}
             >
               {link.name}
             </button>
           ))}
         </div>
-
-        {/* اللوجو والاسم — يمين */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", direction: "rtl", cursor: "pointer" }}
-          onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-        >
-          <span style={{ fontSize: "24px", fontWeight: "800", color: "#493054", fontFamily: "'Tajawal', sans-serif" }}>أُجِليك</span>
-          <img src={logo} alt="logo" style={{ width: "46px", height: "46px" }} />
-        </div>
-
       </nav>
 
       {/* Routes */}
@@ -169,7 +215,8 @@ function App() {
         <Route path="/ikhtbar" element={<Exam />} />
         <Route path="/khattar" element={<Khattar />} />
         <Route path="/dimagh" element={<Brain />} />
-        <Route path="/recovery" element={<Recovery />} /> 
+        <Route path="/recovery" element={<Recovery />} />
+
         <Route path="/disease" element={<Disease />} /> 
         <Route path="/disease/anxiety" element={<AnxietyDetail />} />
         <Route path="/disease/adhd" element={<ADHDDetail />} />
