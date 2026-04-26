@@ -3,7 +3,6 @@ import image from '../image.png';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-
 const genData = {
   z: {
     title: 'جيل Z — أنت هنا',
@@ -99,7 +98,6 @@ function NavCard({ card, navigate }) {
         justifyContent: isMobile ? 'flex-start' : 'center',
       }}>
        
-
         {/* الأيقونة */}
         <div style={{
           width: isMobile ? '60px' : '80px',
@@ -149,6 +147,14 @@ function NavCard({ card, navigate }) {
 
 function TimelineCard({ item, width }) {
   const [hovered, setHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
       onMouseEnter={() => setHovered(true)}
@@ -157,26 +163,26 @@ function TimelineCard({ item, width }) {
         position: 'relative',
         background: 'white',
         borderRadius: '50px',
-        height: '65px',
+        height: isMobile ? '55px' : '65px',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 70px 0 20px',
+        padding: isMobile ? '0 55px 0 15px' : '0 70px 0 20px',
         boxShadow: hovered ? `0 10px 25px ${item.color}66` : '0 4px 12px rgba(0,0,0,0.05)',
         border: `1px solid ${hovered ? item.color : '#f0f0f5'}`,
         cursor: 'pointer',
         transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
         transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
         overflow: 'visible',
-        width: width || 'auto',
+        width: isMobile ? '100%' : (width || 'auto'),
         direction: 'rtl',
       }}
     >
       {/* المعين — على اليمين */}
       <div style={{
         position: 'absolute',
-        right: '-14px',
-        width: '54px',
-        height: '54px',
+        right: isMobile ? '-8px' : '-14px',
+        width: isMobile ? '46px' : '54px',
+        height: isMobile ? '46px' : '54px',
         background: item.color,
         transform: hovered ? 'rotate(405deg)' : 'rotate(45deg)',
         borderRadius: '10px',
@@ -203,7 +209,7 @@ function TimelineCard({ item, width }) {
 
       {/* النص */}
       <span style={{
-        fontSize: '14px',
+        fontSize: isMobile ? '13px' : '14px',
         color: '#665a78',
         fontWeight: '700',
         flex: 1,
@@ -219,6 +225,13 @@ function TimelineCard({ item, width }) {
 function SectionCard({ card, navigate, index }) {
   const [hovered, setHovered] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -244,11 +257,12 @@ function SectionCard({ card, navigate, index }) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '48px',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '20px' : '48px',
         direction: 'rtl',
         cursor: 'pointer',
         transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? 'translateX(-10px)' : 'translateX(0)',
+        transform: isActive ? (isMobile ? 'translateY(-6px)' : 'translateX(-10px)') : 'translateX(0)',
       }}
     >
       {/* البوكس */}
@@ -258,17 +272,18 @@ function SectionCard({ card, navigate, index }) {
           : 'white',
         border: `2.5px solid ${isActive ? card.accentColor : card.borderColor + 'aa'}`,
         borderRadius: '26px',
-        padding: '32px 44px',
+        padding: isMobile ? '24px' : '32px 44px',
         display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
         gap: '20px',
         flexShrink: 0,
-        width: '380px',
+        width: isMobile ? '100%' : '380px',
         boxShadow: isActive
           ? `0 24px 56px ${card.accentColor}40, 0 6px 20px ${card.accentColor}20, inset 0 1px 0 rgba(255,255,255,0.8)`
           : '0 4px 20px rgba(0,0,0,0.08)',
         transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? 'translateY(-8px) scale(1.03)' : 'translateY(0) scale(1)',
+        transform: isActive ? 'scale(1.03)' : 'scale(1)',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -310,11 +325,11 @@ function SectionCard({ card, navigate, index }) {
 
         {/* العنوان */}
         <div style={{
-          fontWeight: '800', fontSize: '28px',
+          fontWeight: '800', fontSize: isMobile ? '24px' : '28px',
           color: isActive ? card.accentColor : '#2d1f4a',
           transition: 'color 0.3s',
           fontFamily: "'Tajawal', sans-serif",
-          flex: 1, textAlign: 'right',
+          flex: 1, textAlign: isMobile ? 'center' : 'right',
           letterSpacing: '-0.3px',
         }}>
           {card.title}
@@ -323,9 +338,10 @@ function SectionCard({ card, navigate, index }) {
 
       {/* الديسكربشن */}
       <div style={{
-        fontSize: '24px',
+        fontSize: isMobile ? '18px' : '24px',
         color: isActive ? '#5a4a7a' : '#9586b0',
-        lineHeight: '1.8', textAlign: 'right',
+        lineHeight: '1.8', 
+        textAlign: isMobile ? 'center' : 'right',
         fontFamily: "'Tajawal', sans-serif",
         flex: 1,
         transition: 'color 0.4s',
@@ -340,6 +356,13 @@ function Home() {
   const navigate = useNavigate();
   const [activeGen, setActiveGen] = useState('z');
   const [genInfo, setGenInfo] = useState(genData['z']);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   function handleGenClick(id, e) {
     setActiveGen(id);
@@ -360,11 +383,10 @@ function Home() {
         justifyContent: 'center',
         minHeight: '100vh',
         textAlign: 'center',
-        padding: '40px',
-         marginBottom:'20px',
+        padding: isMobile ? '20px' : '40px',
+        marginBottom:'20px',
       }}>
        
-     
         <img src={image} alt="background" style={{
           position: 'absolute',
           top: 0, left: 0,
@@ -384,6 +406,7 @@ function Home() {
             maxWidth: '90%',
             marginLeft: 'auto',
             marginRight: 'auto',
+            fontSize: isMobile ? '32px' : '80px',
           }}>
             الوعي بالصحة النفسية
           </h1>
@@ -460,20 +483,19 @@ function Home() {
         `}</style>
       </div>
 
-
       {/* ===== سيكشن تعرف أكثر ===== */}
       <div id="learnMore" style={{
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)',
-        padding: '72px 24px 60px',
+        padding: isMobile ? '40px 16px' : '72px 24px 60px',
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
       }}>
 
         {/* العنوان */}
-        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px' }}>
+        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px', fontSize: isMobile ? '24px' : '30px' }}>
           من هو جيل Z؟
         </h2>
-        <p className="reveal" style={{ fontSize: '16px', color: '#6f5779', textAlign: 'center', marginBottom: '48px', lineHeight: '1.7' }}>
+        <p className="reveal" style={{ fontSize: isMobile ? '14px' : '16px', color: '#6f5779', textAlign: 'center', marginBottom: '48px', lineHeight: '1.7' }}>
           تعرّف على الجيل الذي وُلد في عالم رقمي — وكيف يشكّل ذلك صحته النفسية
         </p>
 
@@ -491,23 +513,21 @@ function Home() {
               <div
                 key={g.id}
                 onClick={(e) => { if (g.id === 'z') launchConfetti(e); }}
-
                 style={{
                   background: isActive ? '#5c4467' : 'white',
                   border: `2px solid ${isActive ? '#5c4467' : '#ebe6f7'}`,
                   borderRadius: '14px',
                   padding: '10px 18px',
                   textAlign: 'center',
-                  
-                  minWidth: '110px',
+                  minWidth: isMobile ? '45%' : '110px',
+                  flexGrow: isMobile ? 1 : 0,
                   transition: 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)',
-                  transform: isActive ? 'translateY(-6px) scale(1.08)' : 'none',
+                  transform: isActive ? 'translateY(-6px) scale(1.05)' : 'none',
                   boxShadow: isActive ? '0 10px 30px rgba(92,68,103,0.3)' : '0 4px 16px rgba(0,0,0,0.07)',
-                  
                 }}
                onMouseEnter={e => {
-  if (g.id === 'z') e.currentTarget.style.cursor = 'pointer';
-}}
+                  if (g.id === 'z') e.currentTarget.style.cursor = 'pointer';
+               }}
               >
                 <div style={{ fontSize: '15px', fontWeight: '800', color: isActive ? 'white' : '#665a78' }}>{g.name}</div>
                 <div style={{ fontSize: '12px', color: isActive ? '#c4aee8' : '#9586b0' }}>{g.year}</div>
@@ -521,7 +541,7 @@ function Home() {
           background: 'white',
           border: '2px solid #ebe6f7',
           borderRadius: '20px',
-          padding: '28px 32px',
+          padding: isMobile ? '24px 20px' : '28px 32px',
           maxWidth: '1100px',
           margin: '0 auto 56px',
           animation: 'float 4s ease-in-out infinite',
@@ -536,12 +556,14 @@ function Home() {
             background: 'linear-gradient(180deg, #9b7fc7, #7c6fcd)',
             borderRadius: '0 20px 20px 0',
           }} />
-          <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#665a78', marginBottom: '14px' }}>{genInfo.title}</h3>
-          <p style={{ fontSize: '15px', color: '#6b5a8a', lineHeight: '1.9' }}>{genInfo.desc}</p>
+          <h3 style={{ fontSize: isMobile ? '20px' : '22px', fontWeight: '800', color: '#665a78', marginBottom: '14px' }}>{genInfo.title}</h3>
+          <p style={{ fontSize: isMobile ? '14px' : '15px', color: '#6b5a8a', lineHeight: '1.9' }}>{genInfo.desc}</p>
         </div>
 
         {/* الكاردز الستة */}
-        <div className="responsive-grid-2" style={{
+        <div className="reveal" style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
           gap: '20px',
           maxWidth: '1100px',
           margin: '0 auto 56px',
@@ -555,7 +577,6 @@ function Home() {
             { icon: '⚡', title: 'براغماتيون وواقعيون', desc:'شاهدوا الأزمة المالية والجائحة وهم صغار، مما جعلهم أكثر حذرًا وعملية في قراراتهم المهنية والمالية مقارنةً بجيل الميلينيالز.' },
           ].map((card, i) => (
             <div
-              className="reveal"
               key={i}
               style={{
                 background: 'white',
@@ -566,14 +587,18 @@ function Home() {
                 cursor: 'default',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 12px 36px rgba(107,79,160,0.15)';
-                e.currentTarget.style.borderColor = '#9b7fc7';
+                if(!isMobile) {
+                  e.currentTarget.style.transform = 'scale(1.04) translateY(-3px)';
+                  e.currentTarget.style.boxShadow = '0 12px 36px rgba(107,79,160,0.15)';
+                  e.currentTarget.style.borderColor = '#9b7fc7';
+                }
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = '#ebe6f7';
+                if(!isMobile) {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = '#ebe6f7';
+                }
               }}
             >
               <div style={{ fontSize: '24px', marginBottom: '10px' }}>{card.icon}</div>
@@ -583,60 +608,66 @@ function Home() {
           ))}
         </div>
 
-{/* ===== تايملاين الأحداث===== */}
-<h3 className="reveal" style={{ fontSize: '22px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '40px' }}>
-  📌 الأحداث التي شكّلت جيل Z
-</h3>
+        {/* ===== تايملاين الأحداث===== */}
+        <h3 className="reveal" style={{ fontSize: isMobile ? '20px' : '22px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '40px' }}>
+          📌 الأحداث التي شكّلت جيل Z
+        </h3>
 
-<div className="reveal" style={{
-  maxWidth: '1100px',
-  margin: '0 auto 60px',
-  direction: 'rtl',
-}}>
-  {/* صف أول: 4 عناصر */}
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '20px',
-    marginBottom: '20px',
-  }}>
-    {[
-      { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
-      { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
-      { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
-      { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
-    ].map((item, i) => (
-      <TimelineCard key={i} item={item} />
-    ))}
-  </div>
-  {/* صف ثاني: 2 عناصر بالوسط */}
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '20px',
-  }}>
-    {[
-      { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
-      { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
-    ].map((item, i) => (
-      <TimelineCard key={i} item={item} width="calc(25% - 10px)" />
-    ))}
-  </div>
-</div>
+        <div className="reveal" style={{
+          maxWidth: '1100px',
+          margin: '0 auto 60px',
+          direction: 'rtl',
+        }}>
+          {/* صف أول: 4 عناصر */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
+            gap: isMobile ? '16px' : '20px',
+            marginBottom: isMobile ? '16px' : '20px',
+          }}>
+            {[
+              { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
+              { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
+              { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
+              { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
+            ].map((item, i) => (
+              <TimelineCard key={i} item={item} />
+            ))}
+          </div>
+          {/* صف ثاني: 2 عناصر بالوسط */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '16px' : '20px',
+          }}>
+            {[
+              { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
+              { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
+            ].map((item, i) => (
+              <TimelineCard key={i} item={item} width={isMobile ? '100%' : "calc(25% - 10px)"} />
+            ))}
+          </div>
+        </div>
 
         {/* الإحصائيات */}
         <div className="reveal" style={{
           background: 'white',
           border: '2px solid #ebe6f7',
           borderRadius: '24px',
-          padding: '36px 32px',
+          padding: isMobile ? '24px 16px' : '36px 32px',
           maxWidth: '1100px',
           margin: '0 auto',
         }}>
-          <div style={{ fontSize: '20px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '28px' }}>
+          <div style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '28px' }}>
             📊 معلومات موثّقة عن الصحة النفسية لجيل Z
           </div>
-          <div className="responsive-grid-3" style={{ gap: '16px', marginBottom: '16px' }}>
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: '16px', 
+            marginBottom: '16px' 
+          }}>
             {[
               { num: '75%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
               { num: '55%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
@@ -652,8 +683,8 @@ function Home() {
                   textAlign: 'center',
                   transition: 'all 0.3s ease',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.12)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                onMouseEnter={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.12)'; } }}
+                onMouseLeave={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; } }}
               >
                 <div style={{ fontSize: '32px', fontWeight: '800', color: '#6b4fa0' }}>{s.num}</div>
                 <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>{s.label}</div>
@@ -674,20 +705,21 @@ function Home() {
 
       </div>
 
-    {/* ===== أقسام أُجليك ===== */}
+      {/* ===== أقسام أُجليك ===== */}
       <div style={{ 
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
         width: '100%',
-        padding: '80px 60px',
+        padding: isMobile ? '40px 20px' : '80px 60px',
       }}>
         <h1 className="reveal" style={{
-          fontSize: '38px',
+          fontSize: isMobile ? '28px' : '38px',
           fontWeight: '800',
           color: '#6f5779',
           fontFamily: "'Tajawal', sans-serif",
           lineHeight: '1.7',
-          marginBottom: '56px',
+          marginBottom: isMobile ? '32px' : '56px',
           direction: 'rtl',
+          textAlign: isMobile ? 'center' : 'right',
         }}>
           أقسام أُجليك:
         </h1>
@@ -697,6 +729,7 @@ function Home() {
           flexDirection: 'column',
           gap: '32px',
           maxWidth: '1100px',
+          margin: '0 auto',
         }}>
           {[
             { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'الإختبارات', desc: 'أجرِ اختبار الصحة النفسية... لتعرف نسبة تعرضك للاضطراب و لتتأكد من حاجتك لمساعدة نفسية.' },
@@ -705,23 +738,22 @@ function Home() {
             { icon: '🎮', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc: 'أنت لست وحدك — طلب المساعدة هو علامة قوة حقيقية...في هذا القسم لعبة تفاعلية ستساعدك على التعافي من احد الاضطرابات.' },
             { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك الرقمي.' },
           ].map((card, i) => (
-            <SectionCard key={i} card={card} navigate={navigate} index={i} total={5} />
+            <SectionCard key={i} card={card} navigate={navigate} index={i} />
           ))}
         </div>
       </div>
- 
 
       {/* ===== Footer ===== */}
       <footer style={{
         background: '#e8dff2',
         color: '#5c4467',
-        padding: '40px 60px',
+        padding: isMobile ? '30px 20px' : '40px 60px',
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
       }}>
 
         <p style={{
-          fontSize: '15px',
+          fontSize: isMobile ? '13px' : '15px',
           lineHeight: '1.8',
           marginBottom: '20px',
           borderBottom: '1px solid #8e7899',
@@ -732,7 +764,7 @@ function Home() {
         </p>
 
         <p style={{
-          fontSize: '13px',
+          fontSize: isMobile ? '12px' : '13px',
           color: '#858286',
           lineHeight: '1.8',
           marginBottom: '28px',
@@ -747,9 +779,8 @@ function Home() {
           borderRadius: '16px',
           padding: '20px 24px',
           boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-          
-margin: '0 auto',
-textAlign: 'center',
+          margin: '0 auto',
+          textAlign: 'center',
         }}>
           <h3 style={{ color: '#553c61', fontSize: '17px', fontWeight: '700', marginBottom: '10px' }}>
             <span style={{ color: '#5c4467', marginLeft: '8px' }}>💜</span>
