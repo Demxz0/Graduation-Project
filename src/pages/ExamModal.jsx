@@ -710,7 +710,7 @@ function ExamModal({ disorderId, onClose }) {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : '← التالي'}
+                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : ' التالي ←'}
                 </button>
               </div>
             </div>

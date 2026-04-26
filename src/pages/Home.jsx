@@ -7,8 +7,8 @@ import { useState, useEffect } from 'react';
 const genData = {
   z: {
     title: 'جيل Z — أنت هنا',
-    desc: 'الجيل الرقمي الأول هو الجيل المولود بين عامَي ١٩٩٧ و٢٠١٢. يُعرَّف بأنه أول جيل نشأ وكبر في عالم تسوده الإنترنت والهواتف الذكية منذ الطفولة. أفراد هذا الجيل في عام ٢٠٢٦ تتراوح أعمارهم بين ١٤ و٢٩ عامًا. يُطلق عليهم أيضًا اسم "Zoomers"، وهم يشكّلون الجيل الأكثر تنوعًا وعالميًا في التاريخ.',
-  },
+    desc: 'الجيل الرقمي الأول هو الجيل المولود بين عامَي ١٩٩٧ و٢٠١٢ ,ويُعرَّف بأنه أول جيل نشأ وكبر في عالم تسوده الإنترنت والهواتف الذكية منذ الطفولة. أفراد هذا الجيل في عام ٢٠٢٦ تتراوح أعمارهم بين ١٤ و٢٩ عامًا. يُطلق عليهم أيضًا اسم "Zoomers"، وهم يشكّلون الجيل الأكثر تنوعًا ثقافيًا وعرقيًا في التاريخ. خلافًا للأجيال السابقة التي شهدت صعود التكنولوجيا تدريجيًا، وجد جيل Z نفسه في عالم رقمي كامل منذ اليوم الأول.',
+   },
 };
 
 const confettiColors = ['#9b7fc7','#7c6fcd','#f9a8d4','#c4b5fd','#fbbf24','#34d399','#60a5fa','#f87171'];
@@ -140,6 +140,195 @@ function NavCard({ card, navigate }) {
         fontFamily: "'Tajawal', sans-serif",
         flex: 1,
         width: isMobile ? '100%' : 'auto',
+      }}>
+        {card.desc}
+      </div>
+    </div>
+  );
+}
+
+function TimelineCard({ item, width }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: 'relative',
+        background: 'white',
+        borderRadius: '50px',
+        height: '65px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 70px 0 20px',
+        boxShadow: hovered ? `0 10px 25px ${item.color}66` : '0 4px 12px rgba(0,0,0,0.05)',
+        border: `1px solid ${hovered ? item.color : '#f0f0f5'}`,
+        cursor: 'pointer',
+        transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
+        transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
+        overflow: 'visible',
+        width: width || 'auto',
+        direction: 'rtl',
+      }}
+    >
+      {/* المعين — على اليمين */}
+      <div style={{
+        position: 'absolute',
+        right: '-14px',
+        width: '54px',
+        height: '54px',
+        background: item.color,
+        transform: hovered ? 'rotate(405deg)' : 'rotate(45deg)',
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2,
+        transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
+        flexShrink: 0,
+      }}>
+        <span style={{
+          color: '#493054',
+          fontWeight: '900',
+          fontSize: '12px',
+          transform: hovered ? 'rotate(-405deg)' : 'rotate(-45deg)',
+          transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          display: 'inline-block',
+          whiteSpace: 'nowrap',
+        }}>
+          {item.year}
+        </span>
+      </div>
+
+      {/* النص */}
+      <span style={{
+        fontSize: '14px',
+        color: '#665a78',
+        fontWeight: '700',
+        flex: 1,
+        textAlign: 'right',
+        paddingRight: '8px',
+      }}>
+        {item.event}
+      </span>
+    </div>
+  );
+}
+
+function SectionCard({ card, navigate, index }) {
+  const [hovered, setHovered] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
+
+  useEffect(() => {
+    const handler = () => {
+      setHighlighted(true);
+      setTimeout(() => setHighlighted(false), 1200);
+    };
+    window.addEventListener(`highlight-${card.sectionId}`, handler);
+    return () => window.removeEventListener(`highlight-${card.sectionId}`, handler);
+  }, [card.sectionId]);
+
+  const isActive = hovered || highlighted;
+
+  return (
+    <div
+      id={card.sectionId}
+      className="reveal"
+      onClick={() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        navigate(card.route);
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '48px',
+        direction: 'rtl',
+        cursor: 'pointer',
+        transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
+        transform: isActive ? 'translateX(-10px)' : 'translateX(0)',
+      }}
+    >
+      {/* البوكس */}
+      <div style={{
+        background: isActive
+          ? `linear-gradient(135deg, ${card.iconBg}, white)`
+          : 'white',
+        border: `2.5px solid ${isActive ? card.accentColor : card.borderColor + 'aa'}`,
+        borderRadius: '26px',
+        padding: '32px 44px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px',
+        flexShrink: 0,
+        width: '380px',
+        boxShadow: isActive
+          ? `0 24px 56px ${card.accentColor}40, 0 6px 20px ${card.accentColor}20, inset 0 1px 0 rgba(255,255,255,0.8)`
+          : '0 4px 20px rgba(0,0,0,0.08)',
+        transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
+        transform: isActive ? 'translateY(-8px) scale(1.03)' : 'translateY(0) scale(1)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* خط علوي ملوّن */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
+          background: `linear-gradient(90deg, transparent, ${card.accentColor}cc, transparent)`,
+          opacity: isActive ? 1 : 0,
+          transition: 'opacity 0.35s ease',
+        }} />
+
+        {/* توهج خلفي */}
+        <div style={{
+          position: 'absolute', bottom: '-20px', right: '-20px',
+          width: '120px', height: '120px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${card.accentColor}18, transparent 70%)`,
+          opacity: isActive ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+          pointerEvents: 'none',
+        }} />
+
+        {/* الأيقونة */}
+        <div style={{
+          width: '80px', height: '80px', fontSize: '38px',
+          borderRadius: '18px',
+          background: isActive
+            ? `linear-gradient(135deg, white, ${card.iconBg})`
+            : card.iconBg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+          border: `2px solid ${isActive ? card.accentColor + '40' : card.borderColor + '60'}`,
+          transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transform: isActive ? 'rotate(-10deg) scale(1.15)' : 'none',
+          boxShadow: isActive ? `0 10px 24px ${card.accentColor}30` : 'none',
+        }}>
+          {card.icon}
+        </div>
+
+        {/* العنوان */}
+        <div style={{
+          fontWeight: '800', fontSize: '28px',
+          color: isActive ? card.accentColor : '#2d1f4a',
+          transition: 'color 0.3s',
+          fontFamily: "'Tajawal', sans-serif",
+          flex: 1, textAlign: 'right',
+          letterSpacing: '-0.3px',
+        }}>
+          {card.title}
+        </div>
+      </div>
+
+      {/* الديسكربشن */}
+      <div style={{
+        fontSize: '24px',
+        color: isActive ? '#5a4a7a' : '#9586b0',
+        lineHeight: '1.8', textAlign: 'right',
+        fontFamily: "'Tajawal', sans-serif",
+        flex: 1,
+        transition: 'color 0.4s',
       }}>
         {card.desc}
       </div>
@@ -333,7 +522,7 @@ function Home() {
           border: '2px solid #ebe6f7',
           borderRadius: '20px',
           padding: '28px 32px',
-          maxWidth: '760px',
+          maxWidth: '1100px',
           margin: '0 auto 56px',
           animation: 'float 4s ease-in-out infinite',
           boxShadow: '0 8px 32px rgba(107,79,160,0.10)',
@@ -354,16 +543,16 @@ function Home() {
         {/* الكاردز الستة */}
         <div className="responsive-grid-2" style={{
           gap: '20px',
-          maxWidth: '760px',
+          maxWidth: '1100px',
           margin: '0 auto 56px',
         }}>
           {[
-            { icon: '🧠', title: 'الأكثر انفتاحًا على الصحة النفسية', desc: 'جيل Z هو الأكثر انفتاحًا في التاريخ على الحديث عن الصحة النفسية والبحث عن المساعدة. ٤٢٪ منهم في الولايات المتحدة يتلقّون العلاج النفسي حاليًا.' },
-            { icon: '📱', title: 'مواطنون رقميون بالفطرة', desc: 'هم أول جيل لم يعرف العالم بدون إنترنت. الهاتف ووسائل التواصل الاجتماعي ليست أدوات بالنسبة لهم بل هي جزء من هويتهم اليومية.' },
-            { icon: '📚', title: 'الأكثر تعليمًا', desc: 'جيل Z هو الأكثر التحاقًا بالتعليم العالي مقارنةً بأي جيل سابق، ويبحثون بنشاط عن مصادر التعلم الذاتي عبر الإنترنت.' },
-            { icon: '🌍', title: 'الأكثر تنوعًا', desc: 'نشأوا في بيئات أكثر تنوعًا من أي جيل سابق. ٢١٪ منهم يعرّفون أنفسهم خارج حدود مجتمع LGBTQ+، وهم أكثر قبولًا للاختلاف والتعددية.' },
-            { icon: '💬', title: 'يتواصلون بطريقة مختلفة', desc: 'يفضّلون التواصل المرن والسريع عبر الفيديو والصوت والمحتوى القصير. محادثة واحدة عبر ميم أو فيديو قصير تعبّر عنهم أكثر من آلاف الكلمات.' },
-            { icon: '⚡', title: 'براغماتيون وواقعيون', desc: 'شاهدوا الأزمة المالية والجائحة وهم صغار، مما جعلهم أكثر احترازًا وعمليةً في قراراتهم المهنية والمالية مقارنةً بجيل الميلينيالز.' },
+            { icon: '🧠', title: 'الأكثر وعيًا بالصحة النفسية', desc:'جيل Z هو الأكثر انفتاحًا في التاريخ على الحديث عن الصحة النفسية والبحث عن المساعدة. ٤٢٪ منهم في الولايات المتحدة يتلقّون العلاج النفسي حاليًا.' },
+            { icon: '📱', title: 'مواطنون رقميون بالفطرة', desc:'هم أول جيل لم يعرف العالم بدون إنترنت. الهاتف الذكي ووسائل التواصل الاجتماعي ليست أدوات بالنسبة لهم  بل هي جزء من هويتهم اليومية.' },
+            { icon: '📚', title: 'الأكثر تعليمًا', desc:'جيل Z هو الأكثر انفتاحًا في التاريخ على الحديث عن الصحة النفسية والبحث عن المساعدة. ٤٢٪ منهم في الولايات المتحدة يتلقّون العلاج النفسي حاليًا.' },
+            { icon: '🌍', title: 'الأكثر تنوعًا', desc:'نشأوا في بيئات أكثر تنوعًا من أي جيل سابق. ١٦٪ منهم يُعرّفون أنفسهم كجزء من مجتمع LGBTQ+، وهم أكثر قبولًا للاختلاف والتعددية.' },
+            { icon: '💬', title: 'يتواصلون بطريقة مختلفة', desc:'يُفضّلون التواصل المرئي والسريع عبر الفيديو والصور والمحتوى القصير. محادثة عبر ميم أو فيديو قصير تُعبّر عندهم أكثر من آلاف الكلمات' },
+            { icon: '⚡', title: 'براغماتيون وواقعيون', desc:'شاهدوا الأزمة المالية والجائحة وهم صغار، مما جعلهم أكثر حذرًا وعملية في قراراتهم المهنية والمالية مقارنةً بجيل الميلينيالز.' },
           ].map((card, i) => (
             <div
               className="reveal"
@@ -399,109 +588,40 @@ function Home() {
   📌 الأحداث التي شكّلت جيل Z
 </h3>
 
-<div className="reveal timeline-grid" style={{
-  maxWidth: '900px',
+<div className="reveal" style={{
+  maxWidth: '1100px',
   margin: '0 auto 60px',
   direction: 'rtl',
-  overflow: 'visible',
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '20px',
 }}>
- {[
-  { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
-  { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
-  { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
-  { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
-  { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
-  { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
-].map((item, i) => (
-  <div
-    key={i}
-    style={{
-      position: 'relative',
-      background: 'white',
-      borderRadius: '50px',
-      height: '65px',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 20px 0 70px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-      border: '1px solid #f0f0f5',
-      cursor: 'pointer',
-      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-      overflow: 'hidden',
-    }}
-    onMouseEnter={e => {
-      e.currentTarget.style.transform = 'translateY(-5px)';
-      e.currentTarget.style.boxShadow = `0 10px 25px ${item.color}66`;
-      e.currentTarget.style.borderColor = item.color;
-      
-      // دوران المعين
-      const diamond = e.currentTarget.querySelector('.diamond-shape');
-      if(diamond) diamond.style.transform = 'rotate(405deg)';
-      
-      const yearText = e.currentTarget.querySelector('.year-text');
-      if(yearText) yearText.style.transform = 'rotate(-405deg)';
-    }}
-    onMouseLeave={e => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
-      e.currentTarget.style.borderColor = '#f0f0f5';
-      
-      const diamond = e.currentTarget.querySelector('.diamond-shape');
-      if(diamond) diamond.style.transform = 'rotate(45deg)';
-      
-      const yearText = e.currentTarget.querySelector('.year-text');
-      if(yearText) yearText.style.transform = 'rotate(-45deg)';
-    }}
-  >
-    <span style={{ 
-      fontSize: '14px', 
-      color: '#665a78', 
-      fontWeight: '700',
-      flex: 1,
-      textAlign: 'right',
-    }}>
-      {item.event}
-    </span>
-
-    {/* المعين */}
-    <div 
-      className="diamond-shape"
-      style={{
-        position: 'absolute',
-        left: '8px',
-        width: '52px',
-        height: '52px',
-        background: item.color,
-        transform: 'rotate(45deg)',
-        borderRadius: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 2,
-        transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-        flexShrink: 0,
-      }}
-    >
-      <span 
-        className="year-text"
-        style={{ 
-          color: '#493054', 
-          fontWeight: '900', 
-          fontSize: '12px',
-          transform: 'rotate(-45deg)', 
-          transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          display: 'inline-block'
-        }}
-      >
-        {item.year}
-      </span>
-    </div>
+  {/* صف أول: 4 عناصر */}
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '20px',
+    marginBottom: '20px',
+  }}>
+    {[
+      { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
+      { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
+      { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
+      { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
+    ].map((item, i) => (
+      <TimelineCard key={i} item={item} />
+    ))}
   </div>
-))}
+  {/* صف ثاني: 2 عناصر بالوسط */}
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '20px',
+  }}>
+    {[
+      { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
+      { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
+    ].map((item, i) => (
+      <TimelineCard key={i} item={item} width="calc(25% - 10px)" />
+    ))}
+  </div>
 </div>
 
         {/* الإحصائيات */}
@@ -510,7 +630,7 @@ function Home() {
           border: '2px solid #ebe6f7',
           borderRadius: '24px',
           padding: '36px 32px',
-          maxWidth: '760px',
+          maxWidth: '1100px',
           margin: '0 auto',
         }}>
           <div style={{ fontSize: '20px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '28px' }}>
@@ -554,41 +674,38 @@ function Home() {
 
       </div>
 
-    {/* ===== الكاردز الأربعة ===== */}
-      
-      <div className="responsive-padding-main" style={{ 
+    {/* ===== أقسام أُجليك ===== */}
+      <div style={{ 
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
         width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: '80px 60px',
       }}>
-        
+        <h1 className="reveal" style={{
+          fontSize: '38px',
+          fontWeight: '800',
+          color: '#6f5779',
+          fontFamily: "'Tajawal', sans-serif",
+          lineHeight: '1.7',
+          marginBottom: '56px',
+          direction: 'rtl',
+        }}>
+          أقسام أُجليك:
+        </h1>
+
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '60px',
-          maxWidth: '700px',
-          width: '100%',
+          gap: '32px',
+          maxWidth: '1100px',
         }}>
-          <h1 className="reveal" style={{
-            fontSize: '35px',
-            fontWeight:'800',
-            color: '#6f5779',
-            fontFamily: "'Tajawal', sans-serif",
-            lineHeight: '1.7',
-            
-          }}>
-            أقسام أُجليك:
-          </h1>
           {[
-            { icon: '📝', iconBg: '#eae6fa', accentColor: '#ad9af8', sectionId: 'exam-section', route: '/ikhtbar', title: 'الإختبارات', desc:'أجرِ إختبار الصحة النفسية لتعرف نسبة تعرضك للإضطراب' },
-            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc: 'أفهم اضطرابات الصحة النفسية ومعانيها بوضوح' },
-            { icon: '🧠', iconBg: '#e8f5e9', accentColor: '#4aab72', sectionId: 'brain-section',     route: '/dimagh',   title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك' },
-            { icon: '🌱', iconBg: '#f0fff4', accentColor: '#6e91a7', sectionId: 'recovery-section',  route: '/recovery', title: 'التعافي',      desc: 'انت لست وحدك — طلب المساعدة هو علامة قوة' },
-            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#f59e0b', sectionId: 'khattar-section',   route: '/khattar',  title: 'مخاطر جيل Z',  desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك' },
-            ].map((card, i) => (
-            <NavCard key={i} card={card} navigate={navigate} />
+            { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'الإختبارات', desc: 'أجرِ اختبار الصحة النفسية... لتعرف نسبة تعرضك للاضطراب و لتتأكد من حاجتك لمساعدة نفسية.' },
+            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc: 'افهم اضطرابات الصحة النفسية ومعانيها بوضوح وعمق و تعرف على كيفية علاج كل اضطراب.' },
+            { icon: '🔬', iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc: 'استكشف كيفية عمل دماغك وما يؤثر على صحتك النفسية — جولة بين تراكيب دماغك.' },
+            { icon: '🎮', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc: 'أنت لست وحدك — طلب المساعدة هو علامة قوة حقيقية...في هذا القسم لعبة تفاعلية ستساعدك على التعافي من احد الاضطرابات.' },
+            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc: 'افهم نفسك بشكل أفضل والمخاطر المحيطة بجيلك الرقمي.' },
+          ].map((card, i) => (
+            <SectionCard key={i} card={card} navigate={navigate} index={i} total={5} />
           ))}
         </div>
       </div>
