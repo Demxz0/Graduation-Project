@@ -295,7 +295,6 @@ function SectionCard({ card, navigate, index }) {
           transition: 'opacity 0.35s ease',
         }} />
 
-        {/* توهج خلفي */}
         <div style={{
           position: 'absolute', bottom: '-20px', right: '-20px',
           width: '120px', height: '120px',
@@ -492,7 +491,7 @@ function Home() {
       }}>
 
         {/* العنوان */}
-        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px', fontSize: isMobile ? '24px' : '30px' }}>
+        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px', fontSize: isMobile ? '24px' : '25px' }}>
           من هو جيل Z؟
         </h2>
         <p className="reveal" style={{ fontSize: isMobile ? '14px' : '16px', color: '#6f5779', textAlign: 'center', marginBottom: '48px', lineHeight: '1.7' }}>
@@ -618,7 +617,6 @@ function Home() {
           margin: '0 auto 60px',
           direction: 'rtl',
         }}>
-          {/* صف أول: 4 عناصر */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
@@ -634,7 +632,6 @@ function Home() {
               <TimelineCard key={i} item={item} />
             ))}
           </div>
-          {/* صف ثاني: 2 عناصر بالوسط */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
