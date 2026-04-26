@@ -59,12 +59,12 @@ function App() {
   }, []);
 
   const navLinks = [
-    { name: "الرئيسية",    path: "/",         scrollTo: null },
-    { name: "الإختبار",    path: "/",         scrollTo: "exam-section" },
-    { name: "الإضطرابات",  path: "/",         scrollTo: "disorders-section" },
-     { name: "الدماغ",      path: "/",         scrollTo: "brain-section" },
-    { name: "التعافي",     path: "/",         scrollTo: "recovery-section" },
-    { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section" },
+    { name: "الرئيسية",    path: "/",         scrollTo: null,                directRoute: null },
+    { name: "الإختبار",    path: "/",         scrollTo: "exam-section",      directRoute: "/ikhtbar" },
+    { name: "الإضطرابات",  path: "/",         scrollTo: "disorders-section", directRoute: "/disease" },
+    { name: "الدماغ",      path: "/",         scrollTo: "brain-section",     directRoute: "/dimagh" },
+    { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
+    { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section",   directRoute: "/khattar" },
   ];
 
   function handleNavClick(link) {
@@ -78,6 +78,12 @@ function App() {
     }
     
     if (link.scrollTo) {
+      if (location.pathname !== '/') {
+        navigate(link.directRoute);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        return;
+      }
+
       const scrollAndHighlight = () => {
         const el = document.getElementById(link.scrollTo);
         if (el) {
@@ -87,12 +93,7 @@ function App() {
           }, 600);
         }
       };
-      if (location.pathname !== '/') {
-        navigate('/');
-        setTimeout(scrollAndHighlight, 150);
-      } else {
-        scrollAndHighlight();
-      }
+      scrollAndHighlight();
     } else {
       navigate(link.path);
     }

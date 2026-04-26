@@ -421,7 +421,6 @@ function ExamModal({ disorderId, onClose }) {
             </button>
           </div>
 
-          {/* شريط التقدم — بس في مرحلة الأسئلة */}
           {phase === 'questions' && (
             <>
               <p style={{ fontSize: '13px', color: '#9586b0', textAlign: 'center', margin: '4px 0 0' }}>
@@ -484,10 +483,8 @@ function ExamModal({ disorderId, onClose }) {
           }
         `}</style>
 
-        {/* ===== المحتوى ===== */}
         <div style={{ padding: '24px 28px 28px' }}>
 
-          {/* ===== شاشة المقدمة ===== */}
           {phase === 'intro' && (
             <div style={{ animation: 'introIn 0.4s ease', textAlign: 'center' }}>
 
