@@ -46,8 +46,7 @@ const brainStructures = [
   {
     title: 'الدماغ الخلفي',
     titleEn: 'Hindbrain',
-    desc: 'يشمل المخيخ وجذع الدماغ الذي يتحكم في الوظائف اللاإرادية الضرورية للحياة كالتنفس وضربات القلب.',
-    
+    desc:'يشمل المخيخ الذي ينسق الحركة والتوازن، وجذع الدماغ الذي يتحكم في الوظائف اللاإرادية الضرورية للحياة كالتنفس وضربات القلب.',
     color: '#b47799',
     bg: '#fff0f7',
   },
@@ -133,21 +132,21 @@ const neurotransmitters = [
     titleEn: 'Serotonin',
     color: '#9b7fc7',
     bg: '#f5f0ff',
-    points: ['ينظم المزاج والنوم والتشبعة', 'انخفاض مستوياته مرتبط بالاكتئاب', 'هو أساس عمل كثير من الأدوية النفسية'],
+    points: ['ينظم المزاج والنوم والشهية', 'انخفاض مستوياته مرتبط بالاكتئاب', 'هو أساس عمل كثير من الأدوية النفسية'],
   },
   {
     title: 'دوبامين',
     titleEn: 'Dopamine',
     color: '#d6936a',
     bg: '#fff8f0',
-    points: ['يرتبط بالمتعة والتحفيز', 'يلعب دوراً محورياً في المكافأة', 'نقصه يرتبط باضطرابات المزاج'],
+    points: ['يرتبط بالمتعة والتحفيز', 'يلعب دورًا محوريًا في الفصام واضطرابات المزاج.'],
   },
   {
     title: 'حمض غاما-أمينوبيوتيريك',
     titleEn: 'GABA',
     color: '#6e91a7',
     bg: '#f0f7fb',
-    points: ['الناقل المثبط الرئيسي', 'يهدئ النشاط العصبي المفرط', 'نقصه مرتبط بحالات القلق'],
+    points: ['الناقل المثبط الرئيسي', 'يهدّئ النشاط العصبي المفرط. ', 'نقصه مرتبط بحالات القلق'],
   },
   {
     title: 'غلوتامات',
@@ -170,7 +169,7 @@ const recoveryMethods = [
     title: 'الآلية العصبية للأدوية',
     icon: '💊',
     iconBg: '#fff0e8',
-    desc: 'بعد 12 أسبوعاً من العلاج: لوحظ انخفاض ملموس في فرط النشاط في مناطق الدماغ المرتبطة بالقلق. الأدوية تساعد في إعادة توازن النواقل العصبية وتهيئة الدماغ للاستجابة للعلاج.',
+    desc: 'تعمل الأدوية النفسية على موازنة النواقل العصبية بشكل فوري، و تحفيز اللدونة العصبية على المدى الطويل , فتساعد الخلايا العصبية على إصلاح نفسها وتكوين روابط جديدة.',
     color: '#d6936a',
   },
   {
@@ -318,8 +317,8 @@ function Dimagh() {
             transition: 'opacity 0.7s ease 0.1s',
           }}>🧠</div>
 
-          <h1 style={{
-            fontSize: '50px', fontWeight: '800', color: '#3a2555',
+          <h1 className="responsive-title-section" style={{
+             fontWeight: '800', color: '#3a2555',
             marginBottom: '14px', letterSpacing: '-0.5px',
             opacity: headerVisible ? 1 : 0,
             transform: headerVisible ? 'translateY(0)' : 'translateY(24px)',
@@ -335,7 +334,7 @@ function Dimagh() {
             transform: headerVisible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s',
           }}>
-            تعرّف على الجيل الذي وُلد في عالم رقمي — وكيف شكّل ذلك صحته النفسية
+           تعرف على تراكيب دماغك ... و كيف تتفاعل هذه التراكيب لتشكل صحتك النفسية.
           </p>
 
           <div style={{
@@ -348,7 +347,7 @@ function Dimagh() {
             transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.5s',
           }}>
             <span style={{ fontSize: '14px', color: '#7c6fcd', fontWeight: '700' }}>
-              علم الأعصاب والصحة النفسية
+             الدماغ مقر الذكاء، ومفسر الحواس.
             </span>
           </div>
 
@@ -393,9 +392,7 @@ function Dimagh() {
           
           />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+          <div className="responsive-grid-3" style={{
             gap: '20px',
             marginBottom: '52px',
           }}>
@@ -456,7 +453,7 @@ function Dimagh() {
             </div>
           </RevealCard>
 
-          {/* ===== الفصوص ===== */}
+          {/* =====  الفصوص الدماغية===== */}
           <SectionHeader
             title="الفصوص الدماغية والسيادة الوظيفية"
             sub="تنقسم القشرة المخية إلى أربعة فصوص رئيسية. يلعب كل منها دوراً محورياً في تشكيل الصحة النفسية والسلوك الاجتماعي."
@@ -520,9 +517,7 @@ function Dimagh() {
             color="#c97099"
           />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+          <div className="responsive-grid-2" style={{
             gap: '18px',
             marginBottom: '52px',
           }}>
@@ -593,7 +588,7 @@ function Dimagh() {
           {/* ===== العصبونات ===== */}
           <SectionHeader
             title="العصبونات واللدونة العصبية"
-            sub="الدماغ شبكة تضم حوالي 86 مليار خلية عصبية."
+           
             color="#6e91a7"
           />
 
@@ -635,9 +630,7 @@ function Dimagh() {
           {/* النواقل العصبية */}
           <SectionHeader title="الاتصال المشبكي والنواقل العصبية" color="#9b7fc7" />
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+          <div className="responsive-grid-2" style={{
             gap: '16px',
             marginBottom: '28px',
           }}>
@@ -723,11 +716,13 @@ function Dimagh() {
           {/* ===== التعافي ===== */}
           <SectionHeader
             title="التعافي وإعادة تشكيل الدماغ"
-            sub="آليات العلاج من منظور عصبي"
             color="#4aab72"
           />
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px' }}>
+           
+            <p style={{color:'#675688',}}>آليات العلاج من منظور عصبي:</p>
+            <p style={{color:'#7a6a98',}}>
+             أثبتت أبحاث NIMH وWHO أن العلاج يغيّر الدماغ فعليًا. الدماغ لا يظل ثابتًا في حالته المرضية، بل يمتلك قدرة حقيقية على الإصلاح وإعادة البناء.</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px',marginTop:'40px' }}>
             {recoveryMethods.map((method, i) => (
               <RevealCard key={i} delay={i * 130}>
                 <div
@@ -762,7 +757,7 @@ function Dimagh() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px', justifyContent: 'flex-start' }}>
-                    <div className="recovery-title" style={{ fontWeight: '800', fontSize: '18px', color: '#3a2555', transition: 'color 0.3s ease' }}>{method.title}</div>
+                    
                     <div className="recovery-icon" style={{
                       width: '46px', height: '46px', borderRadius: '14px',
                       background: method.iconBg,
@@ -772,6 +767,7 @@ function Dimagh() {
                     }}>
                       {method.icon}
                     </div>
+                    <div className="recovery-title" style={{ fontWeight: '800', fontSize: '18px', color: '#3a2555', transition: 'color 0.3s ease' }}>{method.title}</div>
                   </div>
 
                   {method.desc && (
@@ -790,9 +786,9 @@ function Dimagh() {
                           padding: '14px 18px',
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px', justifyContent: 'flex-start' }}>
-                            <div style={{ fontWeight: '700', fontSize: '15px', color: '#3a2555' }}>{sub.title}</div>
                             <span style={{ fontSize: '20px' }}>{sub.icon}</span>
-                          </div>
+                            <div style={{ fontWeight: '700', fontSize: '15px', color: '#3a2555' }}>{sub.title}</div>
+                           </div>
                           <p style={{ fontSize: '13px', color: '#7a8a98', lineHeight: '1.7', margin: 0, textAlign: 'right' }}>
                             {sub.desc}
                           </p>

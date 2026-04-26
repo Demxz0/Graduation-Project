@@ -92,10 +92,12 @@ function Exam() {
         {/* ===== الكاردز ===== */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
           gap: '20px',
           maxWidth: '1100px',
           width: '100%',
+          justifyContent: 'center',
+          
         }}>
           {disorders.map((d) => (
             <div
@@ -104,7 +106,7 @@ function Exam() {
               onClick={() => handleCardClick(d.id)}
               style={{
                 background: 'white',
-                border: '2px solid #ebe6f7',
+                border: '2px solid #c4b1f0',
                 borderRadius: '20px',
                 padding: '28px 20px',
                 cursor: 'pointer',
@@ -112,6 +114,11 @@ function Exam() {
                 transition: 'all 0.25s ease',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
                 position: 'relative',
+                display: 'flex',
+               flexDirection: 'column',
+               justifyContent: 'center', 
+               alignItems: 'center',     
+               minHeight: '200px',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.boxShadow = `0 10px 32px ${d.color}30`;
@@ -123,7 +130,7 @@ function Exam() {
                 e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
                 e.currentTarget.style.transform = 'none';
                 e.currentTarget.style.background = 'white';
-                e.currentTarget.style.borderColor = '#ebe6f7';
+                e.currentTarget.style.borderColor = '#c4b1f0';
               }}
             >
               {/* الاسم العربي */}
@@ -133,6 +140,7 @@ function Exam() {
                 color: '#3a2555',
                 marginBottom: '6px',
                 transition: 'color 0.25s',
+                
               }}>
                 {d.nameAr}
               </div>
@@ -144,6 +152,7 @@ function Exam() {
                 marginBottom: '16px',
                 fontStyle: 'italic',
                 transition: 'color 0.25s',
+                
               }}>
                 {d.nameEn}
               </div>

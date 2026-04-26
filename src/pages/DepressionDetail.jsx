@@ -261,7 +261,7 @@ export default function DepressionDetail() {
       {/* Hero */}
       <div style={s.heroSection}>
         <div style={s.breadcrumb}>الاضطرابات النفسية &gt; الاكتئاب</div>
-        <h1 style={s.heroTitle}>الاكتئاب... ليس حزناً عابراً</h1>
+        <h1 className="responsive-title-hero" style={{ fontSize: "44.5px", fontWeight: "700", color: "#3a3a3a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(58, 58, 58, 0.25)", fontFamily: "'Tajawal', sans-serif" }}>الاكتئاب... ليس حزناً عابراً</h1>
         <p style={s.heroSub}>
           الاكتئاب ليس ضعفاً ولا كسلاً، هو اضطراب حقيقي يُعاني منه{" "}
           <strong style={{ color: "#3a3a3a" }}>أكثر من 280 مليون شخص</strong>{" "}
@@ -275,7 +275,7 @@ export default function DepressionDetail() {
       <div style={s.sectionWrapper}>
         <div style={s.sectionLabel}>التعريف</div>
         <h2 style={s.sectionTitle}>ما هو <span style={s.sectionTitleHighlight}>الاكتئاب</span>؟</h2>
-        <div style={s.defGrid}>
+        <div className="responsive-grid-2" style={{ gap: "20px" }}>
           <div style={s.defCard("#e4e4e4")}>
             <div style={s.defCardBar("#737373")} />
             <div style={s.defCardTitle}>الحزن الطبيعي</div>
@@ -300,7 +300,7 @@ export default function DepressionDetail() {
         <div style={s.sectionLabel}>الأنواع</div>
         <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
         <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
-        <div style={s.typesGrid}>
+        <div className="responsive-grid-2" style={{ gap: "16px" }}>
           {types.map((t) => (
             <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -343,7 +343,7 @@ export default function DepressionDetail() {
             <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div style={s.symptomsGrid}>
+        <div className="responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
             <div key={i} style={s.symptomCard()}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(58,58,58,0.12)"; }}
@@ -410,7 +410,7 @@ export default function DepressionDetail() {
         <div style={s.sectionLabel}>آليات التكيف</div>
         <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
         <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>استجابات تبدو منطقية لتخفيف الألم مؤقتاً — لكنها تُطيل الاكتئاب وتُعمّق دوامته على المدى الطويل.</p>
-        <div style={s.copingGrid}>
+        <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
             <div key={i} style={s.copingCard}
               onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8f8f8f"; }}
@@ -445,7 +445,7 @@ export default function DepressionDetail() {
         <div style={s.sectionLabel}>السمات الشخصية</div>
         <h2 style={s.sectionTitle}>الاكتئاب يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span></h2>
         <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>العيش مع اكتئاب مزمن يُحدث تغييرات عميقة في الشخصية وطريقة رؤية الذات والعالم.</p>
-        <div style={s.traitsGrid}>
+        <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
             <div key={i} style={s.traitCard(t.color)}>
               <div style={s.traitBar(t.bar)} />
@@ -482,7 +482,7 @@ export default function DepressionDetail() {
         </div>
         <div style={{ background: "white", borderRadius: "16px", padding: "28px 32px", border: "1.5px solid #e4e4e4", marginTop: "28px" }}>
           <div style={{ fontSize: "16px", fontWeight: "700", color: "#2a2a2a", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك وعقلك؟</div>
-          <div style={s.resultBox}>
+          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #e4e4e4", gap: "32px" }}>
             <div>
               <div style={s.resultColTitle}>في المزاج والعقل</div>
               {["حزن عميق لا يتحرك بالمنطق", "فقدان الاهتمام بكل الأشياء", "عجز عن الشعور بالسعادة", "أفكار سلبية تلقائية لا تتوقف"].map((t, i) => (

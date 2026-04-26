@@ -215,7 +215,7 @@ export default function ADHDDetail() {
       <div style={s.heroSection}>
         <div style={s.breadcrumb}>الاضطرابات النفسية &gt; نقص الانتباه وفرط الحركة</div>
         <div style={s.heroLabel}>ADHD</div>
-        <h1 style={s.heroTitle}>عقل لا يعرف زر الإيقاف</h1>
+        <h1 className="responsive-title-hero" style={{ fontWeight: "700", color: "#3b6b8a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(74, 143, 168, 0.4)", fontFamily: "'Roca One', sans-serif" }}>عقل لا يعرف زر الإيقاف</h1>
         <p style={s.heroSub}>
           ADHD ليس كسلاً ولا قلة اهتمام، هو اضطراب يعيش معه{" "}
           <strong style={{ color: "#3b6b8a" }}>أكثر من 366 مليون</strong>{" "}
@@ -231,7 +231,7 @@ export default function ADHDDetail() {
         <h2 style={s.sectionTitle}>
           ما هو <span style={s.sectionTitleHighlight}>نقص الانتباه وفرط الحركة</span>؟
         </h2>
-        <div style={s.defGrid}>
+        <div className="responsive-grid-2" style={{ gap: "20px" }}>
           <div style={s.defCard("#c8dff4")}>
             <div style={s.defCardBar("#4a8fa8")} />
             <div style={s.defCardTitle}>الانتباه الطبيعي</div>
@@ -260,7 +260,7 @@ export default function ADHDDetail() {
         <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
           كل أحد فينا مميز بطريقته، حتى في اضطرابه.
         </p>
-        <div style={s.typesGrid}>
+        <div className="responsive-grid-2" style={{ gap: "16px" }}>
           {adhdTypes.map((t) => (
             <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
               <div
@@ -307,7 +307,7 @@ export default function ADHDDetail() {
             <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div style={s.symptomsGrid}>
+        <div className="responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
             <div key={i} style={s.symptomCard()}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.08)"; }}
@@ -391,7 +391,7 @@ export default function ADHDDetail() {
         <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
           هي استجابات سلوكية وعاطفية مختلة يلجأ إليها الفرد لتعويض صعوبات ADHD وحماية نفسه بشكل مصطنع. ورغم أنها قد توفر راحة مؤقتة، إلا أنها تزيد من تأثير الاضطراب وتُفاقم عواقبه على المدى الطويل.
         </p>
-        <div style={s.copingGrid}>
+        <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
             <div key={i} style={s.copingCard}
               onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8ab0c4"; }}
@@ -417,7 +417,7 @@ export default function ADHDDetail() {
         <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
           السمات الشخصية المرتبطة باضطراب ADHD — بعضها تحديات، وبعضها نقاط قوة حقيقية.
         </p>
-        <div style={s.traitsGrid}>
+        <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
             <div key={i} style={s.traitCard(t.color)}>
               <div style={s.traitBar(t.bar)} />

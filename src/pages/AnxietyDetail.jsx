@@ -4,33 +4,46 @@ import { useState } from "react";
 
 const s = {
   page: { background: "#f4f4ff", minHeight: "100vh", direction: "rtl", fontFamily: "'Tajawal', sans-serif" },
-  breadcrumb: { textAlign: "center", fontSize: "13px", color: "#e0aa88", marginBottom: "12px" },
+  breadcrumb: { textAlign: "center", fontSize: "13px", color: "#493054", marginBottom: "12px" },
   heroSection: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px 60px", textAlign: "center", background: "linear-gradient(135deg, #fdf6f2 0%, #f5e6d8 100%)" },
-  heroTitle: { fontSize: "44.5px", fontWeight: "700", color: "#7a3f20", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 63, 32, 0.25)", fontFamily: "'Roca One', sans-serif" },
-  heroSub: { fontSize: "18px", color: "#6b4a38", maxWidth: "550px" },
+
+  heroTitle: { fontSize: "44.5px", fontWeight: "700", color: "#d6936a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 63, 32, 0.25)", fontFamily: "'Roca One', sans-serif" },
+  heroSub: { fontSize: "18px", color: "#665a78", maxWidth: "550px", fontStyle: "italic" },
   sectionWrapper: { maxWidth: "860px", margin: "0 auto", padding: "60px 24px" },
-  sectionLabel: { fontSize: "12px", color: "#e0aa88", letterSpacing: "1px", marginBottom: "6px", textAlign: "right" },
-  sectionTitle: { fontSize: "28px", fontWeight: "700", color: "#3b2415", marginBottom: "32px", textAlign: "right" },
-  sectionTitleHighlight: { color: "#a85c38" },
-  divider: { border: "none", borderTop: "1px solid #eec5a8", margin: "0 auto", maxWidth: "2000px" },
+  sectionLabel: { fontSize: "12px", color: "#5d5c5d", letterSpacing: "1px", marginBottom: "6px", textAlign: "right" },
+  sectionTitle: { fontSize: "28px", fontWeight: "700", color: "#493054", marginBottom: "32px", textAlign: "right" },
+  sectionTitleHighlight: { color: "#d6936a" },
+  divider: { border: "none", borderTop: "1px solid #e4b495", margin: "0 auto", maxWidth: "1000px" },
   defGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" },
-  defCard: (borderColor) => ({ background: "white", borderRadius: "16px", padding: "24px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
+  defCard: (borderColor) => ({ background: "#fafaff", borderRadius: "16px", padding: "24px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden", boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)" }),
   defCardBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: color, borderRadius: "16px 16px 0 0" }),
-  defCardTitle: { fontSize: "18px", fontWeight: "700", color: "#3b2415", marginBottom: "10px" },
-  defCardText: { fontSize: "14px", color: "#6b4a38", lineHeight: "1.8" },
-  typesGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" },
+  defCardTitle: { fontSize: "18px", fontWeight: "700", color: "#3d1f4b", marginBottom: "10px" },
+  defCardText: { fontSize: "14px", color: "#5d5c5d", lineHeight: "1.8" },
+  typesGrid: { 
+    display: "grid", 
+    gridTemplateColumns: "1fr 1fr", 
+    gap: "24px", 
+    alignItems: "flex-start" 
+  },
   typeCard: (borderColor, active) => ({
-    background: "white", borderRadius: "14px", padding: "24px 24px 20px",
-    border: "2px solid white",
-    cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s",
-    display: "flex", flexDirection: "row", justifyContent: "flex-start",
-    alignItems: "center", gap: "16px",
-    position: "relative", overflow: "hidden",
-    boxShadow: "0 2px 12px rgba(214,147,106,0.08)",
+    background: active ? "#fafaff" : "white",
+    borderRadius: "14px",
+    padding: "24px 24px 20px",
+    border: "2px solid #ddd2ef",
+    cursor: "pointer",
+    transition: "transform 0.2s, box-shadow 0.2s",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: "16px",
+    position: "relative",
+    overflow: "hidden",
+    boxShadow: active ? "0 8px 24px rgba(0,0,0,0.06)" : "0 2px 12px rgba(214,147,106,0.08)",
   }),
   typeNum: (color) => ({ fontSize: "28px", fontWeight: "700", color, opacity: 0.35 }),
   typeLabel: { fontSize: "16px", fontWeight: "700", color: "#3b2415" },
-  typeSub: { fontSize: "12px", color: "#e0aa88" },
+  typeSub: { fontSize: "12px", color: "#5d5c5d" },
   tabRow: { display: "flex", gap: "0", marginBottom: "28px", borderBottom: "2px solid #d6936a" },
   tab: (active) => ({
     padding: "10px 20px", fontSize: "15px", cursor: "pointer", fontFamily: "'Tajawal', sans-serif",
@@ -57,14 +70,14 @@ const s = {
   copingCard: { background: "white", borderRadius: "14px", padding: "20px", border: "1.5px solid #eec5a8", transition: "border 0.2s" },
   copingIcon: { fontSize: "22px", marginBottom: "8px" },
   copingTitle: { fontSize: "15px", fontWeight: "700", color: "#3b2415", marginBottom: "4px" },
-  copingEn: { fontSize: "11px", color: "#e0aa88", marginBottom: "10px" },
+  copingEn: { fontSize: "11px", color: "#5d5c5d", marginBottom: "10px" },
   copingText: { fontSize: "13px", color: "#a85c38", lineHeight: "1.7" },
   copingCardWide: { gridColumn: "span 3", background: "white", borderRadius: "14px", padding: "20px 28px", border: "1.5px solid #eec5a8", transition: "border 0.2s" },
   traitsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "14px" },
   traitCard: (borderColor) => ({ background: "white", borderRadius: "14px", padding: "18px 16px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
   traitBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "5px", background: color }),
   traitTitle: { fontSize: "14px", fontWeight: "700", color: "#3b2415", marginBottom: "4px" },
-  traitEn: { fontSize: "11px", color: "#e0aa88", marginBottom: "8px" },
+  traitEn: { fontSize: "11px", color: "#5d5c5d", marginBottom: "8px" },
   traitText: { fontSize: "12px", color: "#a85c38", lineHeight: "1.6" },
   brainList: { display: "flex", flexDirection: "column", gap: "12px" },
   brainCard: (active) => ({
@@ -118,7 +131,7 @@ const symptomData = {
 };
 
 const types = [
-  { id: 1, label: "اضطراب القلق العام", en: "Generalized Anxiety Disorder", color: "#7a3f20" },
+  { id: 1, label: "اضطراب القلق العام", en: "Generalized Anxiety Disorder", },
   { id: 2, label: "اضطراب الهلع", en: "Panic Disorder", color: "#a85c38" },
   { id: 3, label: "رهاب الميادين", en: "Agoraphobia", color: "#d6936a" },
   { id: 4, label: "القلق الاجتماعي", en: "Social Anxiety", color: "#e0aa88" },
@@ -128,7 +141,7 @@ const types = [
   { id: 8, label: "القلق الناتج عن حالات طبية أو مواد", en: "Medical / Substance-Induced", color: "#d6936a" },
 ];
 
-const typeColors = ["#7a3f20", "#a85c38", "#d6936a", "#e0aa88", "#eec5a8", "#7a3f20", "#a85c38", "#d6936a"];
+const typeColors = ["#8e7899", "#ddbcd0", "#abc3d1", "#f4d6a9", "#c8d5c4", "#ab7d7d", "#8b87cd", "#c4bdbd"];
 
 const typeDetails = {
   1: ["حالة من التحفز المستمر، وكأن العقل يعمل بأقصى طاقته لتوقع التهديدات دون القدرة على إيقافه.", "يغرق الفرد في توقع مستمر للأسوأ تجاه أبسط تفاصيل الحياة اليومية كالعمل أو الصحة أو الأمور المالية.", "هذا الضغط المستمر يستهلك الطاقة الجسدية ويسبب الإرهاق وتوتر العضلات.", "لكي يُصنَّف كاضطراب، يجب أن تستمر هذه الحالة لمعظم الأيام طوال ستة أشهر، وتكون ردة الفعل أكبر بكثير من حجم الموقف الفعلي."],
@@ -189,28 +202,28 @@ export default function AnxietyDetail() {
       {/* Hero */}
       <div style={s.heroSection}>
         <div style={s.breadcrumb}>الاضطرابات النفسية &gt; القلق</div>
-        <h1 style={s.heroTitle}>القلق... إنذار بلا حريق</h1>
+        <h1 className="responsive-title-section" style={{ fontWeight: "700", color: "#7a3f20", marginBottom: "16px", textShadow: "2px 2px 12px rgba(122, 63, 32, 0.25)", fontFamily: "'Roca One', sans-serif" }}>القلق... إنذار بلا حريق</h1>
         <p style={s.heroSub}>
           القلق ليس مبالغة، هو اضطراب يحارب{" "}
-          <strong style={{ color: "#7a3f20" }}>359 مليون شخص</strong>{" "}
+          <strong style={{ color: "#d6936a" }}>359 مليون شخص</strong>{" "}
           حول العالم
         </p>
       </div>
 
-      <hr style={s.divider} />
+
 
       {/* التعريف */}
       <div style={s.sectionWrapper}>
         <div style={s.sectionLabel}>التعريف</div>
         <h2 style={s.sectionTitle}>ما هو <span style={s.sectionTitleHighlight}>القلق</span>؟</h2>
         <div style={s.defGrid}>
-          <div style={s.defCard("#f5e8dc")}>
-            <div style={s.defCardBar("#d6936a")} />
+          <div style={s.defCard("#e4b49a")}>
+
             <div style={s.defCardTitle}>القلق الطبيعي</div>
             <div style={s.defCardText}>شعور طبيعي عند الجميع، هو نظام إنذار مبكر في الدماغ يحميك من الأخطار المحتملة ليجعلك أكثر تركيزاً ويقظةً لتستطيع التخطيط وتجنب الأخطاء واكتساب الخبرة.</div>
           </div>
-          <div style={s.defCard("#eec5a8")}>
-            <div style={s.defCardBar("#a85c38")} />
+          <div style={s.defCard("#e4b49a")}>
+
             <div style={s.defCardTitle}>اضطراب القلق</div>
             <div style={s.defCardText}>عطل في هذا النظام، يجعله يرسل إشعارات طوارئ مزيفة باستمرار حتى في أوقات الأمان، مما يسبب ضغطاً كبيراً وتعطلاً في الحياة اليومية.</div>
           </div>
@@ -223,9 +236,10 @@ export default function AnxietyDetail() {
       <div style={s.sectionWrapper}>
         <div style={s.sectionLabel}>الأنواع</div>
         <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
-        <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
+        <p style={{ fontSize: "14px", color: "#3d1f4b", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
         <div style={s.typesGrid}>
-          {types.map((t) => (
+          {types.map((t) =>
+                (
             <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
               <div
                 style={s.typeCard(typeColors[t.id - 1], expandedType === t.id)}
@@ -241,7 +255,7 @@ export default function AnxietyDetail() {
                 </div>
               </div>
               {expandedType === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#6b4a38", lineHeight: "1.9", border: `2px solid ${typeColors[t.id - 1]}`, borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
+                <div style={{ background: "#fafaff", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#6b4a38", lineHeight: "1.9", border: "2px solid #ddd2ef", borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
                   {typeDetails[t.id].map((line, i) => (
                     <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < typeDetails[t.id].length - 1 ? "1px solid #faf0ea" : "none" }}>
                       <span style={{ color: "#aaa", flexShrink: 0 }}>—</span>
@@ -253,7 +267,7 @@ export default function AnxietyDetail() {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: "13px", color: "#e0aa88", textAlign: "center", marginTop: "16px" }}>اضغط على أي بطاقة لعرض التفاصيل</p>
+        <p style={{ fontSize: "13px", color: "#5d5c5d", textAlign: "center", marginTop: "16px" }}>اضغط على أي بطاقة لعرض التفاصيل</p>
       </div>
 
       <hr style={s.divider} />
@@ -267,7 +281,7 @@ export default function AnxietyDetail() {
             <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
           ))}
         </div>
-        <div style={s.symptomsGrid}>
+        <div className="responsive-grid-2" style={{ gap: "12px" }}>
           {(symptomData[activeTab] || []).map((item, i) => (
             <div key={i} style={s.symptomCard(false)}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(214,147,106,0.22)"; }}
@@ -328,7 +342,7 @@ export default function AnxietyDetail() {
         <div style={s.sectionLabel}>آليات التكيف</div>
         <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
         <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>هي استجابات سلوكية وعاطفية مختلفة يلجأ إليها الفرد للتهرب من الألم النفسي. رغم أنها قد توفر راحة مؤقتة إلا أنها تزيد من حدة القلق وتفاقمه على المدى الطويل.</p>
-        <div style={s.copingGrid}>
+        <div className="responsive-grid-3" style={{ gap: "16px" }}>
           {copingCards.map((c, i) => (
             <div key={i} style={s.copingCard}
               onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #a85c38"; }}
@@ -363,7 +377,7 @@ export default function AnxietyDetail() {
         <div style={s.sectionLabel}>السمات الشخصية</div>
         <h2 style={s.sectionTitle}>القلق يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span></h2>
         <p style={{ fontSize: "14px", color: "#e0aa88", textAlign: "right", marginBottom: "24px" }}>العيش مع قلق مزمن يحدث تغييرات في شخصيتك بمرور الوقت.</p>
-        <div style={s.traitsGrid}>
+        <div className="responsive-grid-4" style={{ gap: "14px" }}>
           {traitCards.map((t, i) => (
             <div key={i} style={s.traitCard(t.color)}>
               <div style={s.traitBar(t.bar)} />
@@ -392,7 +406,7 @@ export default function AnxietyDetail() {
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.boxShadow = "none"; }}
               >
                 <div>
-                  <div style={s.brainTitle}>{step.title} · <span style={{ fontSize: "12px", color: "#e0aa88", fontWeight: "400" }}>{step.en}</span></div>
+                  <div style={s.brainTitle}>{step.title} · <span style={{ fontSize: "12px", color: "#5d5c5d", fontWeight: "400" }}>{step.en}</span></div>
                   <div style={s.brainText}>{step.text}</div>
                 </div>
               </div>
@@ -401,7 +415,7 @@ export default function AnxietyDetail() {
         </div>
         <div style={{ ...s.causeBlock, marginTop: "28px" }}>
           <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b2415", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك؟</div>
-          <div style={s.resultBox}>
+          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #eec5a8", gap: "32px" }}>
             <div>
               <div style={s.resultColTitle}>في نوبات الهلع</div>
               {["تسارع شديد في ضربات القلب", "ضيق أو تسارع في التنفس", "ألم أو ضغط في الصدر", "تعرق وارتجاف في اليدين والجسم", "دوار أو شعور بعدم التوازن"].map((t, i) => (
@@ -438,7 +452,7 @@ export default function AnxietyDetail() {
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <span style={{ fontSize: "24px", width: "44px", height: "44px", background: t.color, borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>{t.icon}</span>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: "11px", color: "#e0aa88", marginBottom: "2px" }}>{t.en}</div>
+                    <div style={{ fontSize: "11px", color: "#5d5c5d", marginBottom: "2px" }}>{t.en}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <div style={{ fontSize: "17px", fontWeight: "700", color: "#3b3b6b" }}>{t.label}</div>
                       {t.badge && <span style={{ fontSize: "11px", background: "#f5e8dc", color: "#7a3f20", borderRadius: "20px", padding: "2px 10px" }}>✦ {t.badge}</span>}

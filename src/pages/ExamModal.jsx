@@ -262,7 +262,6 @@ function ExamModal({ disorderId, onClose }) {
   const navigate = useNavigate();
   const exam = examData[disorderId];
 
-  // مرحلة المودال: 'intro' | 'questions' | 'result'
   const [phase, setPhase] = useState('intro');
 
   const [currentQ, setCurrentQ] = useState(0);
@@ -275,6 +274,10 @@ function ExamModal({ disorderId, onClose }) {
   // ===== احتساب النتيجة =====
   function calcResult() {
     const total = answers.reduce((sum, val) => sum + (val ?? 0), 0);
+
+    const maxScore = exam.questions.length * 2;
+
+    const dynamicPercent = Math.round((total / maxScore) * 100);
 
     if (disorderId === 'depression') {
       if ((answers[8] ?? 0) >= 1) {
@@ -297,7 +300,7 @@ function ExamModal({ disorderId, onClose }) {
           levelColor: '#8e7899',
           title: 'الأعراض لا تتوافق بشكل كامل مع معايير الاكتئاب',
           desc: 'معايير DSM-5 تشترط أعراضاً محددة بجانب المجموع.',
-          percent: 30,
+          percent: dynamicPercent,
           recommendation: 'إذا كنت تشعر بضيق، لا تتردد في استشارة مختص.',
         };
       }
@@ -317,8 +320,13 @@ function ExamModal({ disorderId, onClose }) {
       }
     }
 
-    return exam.results.find(r => total >= r.range[0] && total <= r.range[1])
+    const matchedResult = exam.results.find(r => total >= r.range[0] && total <= r.range[1])
       || exam.results[0];
+
+    return {
+      ...matchedResult,
+      percent: dynamicPercent,
+    };
   }
 
   function selectAnswer(value) {
@@ -413,7 +421,6 @@ function ExamModal({ disorderId, onClose }) {
             </button>
           </div>
 
-          {/* شريط التقدم — بس في مرحلة الأسئلة */}
           {phase === 'questions' && (
             <>
               <p style={{ fontSize: '13px', color: '#9586b0', textAlign: 'center', margin: '4px 0 0' }}>
@@ -476,10 +483,8 @@ function ExamModal({ disorderId, onClose }) {
           }
         `}</style>
 
-        {/* ===== المحتوى ===== */}
         <div style={{ padding: '24px 28px 28px' }}>
 
-          {/* ===== شاشة المقدمة ===== */}
           {phase === 'intro' && (
             <div style={{ animation: 'introIn 0.4s ease', textAlign: 'center' }}>
 
@@ -702,7 +707,7 @@ function ExamModal({ disorderId, onClose }) {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : '← التالي'}
+                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : ' التالي ←'}
                 </button>
               </div>
             </div>
