@@ -730,34 +730,12 @@ function Recovery() {
                   </div>
                 ) : (
                   /* منطقة اللعبة عند البدء */
-                  <div style={{ width: '100%', height: '100%', minHeight: '320px', position: 'relative' }}>
-                    {
-                      <iframe
-                        ref={iframeRef}
-                        src="https://demxz0.github.io/AnxietyRecoverBuild/"
-                        style={{ width: '100%', height: '100%', minHeight: '320px', border: 'none' }}
-                        title="Mental Health Game"
-                      />
-                    }
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      minHeight: '320px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: 'linear-gradient(135deg, #1a0a2e, #2d1f4a)',
-                      color: 'rgba(255,255,255,0.6)',
-                      fontSize: '15px',
-                      fontFamily: "'Tajawal', sans-serif",
-                    }}>
-                      {/* اللعبة ستُحمَّل هنا */}
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '40px', marginBottom: '12px', animation: 'float-anim 3s ease-in-out infinite' }}>🎮</div>
-                        <div>جارٍ تحميل اللعبة...</div>
-                      </div>
-                    </div>
-                  </div>
+                  <iframe
+                    ref={iframeRef}
+                    src="https://demxz0.github.io/AnxietyRecoverBuild/"
+                    style={{ width: '100%', height: '100%', minHeight: '320px', border: 'none' }}
+                    title="Mental Health Game"
+                  />
                 )}
 
                 {/* زر التكبير */}
