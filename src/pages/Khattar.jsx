@@ -37,33 +37,33 @@ const riskFactors = [
   },
   {
     id: 4,
-    icon: '🌪️',
+    icon: ' 🎮',
     iconBg: '#fff0f5',
-    titleAr: 'عدم الاستقرار العاطفي',
-    titleEn: 'Emotional Instability',
-    desc: 'التفاعل المستمر مع محتوى سريع ومؤثر عاطفياً يؤدي إلى تقلبات مزاجية، ردود فعل مبالغ فيها، وصعوبة في التحكم بالمشاعر.',
+    titleAr: 'الألعاب الإلكترونية',
+    titleEn: 'Games',
+    desc:'بعض الألعاب الإلكترونية قد تزرع أو تحتوي أفكار غير مناسبة أو انتحارية , بالإضافة الى أسلوب لعب مُسبب للإدمان مُدمر لصحة العقل والصحة النفسية , خصوصًا لدى الأطفال والمراهقين.',
     color: '#c97099',
     borderColor: '#e8b0cc',
     bg: '#fdf5f9',
   },
   {
     id: 5,
-    icon: '🌙',
+    icon: ' 🎧',
     iconBg: '#eef3ff',
-    titleAr: 'اضطرابات النوم',
-    titleEn: 'Sleep Disorders',
-    desc: 'استخدام الأجهزة قبل النوم يؤثر على إفراز هرمون الميلاتونين، مما يسبب أرق، نوم متقطع، وتعب مزمن يؤثر على الصحة الجسدية والنفسية.',
+    titleAr: 'إدمان الموسيقى',
+    titleEn: 'Music addication',
+    desc:'تحتوي الموسيقى ترددات تتلاعب في طريقة فرز الدماغ للهرمونات المسؤولة عن المشاعر، مما يؤدي الى المبالغة في الإحساس بأي شعور , الذي بدوره يخلق مشاعر مزيفة قد تجعل الشخص يستخدم الموسيقى ك وسيلة هروب من الواقع.',
     color: '#7c6fcd',
     borderColor: '#bab3e8',
     bg: '#f5f3ff',
   },
   {
     id: 6,
-    icon: '⚡',
+    icon: ' 🚫',
     iconBg: '#fffbea',
-    titleAr: 'ضعف التركيز',
-    titleEn: 'Short Attention Span',
-    desc: 'التعرض المستمر للمحتوى السريع (Reels / TikTok) يقلل القدرة على التركيز لفترات طويلة، ويضعف على الدراسة، الفهم العميق، وحل المشكلات.',
+    titleAr:'المحتوى غير اللائق',
+    titleEn:'IInappropriate Content',
+    desc:'التعرض للمحتوى الجنسي يؤثر على التفكير والسلوك، وقد يسبب تشوشًا في القيم وصعوبة في التمييز بين الصحيح والخطأ.',
     color: '#c5a227',
     borderColor: '#e8d48a',
     bg: '#fffdf0',
@@ -100,6 +100,17 @@ const riskFactors = [
     color: '#4aab72',
     borderColor: '#9dd4b5',
     bg: '#f4fdf8',
+  },
+   {
+    id: 10,
+    icon: '🔪',
+    iconBg: '#fae8e8',
+    titleAr: 'المحتوى العنيف',
+    titleEn: 'Violent Content',
+    desc:'مشاهدة العنف بشكل متكرر قد تؤدي إلى تطبيع العنف، بحيث يصبح أمرًا عاديًا في نظر الشخص. هذا قد يزيد من السلوك العدواني أو يقلل من التعاطف مع الآخرين',
+    color: '#925c5c',
+    borderColor: '#946868',
+    bg: '#f7efef',
   },
 ];
 
@@ -224,7 +235,7 @@ function RiskCard({ factor, index }) {
         {factor.desc}
       </div>
 
-      {/* خط  ملوّن يظهر عند الهوفر */}
+      {/* خط ملون يظهر عند الهوفر */}
       <div style={{
         position: 'absolute',
         bottom: 0,
@@ -268,11 +279,19 @@ function RiskFactors() {
           grid-template-columns: repeat(3, 1fr);
           gap: 60px;
         }
-        @media (max-width: 900px) {
-          .risk-grid { grid-template-columns: repeat(2, 1fr); }
+
+        @media (min-width: 901px) {
+          .risk-grid > div:last-child:nth-child(10) {
+            grid-column: 2;
+          }
         }
+
+        @media (max-width: 900px) {
+          .risk-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        }
+
         @media (max-width: 600px) {
-          .risk-grid { grid-template-columns: 1fr; }
+          .risk-grid { grid-template-columns: 1fr; gap: 30px; }
         }
       `}</style>
 
@@ -281,6 +300,7 @@ function RiskFactors() {
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)',
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
+        padding: '40px 20px',
       }}>
 
         {/* ===== الهيدر ===== */}
@@ -334,11 +354,12 @@ function RiskFactors() {
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.8',
+            padding: '0 15px', 
           }}>
-           جيل Z هو الجيل الأكثر ارتباطًا بالعالم الرقمي، 
+          جيل Z هو الجيل الأكثر ارتباطًا بالعالم الرقمي، 
             <br />
-            ومع هذا الارتباط ظهرت مجموعة من التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية وجودة الحياة.
-             </p>
+           ومع هذا الارتباط ظهرت مجموعة من التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية وجودة الحياة.
+          </p>
 
           {/* خط ملون*/}
           <div style={{
@@ -359,9 +380,6 @@ function RiskFactors() {
               <RiskCard key={factor.id} factor={factor} index={i} />
             ))}
           </div>
-
-          {/* ===== كارد تذكر ===== */}
-          <RememberCard />
 
           {/* ===== زر الرئيسية ===== */}
           <div style={{ textAlign: 'center', marginTop: '40px' }}>
@@ -395,71 +413,6 @@ function RiskFactors() {
         </div>
       </div>
     </>
-  );
-}
-
-function RememberCard() {
-  const [ref, visible] = useRevealOnScroll();
-
-  return (
-    <div
-      ref={ref}
-      style={{
-        marginTop: '56px',
-        background: 'linear-gradient(135deg, #f8f4ff, #fdf0f8)',
-        border: '2px solid #e0d0f5',
-        borderRadius: '24px',
-        padding: '32px 36px',
-        textAlign: 'center',
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.97)',
-        transition: 'all 0.65s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* زخرفة خلفية */}
-      <div style={{
-        position: 'absolute',
-        top: '-40px',
-        left: '-40px',
-        width: '150px',
-        height: '150px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, #d4bfee30, transparent)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '-40px',
-        right: '-40px',
-        width: '130px',
-        height: '130px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, #f0c0d830, transparent)',
-        pointerEvents: 'none',
-      }} />
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '10px',
-          marginBottom: '16px',
-        }}>
-          <span style={{ fontSize: '22px' }}>💟</span>
-          <span style={{ fontSize: '24px', fontWeight: '800', color: '#5a3a85' }}>تذكّر</span>
-        </div>
-
-        <p style={{
-          fontSize: '16px',
-          color: '#6b5a8a',
-          lineHeight: '2',
-          maxWidth: '680px',
-          margin: '0 auto',
-        }}> طلب المساعدة ليس ضعفًا، بل هو خطوة شجاعة نحو حياة أفضل...اهتم بصحتك النفسية كما تهتم بصحتك الجسدية Be Knd to Yourself (كن لطيفًا مع نفسك) تذكّر أن التعافي يحتاج وقتًا، وأنك لست وحدك في هذه التجربة. </p>
-      </div>
-    </div>
   );
 }
 
