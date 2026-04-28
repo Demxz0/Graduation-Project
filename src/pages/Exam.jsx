@@ -5,18 +5,18 @@ import ExamModal from './ExamModal';
 //قائمة الاضطرابات 
 const disorders = [
   {
-    id: 'depression',
-    nameAr: 'الاكتئاب',
-    nameEn: 'Depression',
-    color: '#665a78',
-    bg: '#f0eeff',
-  },
-  {
     id: 'anxiety',
     nameAr: 'اضطراب القلق',
     nameEn: 'Anxiety',
     color: '#d6936a',
     bg: '#fff0f7',
+  },
+  {
+    id: 'depression',
+    nameAr: 'الاكتئاب',
+    nameEn: 'Depression',
+    color: '#665a78',
+    bg: '#f0eeff',
   },
   {
     id: 'adhd',
@@ -26,18 +26,18 @@ const disorders = [
     bg: '#fff8ee',
   },
   {
-    id: 'ptsd',
-    nameAr: 'اضطراب ما بعد الصدمة',
-    nameEn: 'PTSD',
-    color: '#ab9685',
-    bg: '#edfaf7',
-  },
-  {
     id: 'eating',
     nameAr: 'اضطرابات الأكل',
     nameEn: 'Eating Disorders',
     color: '#b47799',
     bg: '#f0faee',
+  },
+  {
+    id: 'ptsd',
+    nameAr: 'اضطراب ما بعد الصدمة',
+    nameEn: 'PTSD',
+    color: '#ab9685',
+    bg: '#edfaf7',
   },
 ];
 
