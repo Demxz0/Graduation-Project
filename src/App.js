@@ -15,6 +15,9 @@ import EatingDisorderDetail from './pages/EatingDisorderDetail';
 import PTSDDetail from './pages/PTSDDetail';
 import DepressionDetail from './pages/DepressionDetail';
 
+import ChatBot from './pages/ChatBot';
+
+
 function useGlobalScrollReveal() {
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -225,6 +228,7 @@ function App() {
         <Route path="/disease/ptsd" element={<PTSDDetail />} />
         <Route path="/disease/depression" element={<DepressionDetail />} />
       </Routes>
+       <ChatBot />
     </div>
   );
 }
