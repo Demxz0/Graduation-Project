@@ -13,11 +13,11 @@ function Disease() {
   }, []);
 
   const disorders = [
-    { id: 1, label: "اضطراب الأكل",                           sub: "(Eating Disorders)", border: "#ddbcd0", path: "/disease/eating-disorder" },
-    { id: 2, label: "اضطراب نقص الانتباه مع فرط النشاط",     sub: "(ADHD)",              border: "#abc3d1", path: "/disease/adhd" },
-    { id: 3, label: "اضطراب ما بعد الصدمة",                   sub: "(PTSD)",              border: "#ab9685", path: "/disease/ptsd" },
     { id: 4, label: "اضطراب القلق",                           sub: "(Anxiety)",           border: "#d6936a", path: "/disease/anxiety" },
     { id: 5, label: "الاكتئاب",                               sub: "(Depression)",        border: "#545454", path: "/disease/depression" },
+    { id: 2, label: "اضطراب نقص الانتباه مع فرط النشاط",     sub: "(ADHD)",              border: "#abc3d1", path: "/disease/adhd" },
+    { id: 1, label: "اضطراب الأكل",                           sub: "(Eating Disorders)", border: "#ddbcd0", path: "/disease/eating-disorder" },
+    { id: 3, label: "اضطراب ما بعد الصدمة",                   sub: "(PTSD)",              border: "#ab9685", path: "/disease/ptsd" },
   ];
 
   const cardWidth = isMobile ? '100%' : '210px';
@@ -66,28 +66,33 @@ function Disease() {
 
 
       <div style={{
-        display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(210px, 1fr))",
+        display: "flex",
+        flexWrap: "wrap",
         gap: containerGap,
         maxWidth: isMobile ? "100%" : "800px",
         width: "100%",
         justifyContent: "center",
-        
         zIndex: 1
       }}>
-        {disorders.map(d => (
+        {disorders.map((d, index) => (
           <motion.div
             key={d.id}
-            onClick={() => navigate(d.path)}
             className="responsive-w-full-mobile"
-            whileHover={{ 
-              scale: 1.05, 
-              rotateX: 5, 
-              rotateY: -5,
-              boxShadow: "0 15px 35px rgba(0,0,0,0.1)" 
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            style={{
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.15 }}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <motion.div
+              onClick={() => navigate(d.path)}
+              className="responsive-w-full-mobile"
+              whileHover={{ 
+                scale: 1.05, 
+                y: -5,
+                boxShadow: "0 15px 35px rgba(0,0,0,0.1)" 
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              style={{
               width: cardWidth,
               height: cardHeight,
               background: "white",
@@ -103,15 +108,6 @@ function Disease() {
               position: "relative",
               fontFamily: "'Tajawal', sans-serif",
               margin: isMobile ? "0 auto" : "0",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "none";
-             
             }}
           >
             <div style={{
@@ -135,6 +131,7 @@ function Disease() {
               {d.sub}
             </div>
           </motion.div>
+        </motion.div>
         ))}
       </div>
 
