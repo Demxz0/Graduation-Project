@@ -383,8 +383,8 @@ function Home() {
         minHeight: '100vh',
         textAlign: 'center',
         padding: isMobile ? '20px' : '40px',
-        marginBottom:'20px',
       }}>
+
        
         <img src={image} alt="background" style={{
           position: 'absolute',
