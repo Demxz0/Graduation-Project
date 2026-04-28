@@ -44,6 +44,7 @@ function FadeSection({ children, style }) {
     );
 }
 
+
 function Divider() {
     return <div style={s.divider}><div style={s.divLine} /><div style={s.divDot} /><div style={s.divLine} /></div>;
 }
