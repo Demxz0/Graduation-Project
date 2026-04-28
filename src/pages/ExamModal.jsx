@@ -263,10 +263,16 @@ function ExamModal({ disorderId, onClose }) {
   const exam = examData[disorderId];
 
   const [phase, setPhase] = useState('intro');
-
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState(Array(exam.questions.length).fill(null));
   const [animating, setAnimating] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const selectedAnswer = answers[currentQ];
   const progress = ((currentQ) / exam.questions.length) * 100;
@@ -274,9 +280,7 @@ function ExamModal({ disorderId, onClose }) {
   // ===== احتساب النتيجة =====
   function calcResult() {
     const total = answers.reduce((sum, val) => sum + (val ?? 0), 0);
-
     const maxScore = exam.questions.length * 2;
-
     const dynamicPercent = Math.round((total / maxScore) * 100);
 
     if (disorderId === 'depression') {
@@ -374,25 +378,46 @@ function ExamModal({ disorderId, onClose }) {
       backdropFilter: 'blur(6px)',
       zIndex: 2000,
       display: 'flex',
-      alignItems: 'center',
+      alignItems: isMobile ? 'flex-end' : 'center',
       justifyContent: 'center',
       fontFamily: "'Tajawal', sans-serif",
       direction: 'rtl',
+      padding: isMobile ? '0' : '20px',
     }}>
-      <div style={{
+      <div className="exam-modal-inner" style={{
         background: 'white',
-        borderRadius: '28px',
+        borderRadius: isMobile ? '24px 24px 0 0' : '28px',
         width: '100%',
-        maxWidth: '520px',
-        margin: '20px',
+        maxWidth: isMobile ? '100%' : '520px',
+        maxHeight: isMobile ? '92vh' : '90vh',
+        overflowY: 'auto',
         boxShadow: '0 32px 80px rgba(30,15,50,0.25)',
-        overflow: 'hidden',
         position: 'relative',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}>
+
+        {/* شريط السحب للموبايل */}
+        {isMobile && (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '12px',
+            paddingBottom: '4px',
+          }}>
+            <div style={{
+              width: '40px',
+              height: '4px',
+              borderRadius: '2px',
+              background: '#e0d6f5',
+            }} />
+          </div>
+        )}
 
         {/* ===== الهيدر ===== */}
         <div style={{
-          padding: '20px 24px 0',
+          padding: isMobile ? '12px 16px 0' : '20px 24px 0',
           display: 'flex',
           flexDirection: 'column',
           gap: '10px',
@@ -413,6 +438,7 @@ function ExamModal({ disorderId, onClose }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 transition: 'all 0.2s',
+                flexShrink: 0,
               }}
               onMouseEnter={e => { e.currentTarget.style.background = '#ebe4ff'; e.currentTarget.style.color = '#6b4fa0'; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#f5f0ff'; e.currentTarget.style.color = '#9586b0'; }}
@@ -423,7 +449,7 @@ function ExamModal({ disorderId, onClose }) {
 
           {phase === 'questions' && (
             <>
-              <p style={{ fontSize: '13px', color: '#9586b0', textAlign: 'center', margin: '4px 0 0' }}>
+              <p style={{ fontSize: isMobile ? '12px' : '13px', color: '#9586b0', textAlign: 'center', margin: '4px 0 0' }}>
                 اجب بصراحة، لا يوجد إجابات خاطئة — رؤى عن نفسك
               </p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -464,6 +490,9 @@ function ExamModal({ disorderId, onClose }) {
         </div>
 
         <style>{`
+          .exam-modal-inner::-webkit-scrollbar {
+            display: none;
+          }
           @keyframes shimmer {
             0% { background-position: 200% center; }
             100% { background-position: -200% center; }
@@ -483,14 +512,15 @@ function ExamModal({ disorderId, onClose }) {
           }
         `}</style>
 
-        <div style={{ padding: '24px 28px 28px' }}>
+        <div style={{ padding: isMobile ? '16px 16px 24px' : '24px 28px 28px' }}>
 
+          {/* ===== صفحة المقدمة ===== */}
           {phase === 'intro' && (
             <div style={{ animation: 'introIn 0.4s ease', textAlign: 'center' }}>
 
               {/* الأيقونة */}
               <div style={{
-                fontSize: '52px',
+                fontSize: isMobile ? '44px' : '52px',
                 marginBottom: '16px',
                 display: 'inline-block',
                 animation: 'popIn 0.5s ease',
@@ -500,7 +530,7 @@ function ExamModal({ disorderId, onClose }) {
 
               {/* اسم الاضطراب */}
               <h2 style={{
-                fontSize: '24px',
+                fontSize: isMobile ? '20px' : '24px',
                 fontWeight: '800',
                 color: '#2d1f4a',
                 marginBottom: '4px',
@@ -528,10 +558,11 @@ function ExamModal({ disorderId, onClose }) {
 
               {/* الوصف */}
               <p style={{
-                fontSize: '14px',
+                fontSize: isMobile ? '13px' : '14px',
                 color: '#6b5a8a',
                 lineHeight: '1.85',
                 marginBottom: '16px',
+                textAlign: 'right',
               }}>
                 {exam.intro}
               </p>
@@ -541,24 +572,24 @@ function ExamModal({ disorderId, onClose }) {
                 background: `${exam.color}10`,
                 border: `1px solid ${exam.color}30`,
                 borderRadius: '14px',
-                padding: '14px 18px',
-                marginBottom: '28px',
+                padding: isMobile ? '12px 10px' : '14px 18px',
+                marginBottom: '20px',
                 display: 'flex',
                 justifyContent: 'center',
-                gap: '28px',
+                gap: isMobile ? '16px' : '28px',
               }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: exam.color }}>{exam.questions.length}</div>
+                  <div style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '800', color: exam.color }}>{exam.questions.length}</div>
                   <div style={{ fontSize: '12px', color: '#9586b0' }}>سؤال</div>
                 </div>
                 <div style={{ width: '1px', background: `${exam.color}30` }} />
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: exam.color }}>٣</div>
-                  <div style={{ fontSize: '12px', color: '#9586b0' }}>خيارات لكل سؤال</div>
+                  <div style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '800', color: exam.color }}>٣</div>
+                  <div style={{ fontSize: '12px', color: '#9586b0' }}>خيارات</div>
                 </div>
                 <div style={{ width: '1px', background: `${exam.color}30` }} />
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: exam.color }}>~٢</div>
+                  <div style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '800', color: exam.color }}>~٢</div>
                   <div style={{ fontSize: '12px', color: '#9586b0' }}>دقيقة</div>
                 </div>
               </div>
@@ -577,18 +608,19 @@ function ExamModal({ disorderId, onClose }) {
               <button
                 onClick={() => setPhase('questions')}
                 style={{
-                  padding: '14px 48px',
+                  padding: isMobile ? '13px 36px' : '14px 48px',
                   borderRadius: '50px',
                   border: 'none',
                   background: `linear-gradient(135deg, ${exam.color}, ${exam.color}cc)`,
                   color: 'white',
-                  fontSize: '17px',
+                  fontSize: isMobile ? '16px' : '17px',
                   fontWeight: '700',
                   fontFamily: "'Tajawal', sans-serif",
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   boxShadow: `0 6px 24px ${exam.color}40`,
                   letterSpacing: '0.5px',
+                  width: isMobile ? '100%' : 'auto',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = 'scale(1.05)';
@@ -612,17 +644,17 @@ function ExamModal({ disorderId, onClose }) {
               transition: 'all 0.2s ease',
             }}>
               <h2 style={{
-                fontSize: '20px',
+                fontSize: isMobile ? '17px' : '20px',
                 fontWeight: '700',
                 color: '#2d1f4a',
-                marginBottom: '24px',
-                lineHeight: '1.6',
+                marginBottom: '20px',
+                lineHeight: '1.7',
                 textAlign: 'right',
               }}>
                 {exam.questions[currentQ]}
               </h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
                 {answerOptions.map((opt) => {
                   const isChosen = selectedAnswer === opt.value;
                   return (
@@ -630,18 +662,19 @@ function ExamModal({ disorderId, onClose }) {
                       key={opt.value}
                       onClick={() => selectAnswer(opt.value)}
                       style={{
-                        padding: '14px 20px',
+                        padding: isMobile ? '14px 16px' : '14px 20px',
                         borderRadius: '50px',
                         border: isChosen ? `2px solid ${exam.color}` : '2px solid #ebe6f7',
                         background: isChosen ? `${exam.color}15` : 'white',
                         color: isChosen ? exam.color : '#5a4a7a',
-                        fontSize: '16px',
+                        fontSize: isMobile ? '15px' : '16px',
                         fontFamily: "'Tajawal', sans-serif",
                         fontWeight: isChosen ? '700' : '400',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
                         textAlign: 'center',
                         boxShadow: isChosen ? `0 4px 16px ${exam.color}25` : 'none',
+                        WebkitTapHighlightColor: 'transparent',
                       }}
                       onMouseEnter={e => {
                         if (!isChosen) {
@@ -676,6 +709,8 @@ function ExamModal({ disorderId, onClose }) {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '4px',
+                      padding: '8px 0',
+                      WebkitTapHighlightColor: 'transparent',
                     }}
                   >
                     رجوع →
@@ -686,7 +721,7 @@ function ExamModal({ disorderId, onClose }) {
                   onClick={goNext}
                   disabled={selectedAnswer === null}
                   style={{
-                    padding: '12px 32px',
+                    padding: isMobile ? '12px 28px' : '12px 32px',
                     borderRadius: '50px',
                     border: 'none',
                     background: selectedAnswer !== null
@@ -699,6 +734,7 @@ function ExamModal({ disorderId, onClose }) {
                     cursor: selectedAnswer !== null ? 'pointer' : 'not-allowed',
                     transition: 'all 0.2s ease',
                     boxShadow: selectedAnswer !== null ? `0 4px 16px ${exam.color}40` : 'none',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                   onMouseEnter={e => {
                     if (selectedAnswer !== null) e.currentTarget.style.transform = 'scale(1.04)';
@@ -707,7 +743,7 @@ function ExamModal({ disorderId, onClose }) {
                     e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : ' التالي ←'}
+                  {currentQ === exam.questions.length - 1 ? 'إنهاء' : 'التالي ←'}
                 </button>
               </div>
             </div>
@@ -717,27 +753,27 @@ function ExamModal({ disorderId, onClose }) {
           {showResult && result && (
             <div style={{ textAlign: 'center', animation: 'fadeIn 0.4s ease' }}>
               <h2 style={{
-                fontSize: '26px',
+                fontSize: isMobile ? '22px' : '26px',
                 fontWeight: '800',
                 color: '#2d1f4a',
                 marginBottom: '6px',
               }}>
                 نتيجة اختبارك
               </h2>
-              <p style={{ fontSize: '14px', color: '#9586b0', marginBottom: '24px' }}>
+              <p style={{ fontSize: '14px', color: '#9586b0', marginBottom: '20px' }}>
                 بناءً على إجاباتك الصادقة
               </p>
 
               <div style={{
                 background: 'linear-gradient(135deg, #faf7ff, #f5f0ff)',
                 borderRadius: '20px',
-                padding: '28px 24px',
-                marginBottom: '20px',
+                padding: isMobile ? '20px 16px' : '28px 24px',
+                marginBottom: '16px',
                 border: '1px solid #ede6ff',
                 animation: 'popIn 0.5s ease',
               }}>
                 <div style={{
-                  fontSize: '52px',
+                  fontSize: isMobile ? '44px' : '52px',
                   fontWeight: '800',
                   color: result.levelColor,
                   marginBottom: '8px',
@@ -758,7 +794,7 @@ function ExamModal({ disorderId, onClose }) {
                   {result.level}
                 </div>
                 <div style={{
-                  fontSize: '18px',
+                  fontSize: isMobile ? '16px' : '18px',
                   fontWeight: '700',
                   color: '#2d1f4a',
                   marginBottom: '10px',
@@ -770,6 +806,7 @@ function ExamModal({ disorderId, onClose }) {
                   color: '#6b5a8a',
                   lineHeight: '1.7',
                   marginBottom: result.recommendation ? '12px' : '0',
+                  textAlign: 'right',
                 }}>
                   {result.desc}
                 </p>
@@ -779,6 +816,7 @@ function ExamModal({ disorderId, onClose }) {
                     color: '#9586b0',
                     lineHeight: '1.6',
                     fontStyle: 'italic',
+                    textAlign: 'right',
                   }}>
                     {result.recommendation}
                   </p>
@@ -794,7 +832,12 @@ function ExamModal({ disorderId, onClose }) {
                 ⚠️ هذه النتيجة للتوعية فقط ولا تُعدّ تشخيصاً طبياً
               </p>
 
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <div style={{
+                display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
+                gap: '10px',
+                justifyContent: 'center',
+              }}>
                 <button
                   onClick={onClose}
                   style={{
@@ -808,8 +851,10 @@ function ExamModal({ disorderId, onClose }) {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
                     transition: 'all 0.2s',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                   onMouseEnter={e => { e.currentTarget.style.background = '#f8f5ff'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'white'; }}
@@ -830,6 +875,7 @@ function ExamModal({ disorderId, onClose }) {
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     boxShadow: '0 4px 16px rgba(124,111,205,0.35)',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                   onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
