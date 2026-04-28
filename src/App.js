@@ -139,13 +139,8 @@ function App() {
           }}
           onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
         >
-          <img src={logo} alt="logo" style={{ width: isMobile ? "40px" : "46px", height: "auto" }} />
-          <span style={{ 
-            fontSize: isMobile ? "20px" : "24px", 
-            fontWeight: "800", 
-            color: "#493054", 
-            fontFamily: "'Tajawal', sans-serif" 
-          }}>أُجِليك</span>
+          <img src={logo} alt="logo" style={{ width: isMobile ? "80px" : "110px", height: "auto" }} />
+         
         </div>
 
         {/* Mobile Toggle Button */}

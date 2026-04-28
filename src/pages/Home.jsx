@@ -397,28 +397,28 @@ function Home() {
 
         <div style={{ position: 'relative', zIndex: 1 }}>
           <h1 className="reveal responsive-title-hero" style={{
-            fontWeight: '400',
+            fontWeight: '500',
             color: '#493054',
-            marginBottom: '28px',
+            marginBottom: '33px',
             fontFamily: "'Tajawal', sans-serif",
             lineHeight: '1.3',
             maxWidth: '90%',
             marginLeft: 'auto',
             marginRight: 'auto',
-            fontSize: isMobile ? '32px' : '80px',
+            fontSize: isMobile ? '32px' : '100px',
           }}>
-            الوعي بالصحة النفسية
+           أُجْلِيكَ
           </h1>
           <p className="reveal" style={{
-            fontSize: 'clamp(16px, 4vw, 24px)',
+            fontSize: 'clamp(16px, 4vw, 28px)',
             color: '#6f5779',
             fontFamily: "'Tajawal', sans-serif",
             lineHeight: '1.7',
-            maxWidth: '90%',
+            maxWidth: '100%',
             marginLeft: 'auto',
             marginRight: 'auto',
           }}>
-            رحلة للتعرف على صحتك النفسية بوضوح
+           دعني أُجليك من كل ما يؤذيك
           </p>
         </div>
 
