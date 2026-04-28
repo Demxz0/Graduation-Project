@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import './ChatBot.css'; 
+import './ChatBot.css';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +9,6 @@ const ChatBot = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-
-  const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -30,9 +27,7 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
-      
-      const prompt = `أنت "فهيم"، مرشد نفسي ذكي ومساعد افتراضي في منصة "أُجليك" للتوعية بالصحة النفسية الموجهة للشباب والمراهقين (جيل Z) في الوطن العربي. المنصة تركز على التوعية بأبرز 5 اضطرابات نفسية.
+      const systemPrompt = `أنت "فهيم"، مرشد نفسي ذكي ومساعد افتراضي في منصة "أُجليك" للتوعية بالصحة النفسية الموجهة للشباب والمراهقين (جيل Z) في الوطن العربي. المنصة تركز على التوعية بأبرز 5 اضطرابات نفسية.
 
 التزم بالقواعد التالية بصرامة في كل ردودك:
 
@@ -45,18 +40,37 @@ const ChatBot = () => {
 - تحسين جودة النوم.
 - ممارسة نشاط بدني حتى لو كان بسيطاً.
 - تقليل وقت الشاشات وتجنب مقارنة النفس بالآخرين على السوشيال ميديا.
--تحسين جودة الطعام و ربطه بالحالة النفسية 
+- تحسين جودة الطعام وربطه بالحالة النفسية.
 
 4. بروتوكول الطوارئ (حالات الانتحار أو إيذاء الذات): إذا استشعرت من كلمات المستخدم أي نية لإيذاء نفسه، أو فقدان الأمل في الحياة، أو أفكار انتحارية، توقف عن تقديم النصائح العامة فوراً، وأرسل رسالة تعاطف قصيرة جداً وواضحة، متبوعة بأرقام ومراكز الطوارئ.
 (صيغة الطوارئ: "أنا أسمعك وأشعر بحجم ألمك، وأرجوك أن تتذكر أنك لست وحدك وهناك من يهتم لأمرك ويريد مساعدتك لتجاوز هذه اللحظة. أرجوك، تواصل حالاً مع شخص تثق به، أو اتصل فوراً بالخط الساخن للدعم النفسي أو الطوارئ الطبية في بلدك. حياتك مهمة جداً.")
 
-5. نبرة الصوت (Tone of Voice): استخدم لغة عربية فصحى مبسطة، قريبة من لغة الشباب، خالية من التعقيدات والمصطلحات الطبية الجافة. كن دافئاً، محترفاً، وحكيماً.
+5. نبرة الصوت (Tone of Voice): استخدم لغة عربية فصحى مبسطة، قريبة من لغة الشباب، خالية من التعقيدات والمصطلحات الطبية الجافة. كن دافئاً، محترفاً، وحكيماً.`;
 
-المستخدم يقول لك الآن: ${userMessage}`;
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-oss-120b",
+          max_tokens: 1000,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userMessage }
+          ]
+        })
+      });
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const botReply = response.text();
+      const data = await response.json();
+      
+      if (!response.ok) {
+        console.error("API Error:", data);
+        throw new Error(data.error?.message || "API request failed");
+      }
+      
+      const botReply = data.choices[0].message.content;
 
       setMessages(prev => [...prev, { text: botReply, isBot: true }]);
     } catch (error) {
@@ -76,48 +90,48 @@ const ChatBot = () => {
       ) : (
         <div className="chat-window">
           {/* Header */}
-         
           <div className="chat-header">
-          <div className="chat-header-info">
-          <h3 className="chat-header-title"> فهيم : مرشدك النفسي الذكي</h3>
-          <p className="chat-header-subtitle">مساعد توعوي — ليس طبيباً نفسياً</p>
+            <div className="chat-header-info">
+              <h3 className="chat-header-title"> فهيم : مرشدك النفسي الذكي</h3>
+              <p className="chat-header-subtitle">مساعد توعوي — ليس طبيباً نفسياً</p>
+            </div>
+            <button className="chat-close-btn" onClick={() => setIsOpen(false)}>✖</button>
           </div>
-          <button className="chat-close-btn" onClick={() => setIsOpen(false)}>✖</button>
-          </div>
-          
+
           {/* Messages Area */}
           <div className="chat-body">
             {messages.map((msg, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`message-bubble ${msg.isBot ? 'bot-message' : 'user-message'}`}
               >
                 {msg.text}
               </div>
             ))}
             {isLoading && (
-             <div className="typing-indicator">
-              جاري الكتابة...
-               <div className="typing-dots">
-               <span/><span/><span/>
-               </div>
-               </div> )}
+              <div className="typing-indicator">
+                جاري الكتابة...
+                <div className="typing-dots">
+                  <span/><span/><span/>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Input Area */}
           <div className="chat-footer">
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="chat-input"
-              value={input} 
+              value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="اكتب رسالتك هنا..." 
+              placeholder="اكتب رسالتك هنا..."
               disabled={isLoading}
             />
-            <button 
-              className="chat-send-btn" 
+            <button
+              className="chat-send-btn"
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
             >
@@ -125,8 +139,8 @@ const ChatBot = () => {
             </button>
           </div>
           <div className="chat-disclaimer">
-       ⚠️ <strong>تنبيه:</strong> فهيم بوت توعوي فقط ولا يُغني عن استشارة متخصص نفسي مؤهل
-           </div>
+            ⚠️ <strong>تنبيه:</strong> فهيم بوت توعوي فقط ولا يُغني عن استشارة متخصص نفسي مؤهل
+          </div>
         </div>
       )}
     </div>

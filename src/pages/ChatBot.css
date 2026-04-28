@@ -4,8 +4,8 @@
   font-family: 'Tajawal', sans-serif;
   direction: rtl;
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 35px;
+  left: 50px;
   z-index: 2000;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .chat-window {
-  width: 360px;
+  width: 400px;
   height: 560px;
   background-color: white;
   border-radius: 24px;
@@ -150,7 +150,7 @@
 }
 
 .bot-message {
-  align-self: flex-start;
+  align-self: flex-end;
   background-color: white;
   color: #3a2555;
   border: 1.5px solid #eddae8;
@@ -159,7 +159,7 @@
 }
 
 .user-message {
-  align-self: flex-end;
+  align-self: flex-start;
   background: linear-gradient(135deg, #c97099, #9b7fc7);
   color: white;
   border-radius: 18px 18px 4px 18px;
