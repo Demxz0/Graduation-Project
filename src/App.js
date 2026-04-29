@@ -142,7 +142,7 @@ function App() {
           <img src={logo} alt="logo" style={{ width: isMobile ? "80px" : "110px", height: "auto" }} />
          
         </div>
-
+ 
         {/* Mobile Toggle Button */}
         {isMobile && (
           <button
