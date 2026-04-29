@@ -1,533 +1,620 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+
+const COLORS = {
+    bg: "#f4f4ff",
+    bg2: "#eeeeff",
+    primary: "#4a8fa8", // ADHD Teal
+    secondary: "#3d1f4b", // Deep Purple
+    accent: "#d68cb9", // Pink/Purple Accent
+    muted: "#7a7a9a",
+    border: "rgba(74, 143, 168, 0.15)",
+    card: "rgba(74, 143, 168, 0.04)",
+};
 
 const s = {
-  page: { background: "#f4f4ff", minHeight: "100vh", direction: "rtl", fontFamily: "'Tajawal', sans-serif" },
-  breadcrumb: { textAlign: "center", fontSize: "13px", color: "#999", marginBottom: "12px" },
-  heroSection: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px 60px", textAlign: "center", background: "linear-gradient(135deg, #f0f8fe 0%, #e8f0f7 100%)" },
-  heroLabel: { fontSize: "32px", fontWeight: "700", color: "#4a8fa8", marginBottom: "8px", fontFamily: "'Roca One', sans-serif" },
-  heroTitle: { fontSize: "44px", fontWeight: "700", color: "#3b6b8a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(74, 143, 168, 0.4)", fontFamily: "'Roca One', sans-serif" },
-  heroSub: { fontSize: "18px", color: "#5a5a7a", maxWidth: "580px" },
-  sectionWrapper: { maxWidth: "860px", margin: "0 auto", padding: "60px 24px" },
-  sectionLabel: { fontSize: "12px", color: "#aaa", letterSpacing: "1px", marginBottom: "6px", textAlign: "right" },
-  sectionTitle: { fontSize: "28px", fontWeight: "700", color: "#3b3b6b", marginBottom: "32px", textAlign: "right" },
-  sectionTitleHighlight: { color: "#4a8fa8" },
-  divider: { border: "none", borderTop: "1px solid #d8d8ee", margin: "0 auto", maxWidth: "2000px" },
-  defGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" },
-  defCard: (borderColor) => ({ background: "white", borderRadius: "16px", padding: "24px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
-  defCardBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: color, borderRadius: "16px 16px 0 0" }),
-  defCardTitle: { fontSize: "18px", fontWeight: "700", color: "#3b3b6b", marginBottom: "10px" },
-  defCardText: { fontSize: "14px", color: "#6f6f8f", lineHeight: "1.8" },
-  typesGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" },
-  typeCard: (borderColor, active) => ({
-    background: "white", borderRadius: "14px", padding: "20px 24px",
-    border: `2px solid ${active ? borderColor : "#e0ddf5"}`,
-    cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s",
-    display: "flex", justifyContent: "space-between", alignItems: "center",
-  }),
-  typeNum: (color) => ({ fontSize: "28px", fontWeight: "700", color, opacity: 0.35 }),
-  typeLabel: { fontSize: "16px", fontWeight: "700", color: "#3b3b6b" },
-  typeSub: { fontSize: "12px", color: "#aaa" },
-  tabRow: { display: "flex", gap: "0", marginBottom: "28px", borderBottom: "2px solid #e0ddf5" },
-  tab: (active) => ({
-    padding: "10px 20px", fontSize: "15px", cursor: "pointer", fontFamily: "'Tajawal', sans-serif",
-    color: active ? "#4a8fa8" : "#999", background: "none", border: "none",
-    borderBottom: active ? "2px solid #4a8fa8" : "2px solid transparent",
-    marginBottom: "-2px", transition: "0.2s", fontWeight: active ? "700" : "400",
-  }),
-  symptomsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" },
-  symptomCard: () => ({
-    background: "white", borderRadius: "12px", padding: "16px 20px",
-    border: "1.5px solid #e0ddf5",
-    fontSize: "14px", color: "#3b3b6b", display: "flex", alignItems: "flex-start", gap: "10px",
-    transition: "transform 0.2s, box-shadow 0.2s",
-  }),
-  dot: (color) => ({ width: "8px", height: "8px", borderRadius: "50%", background: color, flexShrink: 0, marginTop: "6px" }),
-  causeBlock: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "0", border: "1.5px solid #e0ddf5", position: "relative" },
-  causeBlockHighlight: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "0", border: "2px solid #4a8fa8" },
-  causeBlockWarning: { background: "#fff9f0", borderRadius: "16px", padding: "20px 28px", marginTop: "8px", border: "1.5px solid #f4dcc8" },
-  causeTitle: { fontSize: "17px", fontWeight: "700", color: "#3b3b6b", marginBottom: "14px", textAlign: "right" },
-  causeLine: { fontSize: "14px", color: "#5a5a7a", lineHeight: "2", borderBottom: "1px solid #f0eef8", padding: "6px 0", textAlign: "right" },
-  tagRow: { display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "12px", justifyContent: "flex-end" },
-  tag: (color) => ({ background: color, borderRadius: "30px", padding: "6px 16px", fontSize: "13px", color: "#3b3b6b" }),
-  copingGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" },
-  copingCard: { background: "white", borderRadius: "14px", padding: "20px", border: "1.5px solid #e0ddf5", transition: "border 0.2s" },
-  copingIcon: { fontSize: "22px", marginBottom: "8px" },
-  copingTitle: { fontSize: "15px", fontWeight: "700", color: "#3b3b6b", marginBottom: "4px" },
-  copingEn: { fontSize: "11px", color: "#bbb", marginBottom: "10px" },
-  copingText: { fontSize: "13px", color: "#7a7a9a", lineHeight: "1.7" },
-  traitsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "14px" },
-  traitCard: (borderColor) => ({ background: "white", borderRadius: "14px", padding: "18px 16px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
-  traitBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "5px", background: color }),
-  traitTitle: { fontSize: "14px", fontWeight: "700", color: "#3b3b6b", marginBottom: "4px" },
-  traitEn: { fontSize: "11px", color: "#bbb", marginBottom: "8px" },
-  traitText: { fontSize: "12px", color: "#7a7a9a", lineHeight: "1.6" },
-  brainList: { display: "flex", flexDirection: "column", gap: "12px" },
-  brainNum: (bg) => ({ minWidth: "40px", height: "40px", borderRadius: "50%", background: bg, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px" }),
-  brainTitle: { fontSize: "16px", fontWeight: "700", color: "#3b3b6b", marginBottom: "4px" },
-  brainText: { fontSize: "13px", color: "#6a6a8a", lineHeight: "1.7" },
-  resultBox: { background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #e0ddf5" },
-  resultItem: { fontSize: "14px", color: "#4a4a6a", lineHeight: "2.2", display: "flex", alignItems: "flex-start", gap: "10px" },
-  resultDot: (c) => ({ width: "6px", height: "6px", borderRadius: "50%", background: c, flexShrink: 0, marginTop: "8px" }),
+    page: { fontFamily: "'Tajawal', sans-serif", background: COLORS.bg, color: "#1a1a2e", direction: "rtl", minHeight: "100vh", overflowX: "hidden" },
+    section: { maxWidth: "min(1200px, 92vw)", margin: "0 auto", padding: "4rem clamp(1rem, 3vw, 3rem)" },
+    label: { fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 10, display: "block" },
+    h2: { fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.5rem)", lineHeight: 1.2, marginBottom: "1.5rem" },
+    card: { background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 14, padding: "1.25rem 1.5rem", transition: "all 0.3s ease" },
+    divider: { display: "flex", alignItems: "center", gap: 16, padding: "0 1.5rem", maxWidth: "min(1200px, 92vw)", margin: "0 auto" },
+    divLine: { flex: 1, height: 1, background: COLORS.border },
+    divDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.primary },
 };
 
-const adhdTypes = [
-  { id: 1, label: "قلة الانتباه", en: "Inattentive", color: "#c8dff4" },
-  { id: 2, label: "فرط الحركة والاندفاعية", en: "Hyperactive-Impulsive", color: "#dcc8f4" },
-  { id: 3, label: "النوع المدمج", en: "Combined Type", color: "#c8f4e8" },
-];
+function useFadeIn() {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+    }, []);
+    return [ref, visible];
+}
 
-const typeColors = ["#c8dff4", "#dcc8f4", "#c8f4e8"];
-
-const typeDetails = {
-  1: [
-    "حالة من التشتت المستمر، وكأن العقل يرفض التمسك بأي فكرة أو مهمة لفترة كافية.",
-    "يغرق الفرد في نسيان التفاصيل، فقدان الأشياء، والقفز بين الأفكار دون إنجاز شيء حتى النهاية.",
-    "لا يرافقه فرط حركة واضح، لذلك يُشخَّص متأخراً، خاصةً عند البنات اللواتي يبدون 'حالمات' فقط.",
-    "لُيصنَّف كاضطراب، يجب أن تستمر هذه الأعراض لأكثر من ستة أشهر، تبدأ قبل سن الثانية عشرة، وتظهر في بيئتين مختلفتين على الأقل.",
-  ],
-  2: [
-    "طاقة جسدية وذهنية تفوق ما تستطيع البيئة المحيطة استيعابه.",
-    "يتصرف الفرد قبل أن يفكر، يقاطع الآخرين، ويجد صعوبة شديدة في الانتظار أو الجلوس ساكناً.",
-    "النوع الأقل شيوعاً، وأكثر وضوحاً للعين، مما يجعل تشخيصه أسرع، خاصةً عند الأولاد.",
-  ],
-  3: [
-    "الجمع بين ضعف الانتباه وفرط الحركة والاندفاعية معاً في آنٍ واحد.",
-    "النوع الأكثر شيوعاً وتأثيراً، إذ يجمع صعوبات التركيز مع التصرفات الاندفاعية وعدم الهدوء.",
-    "يحتاج إلى خطة علاج أكثر شمولاً تُراعي كلا الجانبين معاً.",
-  ],
-};
-
-const symptomTabs = ["الأعراض المعرفية والنفسية", "الأعراض السلوكية", "الأعراض الجسدية", "نوبات الهلع"];
-const symptomData = {
-  "الأعراض المعرفية والنفسية": [
-    { text: "صعوبة شديدة في الانتباه للتفاصيل والوقوع في أخطاء الإهمال.", color: "#d5c0f4" },
-    { text: "صعوبة الحفاظ على التركيز في المهام والمحادثات.", color: "#d5c0f4" },
-    { text: "سهولة التشتت بأي مؤثر خارجي بسيط.", color: "#c0d5f4" },
-    { text: "النسيان المتكرر في الأنشطة اليومية والمواعيد.", color: "#c0d5f4" },
-    { text: "صعوبة تنظيم المهام وترتيب الأولويات.", color: "#c0f4d5" },
-    { text: "تجنب المهام التي تتطلب جهداً ذهنياً مستمراً.", color: "#c0f4d5" },
-    { text: "ضبابية ذهنية (Brain Fog) وصعوبة في الوضوح الفكري.", color: "#f4f0c0" },
-  ],
-  "الأعراض السلوكية": [
-    { text: "التململ وعدم القدرة على الجلوس ساكناً (Fidgeting).", color: "#f4c0c0" },
-    { text: "الكلام الزائد والمقاطعة المتكررة للآخرين.", color: "#f4c0c0" },
-    { text: "التصرف دون تفكير في العواقب.", color: "#f4d5c0" },
-    { text: "صعوبة انتظار الدور في المحادثات أو المواقف.", color: "#f4d5c0" },
-    { text: "الميل للبدء في مهام جديدة قبل إنهاء القديمة.", color: "#d5c0f4" },
-    { text: "فقدان الأشياء الضرورية باستمرار (المفاتيح، الهاتف، الأوراق).", color: "#d5c0f4" },
-  ],
-  "الأعراض الجسدية": [
-    { text: "الإرهاق الذهني والجسدي نتيجة الجهد المستمر للتركيز.", color: "#f4c0c0" },
-    { text: "اضطرابات النوم وصعوبة الاستيقاظ في الصباح.", color: "#c0d5f4" },
-    { text: "توتر في العضلات ناجم عن الضغط الداخلي المستمر.", color: "#f4d5c0" },
-    { text: "الشعور بضيق جسدي عند مواجهة المهام الشاقة.", color: "#c0f4d5" },
-  ],
-  "نوبات الهلع": [
-    { text: "التقلبات العاطفية المفاجئة وشدة ردود الأفعال.", color: "#f4c0c0" },
-    { text: "حساسية مفرطة للنقد والرفض (RSD).", color: "#f4c0c0" },
-    { text: "الإحباط السريع عند مواجهة عقبات بسيطة.", color: "#c0d5f4" },
-    { text: "صعوبة في استعادة الهدوء بعد انفعال عاطفي.", color: "#f4d5c0" },
-    { text: "تدني الثقة بالنفس نتيجة تراكم الإخفاقات.", color: "#d5c0f4" },
-  ],
-};
-
-const copingCards = [
-  { icon: "⏳", title: "التسويف المزمن", en: "Chronic Procrastination", text: "تأجيل المهام باستمرار لأن الدماغ لا يجد الدافع الكافي لبدئها، مما يخلق دوامة من الذنب والتوتر والتأجيل المتكرر." },
-  { icon: "🌀", title: "الإفراط في الانشغال", en: "Hyperbusyness", text: "ملء كل لحظة بالنشاط والفوضى هرباً من الجلوس مع الأفكار أو مواجهة مهمة صعبة. يبدو الشخص 'مشغولاً' لكنه لا ينجز الأهم." },
-  { icon: "⏱️", title: "الاعتماد على الضغط اللحظي", en: "Deadline Dependency", text: "عدم القدرة على البدء إلا تحت وطأة الموعد النهائي، مما يصنع أداءً متذبذباً وضغطاً دائماً وإرهاقاً مزمناً." },
-  { icon: "🙈", title: "التجنب العاطفي", en: "Emotional Avoidance", text: "الابتعاد عن المواقف والعلاقات التي تتطلب جهداً تنظيمياً أو قد تُسبب إحراجاً بسبب الأعراض. يُضيّق دائرة الحياة تدريجياً." },
-  { icon: "📱", title: "الإفراط في المحفزات السريعة", en: "Dopamine Seeking", text: "اللجوء المستمر للمحتوى السريع الذي يُشبع الدوبامين مؤقتاً دون بذل جهد، مما يُقلل القدرة على تحمل المهام الأبطأ والأهم." },
-  { icon: "💔", title: "إلقاء اللوم على الذات", en: "Self-blame", text: "تفسير كل إخفاق على أنه دليل على الكسل أو الغباء، مما يؤدي للاكتئاب المصاحب وتدمير الثقة بالنفس تدريجياً وبصمت." },
-  { icon: "🤝", title: "طلب الطمأنينة المفرطة", en: "Excessive Reassurance-Seeking", text: "الاعتماد على الآخرين لتأكيد قراراته وتنظيم مهامه باستمرار، مما يُضعف الاستقلالية ويُثقل العلاقات." },
-];
-
-const traitCards = [
-  { title: "الاندفاعية العاطفية", en: "Emotional Impulsivity", text: "ردود أفعال عاطفية مكثفة وسريعة غير متناسبة مع الموقف، وصعوبة في تهدئة هذه المشاعر بعد إثارتها.", color: "#f4c8c8", bar: "#c46a6a" },
-  { title: "حساسية الرفض المؤلمة", en: "RSD", text: "ألم عاطفي حاد عند الشعور بأي رفض أو انتقاد. يُعاني منها ما يصل إلى 98% من البالغين المصابين.", color: "#f4c8d5", bar: "#c46a8a" },
-  { title: "عدم الاتساق في الأداء", en: "Performance Inconsistency", text: "قدرة استثنائية في بعض الأيام وشلل تام في أيام أخرى دون سبب واضح.", color: "#c8d5f4", bar: "#6a8fc4" },
-  { title: "الإبداع والتفكير خارج الصندوق ✨", en: "Creative & Divergent Thinking", text: "ميل طبيعي لرؤية الروابط غير المتوقعة بين الأفكار وابتكار حلول غير تقليدية.", color: "#c8f4e0", bar: "#4a9a6a" },
-  { title: "فرط التركيز الانتقائي ✨", en: "Hyperfocus", text: "قدرة على الانغماس الكلي في الاهتمامات التي تُحفّز الدوبامين، مما يجعل بعضهم بارعين استثنائيين في مجالاتهم.", color: "#dcc8f4", bar: "#8a6ac4" },
-  { title: "الكمالية الدفاعية", en: "Defensive Perfectionism", text: "كمالية مبالغ فيها كآلية تعويضية لإخفاء أعراض ADHD وإثبات الكفاءة للآخرين.", color: "#f4dcc8", bar: "#c4992a" },
-  { title: "الحاجة للتحفيز المرتفع", en: "High Stimulation Need", text: "الملل السريع جداً من الأنشطة الروتينية والبحث المستمر عن التجديد والإثارة كمصدر طبيعي للدوبامين.", color: "#c8f4f4", bar: "#4aaac4" },
-];
-
-const brainSteps = [
-  { title: "قشرة الفص الجبهي", en: "Prefrontal Cortex", text: "عند مواجهة مهمة تتطلب تركيزاً مستمراً، تُرسل قشرة الفص الجبهي إشارات لتفعيل الانتباه والتخطيط والتحكم بالاندفاع. في ADHD، هذه المنطقة أبطأ نضجاً وأقل نشاطاً، مما يُضعف قدرتها على 'إدارة' بقية الدماغ بفعالية.", bg: "#3b6b8a" },
-  { title: "الدوبامين والنورإبينفرين", en: "Dopamine & Norepinephrine", text: "في الدماغ الطبيعي، يُفرز الدوبامين بكميات كافية عند البدء بمهمة مما يجعلها 'تبدو مهمة'. في دماغ ADHD، الدوبامين شحيح في هذه الدوائر — لذا لا يجد الدماغ 'السبب الكافي' للبدء أو الاستمرار حتى في المهام الضرورية.", bg: "#4a8fa8" },
-  { title: "الشبكة العصبية الافتراضية", en: "Default Mode Network", text: "هذه الشبكة المسؤولة عن الأحلام والتخيل تبقى نشطة بشكل غير طبيعي حتى أثناء التركيز في ADHD، مما يخلق 'ضوضاء داخلية' مستمرة تُصعّب التركيز وتُفسّر التشتت المزمن.", bg: "#6a9ab0" },
-  { title: "العقد القاعدية", en: "Basal Ganglia", text: "تُحدث انخفاضاً في نشاط العقد القاعدية المسؤولة عن تنظيم الحركة والتحكم بالاندفاع، مما يجعل كبح الأفعال الفورية وتأجيل المكافأة أمراً شاقاً للغاية.", bg: "#8aaa4a" },
-  { title: "اللوزة الدماغية", en: "Amygdala", text: "تُرسل اللوزة الدماغية استجابات عاطفية مبالغ فيها تجاه الإخفاق أو الانتقاد، بينما تعجز قشرة الفص الجبهي الضعيفة عن تهدئتها — وهذا يُفسّر ظاهرة 'حساسية الرفض المؤلمة RSD' بشكل كامل.", bg: "#c4992a" },
-];
-
-const treatments = [
-  {
-    id: 1, icon: "🧩", en: "Cognitive Behavioral Therapy", label: "العلاج السلوكي المعرفي (CBT)", color: "#ddc8f4",
-    details: [
-      "التثقيف النفسي: فهم أن التسويف وصعوبة البدء ليسا كسلاً، بل خللاً في نظام الدوبامين يمكن تجاوزه بالاستراتيجيات الصحيحة. التعامل مع ADHD كاختلاف لا كعيب.",
-      "إعادة الهيكلة المعرفية: تحدي الأفكار مثل 'أنا فاشل' أو 'لن أستطيع أبداً' وربطها بالاضطراب لا بالشخصية. تغيير الحوار الداخلي من العقاب إلى الحل.",
-      "تدريب المهارات: تعليم التخطيط، تقسيم المهام إلى خطوات صغيرة قابلة للتنفيذ، وبناء أنظمة شخصية تعوّض الضعف في الوظائف التنفيذية.",
-      "التعرض التدريجي: مواجهة تدريجية للمهام المؤجلة لكسر الدوامة السلبية. تعليم الدماغ أن البدء ممكن دون الحاجة لضغط الموعد النهائي.",
-    ],
-  },
-  {
-    id: 2, icon: "💊", en: "Pharmacotherapy", label: "العلاج الدوائي", color: "#c8dff4",
-    details: [
-      "الأدوية المنشطة (الخط الأول): كالميثيلفينيدات (ريتالين) والأمفيتامينات. هي الأكثر فعالية — ترفع الدوبامين والنورإبينفرين في قشرة الفص الجبهي مباشرةً. تحسين واضح في التركيز والتنظيم والتحكم.",
-      "الأدوية غير المنشطة (الخط الثاني): كأتوموكسيتين (ستراتيرا) وجوانفاسين. تُستخدم عند عدم تحمل المنشطات أو وجود حالات مصاحبة كالقلق أو اضطراب النوم.",
-      "ناهضات ألفا لعلاج الحساسية العاطفية: كلونيدين وجوانفاسين — تُستخدم تحديداً لعلاج حساسية الرفض المؤلمة (RSD). تعمل على تهدئة نشاط النورإبينفرين.",
-      "مضادات اكتئاب SNRIs: في حالات ADHD المصحوبة باكتئاب أو قلق مزمن — تساعد على تنظيم الدوبامين والسيروتونين والنورإبينفرين معاً.",
-    ],
-  },
-  {
-    id: 3, icon: "⚡", en: "Combined Treatment", label: "العلاج المدمج", color: "#f4f0c8", badge: "الأفضل نتائج",
-    details: [
-      "دمج CBT مع الأدوية يعطي أفضل النتائج. الأدوية تُهيّئ الدماغ للاستفادة من جلسات العلاج النفسي، وتُمكّن الشخص من تطبيق الاستراتيجيات السلوكية بفعالية أكبر.",
-      "الدعم المدرسي والمهني: وقت إضافي في الامتحانات، تقليل المشتتات، تقسيم المهام، مرونة في طريقة التسليم. هذه التكييفات تُظهر القدرة الحقيقية للشخص.",
-    ],
-  },
-  {
-    id: 4, icon: "🌿", en: "Lifestyle & Support", label: "تعديل نمط الحياة والدعم", color: "#c8f4e0",
-    details: [
-      "الرياضة: الرياضة المنتظمة — خاصةً التمارين الهوائية — ترفع الدوبامين والنورإبينفرين بشكل طبيعي وتُحسّن التركيز بشكل ملحوظ ومثبت علمياً.",
-      "الروتين: الجداول المنتظمة تُقلل العبء على الدماغ وتُحوّل القرارات اليومية إلى عادات تلقائية. الفوضى تُضاعف الأعراض والبنية تُخففها.",
-      "تقنية بومودورو: 25 دقيقة عمل + 5 دقائق راحة. تمنع الإرهاق الذهني وتحافظ على التركيز بتقسيم العمل إلى جلسات قصيرة.",
-      "الدعم الاجتماعي: الانضمام لمجموعات دعم، والتحدث مع أشخاص يفهمون الاضطراب يُقلل العزلة ويوفر استراتيجيات عملية مجرّبة.",
-    ],
-  },
-];
-
-const resultItems = [
-  "صعوبة في بدء المهام حتى المهمة منها (Task Initiation Deficit) — 'أعرف أنني يجب أن أبدأ، لكن لا أستطيع'.",
-  "الانتقال المتكرر بين المهام دون إنهاء أي منها — دوامة مستمرة من البدايات بلا نهايات.",
-  "فرط التركيز على أنشطة ذات تحفيز عالٍ مقابل شلل تام أمام أنشطة روتينية أو ذات تحفيز منخفض.",
-  "تفاوت حاد في الأداء بين يوم وآخر بحسب مستوى التحفيز المتاح — لا يمكن التنبؤ بأداء اليوم.",
-];
-
-export default function ADHDDetail() {
-  const [activeTab, setActiveTab] = useState("الأعراض المعرفية والنفسية");
-  const [expandedType, setExpandedType] = useState(null);
-  const [expandedTreatment, setExpandedTreatment] = useState(null);
-
-  return (
-    <div style={s.page}>
-
-      {/* Hero */}
-      <div style={s.heroSection}>
-        <div style={s.breadcrumb}>الاضطرابات النفسية &gt; نقص الانتباه وفرط الحركة</div>
-        <div style={s.heroLabel}>ADHD</div>
-        <h1 className="responsive-title-hero" style={{ fontWeight: "700", color: "#3b6b8a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(74, 143, 168, 0.4)", fontFamily: "'Roca One', sans-serif" }}>عقل لا يعرف زر الإيقاف</h1>
-        <p style={s.heroSub}>
-          ADHD ليس كسلاً ولا قلة اهتمام، هو اضطراب يعيش معه{" "}
-          <strong style={{ color: "#3b6b8a" }}>أكثر من 366 مليون</strong>{" "}
-          شخص حول العالم
-        </p>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* التعريف */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>التعريف</div>
-        <h2 style={s.sectionTitle}>
-          ما هو <span style={s.sectionTitleHighlight}>نقص الانتباه وفرط الحركة</span>؟
-        </h2>
-        <div className="responsive-grid-2" style={{ gap: "20px" }}>
-          <div style={s.defCard("#c8dff4")}>
-            <div style={s.defCardBar("#4a8fa8")} />
-            <div style={s.defCardTitle}>الانتباه الطبيعي</div>
-            <div style={s.defCardText}>
-              الانتباه هو قدرة طبيعية يمتلكها الجميع. فهو نظام تنظيمي في الدماغ يساعدك على إنجاز المهام، ترتيب الأولويات، والتحكم في ردود أفعالك.
-            </div>
-          </div>
-          <div style={s.defCard("#ddc8f4")}>
-            <div style={s.defCardBar("#8a6ac4")} />
-            <div style={s.defCardTitle}>اضطراب نقص الانتباه وفرط الحركة</div>
-            <div style={s.defCardText}>
-              ADHD اضطراب عصبي نمائي يؤثر على كيفية نمو الدماغ وعمله. يبدأ في الطفولة ويستمر غالباً للبلوغ. الدماغ لا يعمل بشكل "خاطئ" — بل يعمل بطريقة مختلفة.
-            </div>
-          </div>
+function FadeSection({ children, style }) {
+    const [ref, visible] = useFadeIn();
+    return (
+        <div ref={ref} style={{ ...s.section, ...style, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 0.8s ease, transform 0.8s ease" }}>
+            {children}
         </div>
-      </div>
+    );
+}
 
-      <hr style={s.divider} />
+function Divider() {
+    return <div style={s.divider}><div style={s.divLine} /><div style={s.divDot} /><div style={s.divLine} /></div>;
+}
 
-      {/* الأنواع */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأنواع</div>
-        <h2 style={s.sectionTitle}>
-          أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          كل أحد فينا مميز بطريقته، حتى في اضطرابه.
-        </p>
-        <div className="responsive-grid-2" style={{ gap: "16px" }}>
-          {adhdTypes.map((t) => (
-            <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
-              <div
-                style={s.typeCard(typeColors[t.id - 1], expandedType === t.id)}
-                onClick={() => setExpandedType(expandedType === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.03)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
-                <div style={s.typeNum(typeColors[t.id - 1])}>{t.id}</div>
-                <div>
-                  <div style={s.typeLabel}>{t.label}</div>
-                  <div style={s.typeSub}>{t.en}</div>
-                </div>
-              </div>
-              {expandedType === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#5a5a7a", lineHeight: "1.9", border: `2px solid ${typeColors[t.id - 1]}`, borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
-                  {typeDetails[t.id].map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < typeDetails[t.id].length - 1 ? "1px solid #f0eef8" : "none" }}>
-                      <span style={{ color: "#aaa", flexShrink: 0 }}>—</span>
-                      <span>{line}</span>
+// ── HERO ──────────────────────────────────────────────────────────────────
+function Hero() {
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+    const fade = (delay) => ({ opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(24px)", transition: `opacity 0.8s ${delay}s ease, transform 0.8s ${delay}s ease` });
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(182, 199, 239, 0.3) 0%, rgba(221, 188, 208, 0.3) 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 50% at 50% 30%, rgba(74, 143, 168, 0.08) 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 20% 80%, rgba(74, 143, 168, 0.05) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <p style={{ ...fade(0.2), fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 28 }}>الاضطرابات النفسية · نقص الانتباه وفرط الحركة</p>
+            <h1 style={{ ...fade(0.4), fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,4rem)", lineHeight: 1.1, margin: 0 }}>
+                <span style={{ display: "block", color: COLORS.primary }}>عقل لا يعرف</span>
+                <span style={{ display: "block", color: COLORS.primary }}>زر الإيقاف</span>
+            </h1>
+            <div style={{ ...fade(0.6), width: 60, height: 2, background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.accent})`, margin: "1.75rem auto" }} />
+            <p style={{ ...fade(0.8), fontSize: "1.05rem", color: "rgba(26,26,46,0.65)", maxWidth: 480, lineHeight: 1.8 }}>
+                ADHD ليس كسلاً ولا قلة اهتمام، هو اضطراب يعيش معه <strong style={{ color: COLORS.primary }}>366 مليون شخص</strong> حول العالم.
+            </p>
+        </div>
+    );
+}
+
+// ── DEFINITION ────────────────────────────────────────────────────────────
+function Definition() {
+    return (
+        <FadeSection>
+            <span style={s.label}>التعريف</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>ما هو </span><span style={{ color: COLORS.primary }}>ADHD؟</span></h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 16 }}>
+                {[
+                    { title: "الانتباه الطبيعي", color: "#3d1f4b", text: "هو قدرة طبيعية ونظام تنظيمي في الدماغ يساعدك على إنجاز المهام، ترتيب الأولويات، والتحكم في ردود أفعالك بوعي." },
+                    { title: "نقص الانتباه وفرط الحركة", color: COLORS.primary, text: "اضطراب عصبي نمائي يؤثر على كيفية نمو الدماغ وعمله. يبدأ في الطفولة ويستمر للبلوغ. الدماغ لا يعمل بشكل 'خاطئ' — بل يعمل بطريقة مختلفة." },
+                ].map(({ title, color, text }) => (
+                    <div key={title}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = `0 15px 35px ${COLORS.primary}26`; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                        style={{ ...s.card, position: "relative", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", top: 0, right: 0, width: 80, height: 80, borderRadius: "50%", background: color, filter: "blur(40px)", opacity: 0.15, pointerEvents: "none" }} />
+                        <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color, fontSize: "1.1rem", marginBottom: 10 }}>{title}</div>
+                        <p style={{ fontSize: "0.875rem", color: "#5d5c5d", lineHeight: 1.8, margin: 0 }}>{text}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <p style={{ fontSize: "13px", color: "#bbb", textAlign: "center", marginTop: "16px" }}>اضغط على أي بطاقة لعرض التفاصيل</p>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* الأعراض */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأعراض</div>
-        <h2 style={s.sectionTitle}>
-          كيف يظهر <span style={s.sectionTitleHighlight}>ADHD</span> في جسدك؟
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          تختلف الأعراض من شخص لآخر ومن مرحلة عمرية لأخرى — وقد تتداخل مع اضطرابات أخرى.
-        </p>
-        <div style={s.tabRow}>
-          {symptomTabs.map(tab => (
-            <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
-          ))}
-        </div>
-        <div className="responsive-grid-2" style={{ gap: "12px" }}>
-          {(symptomData[activeTab] || []).map((item, i) => (
-            <div key={i} style={s.symptomCard()}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.08)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
-            >
-              <div style={s.dot(item.color)} />
-              {item.text}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* الأسباب */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأسباب</div>
-        <h2 style={s.sectionTitle}>
-          من أين يأتي <span style={s.sectionTitleHighlight}>ADHD</span>؟
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          هناك 3 مسببات رئيسية لاضطراب ADHD — وهي تتفاعل مع بعضها لتحدد شدة الاضطراب وطريقة ظهوره.
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b6b8a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>1</div>
-            <div style={{ ...s.causeBlock, flex: 1 }}>
-              <div style={s.causeTitle}>العوامل الجينية والوراثية</div>
-              <div style={s.causeLine}>ADHD من أعلى الاضطرابات النفسية في نسبة الوراثة — تصل إلى 76%. إذا كان أحد الوالدين مصاباً، فالاحتمال مرتفع جداً أن ينتقل للأبناء.</div>
-              <div style={s.causeLine}>خلل في مستويات الدوبامين والنورإبينفرين في قشرة الفص الجبهي المسؤولة عن التحكم التنفيذي.</div>
-              <div style={s.causeLine}>تأخر في نضج قشرة الفص الجبهي (Prefrontal Cortex) مقارنةً بالأقران في نفس العمر.</div>
-              <div style={s.causeLine}>ارتباط جينات محددة مثل DRD4 وDRD5 وCDH13 بزيادة خطر الإصابة واضطراب إشارات الدوبامين.</div>
-              <div style={{ ...s.causeLine, borderBottom: "none" }}>حجم أصغر في مناطق دماغية كالعقد القاعدية والمخيخ عند بعض المصابين.</div>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b6b8a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>2</div>
-            <div style={{ ...s.causeBlockHighlight, flex: 1 }}>
-              <div style={s.causeTitle}>العوامل البيئية والضغوطات</div>
-              <div style={{ fontSize: "14px", color: "#5a5a7a", marginBottom: "12px", textAlign: "right" }}>البيئة التي تنشأ فيها والمؤثرات التي تتعرض لها هي المحفز الذي يشعل الاستعداد الجيني الكامن، مثل:</div>
-              <div style={s.tagRow}>
-                {["التعرض للتبغ أو الكحول خلال الحمل", "الولادة المبكرة أو انخفاض وزن الولادة", "التعرض للرصاص أو المبيدات في سن مبكرة", "الحرمان من التحفيز المعرفي والعاطفي", "البيئات الفوضوية وغير المنتظمة"].map((t, i) => (
-                  <span key={i} style={s.tag(["#f4e0cc", "#ddc8f4", "#c8d5f4", "#c8f4e0", "#f4c8c8"][i % 5])}>{t}</span>
                 ))}
-              </div>
             </div>
-          </div>
+        </FadeSection>
+    );
+}
 
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3b6b8a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>3</div>
-            <div style={{ ...s.causeBlock, flex: 1 }}>
-              <div style={s.causeTitle}>العوامل العضوية والطبية</div>
-              <div style={s.causeLine}>بطء في استقلاب الجلوكوز في المناطق الدماغية المسؤولة عن الانتباه والحركة.</div>
-              <div style={s.causeLine}>خلل في نشاط الشبكة العصبية الافتراضية (Default Mode Network) التي تبقى نشطة بشكل غير طبيعي.</div>
-              <div style={s.causeLine}>اضطرابات الغدة الدرقية — فرط نشاطها يسبب أعراضاً مشابهة جداً لـ ADHD.</div>
-              <div style={s.causeLine}>انخفاض الحديد والفيريتين في الدم يرتبط بتعطل إنتاج الدوبامين مباشرةً.</div>
-              <div style={{ ...s.causeLine, borderBottom: "none" }}>بعض الأدوية كالكورتيكوستيرويدات تنتج أعراضاً مشابهة للاضطراب.</div>
+// ── TYPES ─────────────────────────────────────────────────────────────────
+const TYPES = [
+  { n: "١", en: "Inattentive Type", ar: "قلة الانتباه", color: "#552269", pts: ["حالة من التشتت المستمر، وكأن العقل يرفض التمسك بأي فكرة أو مهمة لفترة كافية.", "يغرق الفرد في نسيان التفاصيل، فقدان الأشياء، والقفز بين الأفكار دون إنجاز.", "لا يرافقه فرط حركة واضح، لذلك يُشخَّص متأخراً خاصةً عند الفتيات."] },
+  { n: "٢", en: "Hyperactive-Impulsive Type", ar: "فرط الحركة والاندفاعية", color: "#8a354c", pts: ["طاقة جسدية وذهنية تفوق ما تستطيع البيئة المحيطة استيعابه.", "يتصرف الفرد قبل أن يفكر، يقاطع الآخرين، ويجد صعوبة شديدة في الجلوس ساكناً.", "النوع الأقل شيوعاً وأكثر وضوحاً للعين، مما يجعل تشخيصه أسرع."] },
+  { n: "٣", en: "Combined Type", ar: "النوع المدمج", color: "#2a6275", pts: ["الجمع بين ضعف الانتباه وفرط الحركة والاندفاعية معاً في آنٍ واحد.", "النوع الأكثر شيوعاً وتأثيراً، إذ يجمع صعوبات التركيز مع التصرفات الاندفاعية.", "يحتاج إلى خطة علاج شاملة تُراعي كلا الجانبين معاً بفعالية."] },
+];
+
+function Types() {
+    const [open, setOpen] = useState(-1);
+    return (
+        <FadeSection>
+            <span style={s.label}>الأنواع</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>أنواع </span><span style={{ color: COLORS.primary }}>الاضطراب</span><span style={{ color: "#3d1f4b" }}> وأشكاله</span></h2>
+            <p style={{ fontFamily: "'Tajawal', sans-serif", color: "#3d1f4b", borderRight: `3px solid #3d1f4b`, paddingRight: 16, marginBottom: 28, fontStyle: "italic", fontWeight: "bold" }}>كل احد فينا مميز حتى باضطرابه</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", alignItems: "flex-start" }}>
+                {TYPES.map((t, i) => {
+                    const isOpened = open === i;
+                    return (
+                        <div key={i} onClick={() => setOpen(isOpened ? -1 : i)}
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = isOpened ? "translateY(-2px)" : "none"; e.currentTarget.style.boxShadow = "none"; }}
+                            style={{ background: COLORS.card, borderRight: `1px solid ${isOpened ? t.color : COLORS.border}`, borderBottom: `1px solid ${isOpened ? t.color : COLORS.border}`, borderLeft: `1px solid ${isOpened ? t.color : COLORS.border}`, borderTop: `5px solid ${t.color}`, borderRadius: 14, overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s, transform 0.2s", transform: isOpened ? "translateY(-2px)" : "none", flex: "1 1 280px", maxWidth: "380px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "1rem 1.25rem" }}>
+                                <span style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.8rem", color: t.color, opacity: 0.25, lineHeight: 1 }}>{t.n}</span>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 3, letterSpacing: "0.05em" }}>{t.en}</div>
+                                    <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color: t.color, fontSize: "0.9rem" }}>{t.ar}</div>
+                                </div>
+                                <div style={{ fontSize: 18, color: COLORS.muted, transition: "transform 0.3s", transform: isOpened ? "rotate(45deg)" : "none" }}>+</div>
+                            </div>
+                            {isOpened && (
+                                <div style={{ padding: "0 1.25rem 1.25rem" }}>
+                                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                        {t.pts.map((pt, j) => (
+                                            <li key={j} style={{ fontSize: "0.85rem", color: "rgba(26,26,46,0.7)", padding: "0.4rem 0", borderBottom: j < t.pts.length - 1 ? "1px solid rgba(74, 143, 168, 0.1)" : "none", lineHeight: 1.7 }}>
+                                                <span style={{ color: t.color, marginLeft: 8 }}>—</span>{pt}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
-          </div>
+            <p style={{ textAlign: "center", fontSize: 12, color: COLORS.muted, marginTop: 14 }}>اضغط على أي بطاقة لعرض التفاصيل</p>
+        </FadeSection>
+    );
+}
 
-          <div style={s.causeBlockWarning}>
-            <div style={{ fontSize: "15px", fontWeight: "700", color: "#c46a20", marginBottom: "8px", textAlign: "right" }}>❌ خرافات شائعة عن أسباب ADHD</div>
-            <div style={{ fontSize: "13px", color: "#7a5a3a", lineHeight: "1.8", textAlign: "right" }}>
-              السكر لا يسبب ADHD. الشاشات والتلفزيون لا تسببه. التربية السيئة ليست السبب. الكسل أو قلة الإرادة لا علاقة لها به. هذه أساطير غير علمية — ADHD اضطراب دماغي حقيقي له أساس بيولوجي وجيني موثق بآلاف الدراسات العلمية.
+// ── SYMPTOMS ──────────────────────────────────────────────────────────────
+const TABS = [
+    { label: "الأعراض المعرفية", id: "cognitive", color: "#3d1f4b", items: ["صعوبة شديدة في الانتباه للتفاصيل", "صعوبة الحفاظ على التركيز في المهام", "سهولة التشتت بأي مؤثر خارجي", "النسيان المتكرر في الأنشطة اليومية", "صعوبة تنظيم المهام وترتيب الأولويات", "ضبابية ذهنية (Brain Fog)"] },
+    { label: "الأعراض السلوكية", id: "behavioral", color: COLORS.primary, items: ["التململ وعدم القدرة على الجلوس", "الكلام الزائد ومقاطعة الآخرين", "التصرف دون تفكير في العواقب", "صعوبة انتظار الدور في المحادثات", "البدء في مهام جديدة قبل إنهاء القديمة", "فقدان الأشياء الضرورية باستمرار"] },
+    { label: "الأعراض الجسدية", id: "physical", color: "#7a7a9a", items: ["الإرهاق الذهني والجسدي المستمر", "اضطرابات النوم وصعوبة الاستيقاظ", "توتر في العضلات ناجم عن الضغط", "الشعور بضيق جسدي عند المهام الشاقة"] },
+    { label: "الأعراض العاطفية", id: "emotional", color: "#c1232b", items: ["التقلبات العاطفية المفاجئة", "حساسية مفرطة للنقد والرفض (RSD)", "الإحباط السريع عند العقبات البسيطة", "صعوبة في استعادة الهدوء بعد الانفعال", "تدني الثقة بالنفس نتيجة الإخفاقات"] },
+];
+
+function Symptoms() {
+    const [tab, setTab] = useState(0);
+    const cur = TABS[tab];
+    return (
+        <FadeSection>
+            <span style={s.label}>الأعراض</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>كيف يظهر </span><span style={{ color: COLORS.primary }}>ADHD</span><span style={{ color: "#3d1f4b" }}> في جسدك وعقلك؟</span></h2>
+            <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${COLORS.border}`, marginBottom: 24, overflowX: "auto" }}>
+                {TABS.map((t, i) => (
+                    <button key={i} onClick={() => setTab(i)} style={{ background: "none", border: "none", color: tab === i ? "#3d1f4b" : COLORS.muted, fontWeight: tab === i ? "bold" : "normal", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", padding: "0.65rem 1.1rem", cursor: "pointer", borderBottom: `2px solid ${tab === i ? "#3d1f4b" : "transparent"}`, marginBottom: -1, whiteSpace: "nowrap", transition: "color 0.3s" }}>{t.label}</button>
+                ))}
             </div>
-          </div>
-
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* آليات التكيف */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>آليات التكيف</div>
-        <h2 style={s.sectionTitle}>
-          حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span>
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          هي استجابات سلوكية وعاطفية مختلة يلجأ إليها الفرد لتعويض صعوبات ADHD وحماية نفسه بشكل مصطنع. ورغم أنها قد توفر راحة مؤقتة، إلا أنها تزيد من تأثير الاضطراب وتُفاقم عواقبه على المدى الطويل.
-        </p>
-        <div className="responsive-grid-3" style={{ gap: "16px" }}>
-          {copingCards.map((c, i) => (
-            <div key={i} style={s.copingCard}
-              onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8ab0c4"; }}
-              onMouseLeave={e => { e.currentTarget.style.border = "1.5px solid #e0ddf5"; }}
-            >
-              <div style={s.copingIcon}>{c.icon}</div>
-              <div style={s.copingTitle}>{c.title}</div>
-              <div style={s.copingEn}>{c.en}</div>
-              <div style={s.copingText}>{c.text}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* السمات الشخصية */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>السمات الشخصية</div>
-        <h2 style={s.sectionTitle}>
-          نقص الانتباه وفرط الحركة يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span>
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          السمات الشخصية المرتبطة باضطراب ADHD — بعضها تحديات، وبعضها نقاط قوة حقيقية.
-        </p>
-        <div className="responsive-grid-4" style={{ gap: "14px" }}>
-          {traitCards.map((t, i) => (
-            <div key={i} style={s.traitCard(t.color)}>
-              <div style={s.traitBar(t.bar)} />
-              <div style={{ height: "8px" }} />
-              <div style={s.traitTitle}>{t.title}</div>
-              <div style={s.traitEn}>{t.en}</div>
-              <div style={{ fontSize: "12px", color: "#7a7a9a", lineHeight: "1.6" }}>{t.text}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* رحلة داخل الدماغ */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>علم الأعصاب</div>
-        <h2 style={s.sectionTitle}>
-          رحلة داخل <span style={s.sectionTitleHighlight}>دماغك</span>
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "28px" }}>
-          فهم الآلية العصبية خلف الأعراض — لماذا يعمل الدماغ هكذا؟
-        </p>
-        <div style={s.brainList}>
-          {brainSteps.map((step, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-              <div style={{ ...s.brainNum(step.bg), flexShrink: 0, marginTop: "4px" }}>{i + 1}</div>
-              <div
-                style={{ background: "white", borderRadius: "14px", padding: "20px 28px", border: "1.5px solid #e0ddf5", flex: 1, transition: "transform 0.2s, box-shadow 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateX(-6px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
-                <div style={s.brainTitle}>{step.title} · <span style={{ fontSize: "12px", color: "#bbb", fontWeight: "400" }}>{step.en}</span></div>
-                <div style={s.brainText}>{step.text}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ background: "white", borderRadius: "16px", padding: "28px 32px", border: "1.5px solid #e0ddf5", marginTop: "28px" }}>
-          <div style={{ fontSize: "16px", fontWeight: "700", color: "#3b3b6b", marginBottom: "20px", textAlign: "right" }}>
-            نتيجة هذا الخلل في الدوبامين والنورإبينفرين — تحدث هذه التأثيرات:
-          </div>
-          {resultItems.map((item, i) => (
-            <div key={i} style={s.resultItem}>
-              <div style={s.resultDot("#4a8fa8")} />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* العلاج */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>العلاج</div>
-        <h2 style={s.sectionTitle}>
-          طريقك نحو <span style={s.sectionTitleHighlight}>التعافي</span>
-        </h2>
-        <p style={{ fontSize: "14px", color: "#999", textAlign: "right", marginBottom: "24px" }}>
-          لا يوجد علاج شافٍ — لكن الأعراض قابلة للإدارة بفعالية عالية جداً.
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {treatments.map((t) => (
-            <div key={t.id}>
-              <div
-                style={{ background: "white", borderRadius: expandedTreatment === t.id ? "14px 14px 0 0" : "14px", padding: "20px 24px", border: `2px solid ${expandedTreatment === t.id ? t.color : "#e0ddf5"}`, cursor: "pointer", transition: "border 0.2s", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                onClick={() => setExpandedTreatment(expandedTreatment === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.border = `2px solid ${t.color}`; }}
-                onMouseLeave={e => { if (expandedTreatment !== t.id) e.currentTarget.style.border = "2px solid #e0ddf5"; }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <span style={{ fontSize: "20px", width: "36px", height: "36px", background: t.color, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center" }}>{t.icon}</span>
-                  <span style={{ fontSize: "18px", color: "#aaa" }}>{expandedTreatment === t.id ? "−" : "+"}</span>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "11px", color: "#bbb", marginBottom: "2px" }}>{t.en}</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "flex-end" }}>
-                    <div style={{ fontSize: "17px", fontWeight: "700", color: "#3b3b6b" }}>{t.label}</div>
-                    {t.badge && <span style={{ fontSize: "11px", background: "#f4f0c8", color: "#a07820", borderRadius: "20px", padding: "2px 10px" }}>✦ {t.badge}</span>}
-                  </div>
-                </div>
-              </div>
-              {expandedTreatment === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "4px 24px 20px", border: `2px solid ${t.color}`, borderTop: "none" }}>
-                  {t.details.map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < t.details.length - 1 ? "1px solid #f0eef8" : "none", fontSize: "14px", color: "#5a5a7a", lineHeight: "1.9", textAlign: "right" }}>
-                      <span style={{ color: t.color, flexShrink: 0, fontSize: "16px" }}>•</span>
-                      <span>{line}</span>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                {cur.items.map((item, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                        style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
+                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
                     </div>
-                  ))}
-                </div>
-              )}
+                ))}
             </div>
-          ))}
+        </FadeSection>
+    );
+}
+
+// ── CAUSES ────────────────────────────────────────────────────────────────
+const CAUSES_DATA = [
+    {
+        n: "١",
+        title: "العوامل الجينية والوراثية",
+        color: "#5b4269",
+        bgCircle: "#e0dce6",
+        desc: "ADHD من أعلى الاضطرابات النفسية في نسبة الوراثة - تصل إلى 76%. إذا كان أحد الوالدين مصاباً، فالاحتمال مرتفع جداً أن ينتقل للأبناء.",
+        type: "pills",
+        items: [
+            "تأخر في نضج قشرة الفص الجبهي (Prefrontal Cortex) مقارنة بالأقران في نفس العمر.",
+            "ارتباط جينات محددة مثل DRD4 و DRD5 و CDH13 بزيادة خطر الإصابة واضطراب إشارات الدوبامين.",
+            "حجم أصغر في مناطق دماغية كالعقد القاعدية والمخيخ عند بعض المصابين.",
+            "خلل في مستويات الدوبامين والنورإبينفرين في قشرة الفص الجبهي المسؤولة عن التحكم التنفيذي."
+        ]
+    },
+    {
+        n: "٢",
+        title: "العوامل البيئية والضغوطات",
+        color: "#5b8091",
+        bgCircle: "#d0dae0",
+        type: "list",
+        items: [
+            "التعرض للتبغ أو الكحول أو المواد السامة خلال فترة الحمل",
+            "الولادة المبكرة أو انخفاض وزن الولادة بشكل ملحوظ",
+            "التعرض للرصاص أو المبيدات الحشرية في سن مبكرة جداً",
+            "الحرمان الشديد من التحفيز المعرفي والعاطفي في سنوات الطفولة الأولى",
+            "البيئات الفوضوية وغير المنتظمة التي تُرهق نظام التنظيم الذاتي الهش لدى الطفل"
+        ]
+    },
+    {
+        n: "٣",
+        title: "العوامل العضوية والطبية",
+        color: "#c46a20",
+        bgCircle: "#f5e6d3",
+        type: "list",
+        items: [
+            "بطء في استقلاب الجلوكوز في المناطق الدماغية المسؤولة عن الانتباه والحركة.",
+            "خلل في نشاط الشبكة العصبية الافتراضية (Default Mode Network) التي تبقى نشطة بشكل غير طبيعي.",
+            "اضطرابات الغدة الدرقية - فرط نشاطها يسبب أعراضاً مشابهة جداً لـ ADHD",
+            "انخفاض الحديد والفيريتين في الدم يرتبط بتعطل إنتاج الدوبامين مباشرةً",
+            "بعض الأدوية كالكورتيكوستيرويدات تنتج أعراضاً مشابهة للاضطراب"
+        ]
+    }
+];
+
+function Causes() {
+    return (
+        <FadeSection>
+            <span style={s.label}>الأسباب</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>من أين يأتي </span><span style={{ color: COLORS.primary }}>ADHD؟</span></h2>
+            <p style={{ fontSize: "0.875rem", color: COLORS.muted, marginBottom: 32 }}>هناك ٣ مسببات رئيسية لاضطراب ADHD</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                {CAUSES_DATA.map((c, i) => (
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 20, alignItems: "start" }}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <div style={{ width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.1rem", color: "#3d1f4b", border: `1px solid ${c.color}`, background: c.bgCircle, flexShrink: 0 }}>{c.n}</div>
+                            {i < CAUSES_DATA.length - 1 && <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)`, marginTop: 4 }} />}
+                        </div>
+                        <div style={{
+                            marginBottom: 0,
+                            background: "#ffffff",
+                            border: `2.5px solid ${c.color}`,
+                            borderRadius: "20px",
+                            padding: "1.5rem",
+                            boxShadow: "0 4px 15px rgba(0,0,0,0.03)"
+                        }}>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: c.color, fontSize: "1.05rem", marginBottom: 14 }}>{c.title}</div>
+                            {c.desc && <p style={{ fontSize: "0.875rem", color: "#5d5c5d", lineHeight: 1.7, marginBottom: 14, fontWeight: "600" }}>{c.desc}</p>}
+                            
+                            {c.type === "pills" ? (
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                                    {c.items.map((item, idx) => (
+                                        <span key={idx} style={{ background: c.bgCircle, color: "#3d1f4b", borderRadius: 50, padding: "4px 12px", fontSize: "0.75rem", fontWeight: "bold" }}>{item}</span>
+                                    ))}
+                                </div>
+                            ) : (
+                                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                    {c.items.map((item, idx) => (
+                                        <li key={idx} style={{ 
+                                            padding: "0.5rem 0", 
+                                            borderBottom: idx < c.items.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
+                                            fontSize: "0.875rem",
+                                            color: "#5d5c5d",
+                                            fontWeight: "600",
+                                            lineHeight: 1.7
+                                        }}>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div style={{ 
+                border: "2.5px solid #8ba8b5", 
+                borderRadius: 35, 
+                padding: "1.5rem 2.5rem", 
+                background: "rgba(255, 255, 255, 0.5)", 
+                marginTop: 40,
+                textAlign: "right"
+            }}>
+                <div style={{ 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "flex-start", 
+                    gap: 12, 
+                    color: "#5b8091", 
+                    fontWeight: 900, 
+                    fontSize: "1.1rem",
+                    marginBottom: 10,
+                    fontFamily: "'Tajawal', sans-serif"
+                }}>
+                    <span style={{ color: "#ff6b81", fontSize: "1.4rem" }}>❌</span>
+                    <span>خرافات شائعة عن أسباب ADHD</span>
+                </div>
+                <p style={{ 
+                    fontSize: "0.95rem", 
+                    color: "#5d5c5d", 
+                    lineHeight: 1.8, 
+                    margin: 0,
+                    fontWeight: "600",
+                    fontFamily: "'Tajawal', sans-serif"
+                }}>
+                    السكر لا يسبب ADHD. الشاشات والتلفزيون لا تسببه. التربية السيئة ليست السبب. الكسل أو قلة الإرادة لا علاقة لها به. هذه أساطير غير علمية - ADHD اضطراب دماغي حقيقي له أساس بيولوجي وجيني موثق بآلاف الدراسات العلمية.
+                </p>
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── MALADAPTIVE ───────────────────────────────────────────────────────────
+const MALAD = [
+    { icon: "⏳", title: "التسويف المزمن", en: "Chronic Procrastination", desc: "تأجيل المهام لأن الدماغ لا يجد الدافع الكافي، مما يخلق دوامة ذنب وتوتر.", color: "#E67E22" },
+    { icon: "🌀", title: "الإفراط في الانشغال", en: "Hyperbusyness", desc: "ملء كل لحظة بالفوضى هرباً من الجلوس مع الأفكار أو مواجهة مهمة صعبة.", color: "#E67E22" },
+    { icon: "⏱️", title: "الاعتماد على الضغط", en: "Deadline Dependency", desc: "عدم القدرة على البدء إلا تحت وطأة الموعد النهائي، مما يسبب إرهاقاً مزمناً.", color: "#E67E22" },
+    { icon: "🙈", title: "التجنب العاطفي", en: "Emotional Avoidance", desc: "الابتعاد عن المواقف التي تتطلب جهداً تنظيمياً أو قد تسبب إحراجاً.", color: "#E67E22" },
+    { icon: "📱", title: "المحفزات السريعة", en: "Dopamine Seeking", desc: "اللجوء للمحتوى السريع لإشباع الدوبامين مؤقتاً دون بذل جهد حقيقي.", color: "#E67E22" },
+    { icon: "💔", title: "إلقاء اللوم على الذات", en: "Self-blame", desc: "تفسير كل إخفاق كدليل على الكسل، مما يدمر الثقة بالنفس تدريجياً.", color: "#E67E22" },
+];
+
+const REASSURANCE = { icon: "🙏", title: "طلب الطمأنينة المفرطة", en: "Excessive Reassurance Seeking", desc: "الاعتماد على الآخرين لتأكيد قراراته وتنظيم مهامه باستمرار، مما يُضعف الاستقلالية ويُثقل العلاقات ويزيد القلق بدلاً من تخفيفه على المدى الطويل.", color: "#E67E22" };
+
+function Maladaptive() {
+    return (
+        <FadeSection>
+            <span style={s.label}>آليات التكيف</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>حين تُخطئ </span><span style={{ color: COLORS.primary }}>طريقة التعامل</span></h2>
+            <p style={{ fontSize: "0.875rem", color: "#5d5c5d", marginBottom: 28, lineHeight: 1.7 }}>هي استجابات سلوكية مختلة توفر راحة مؤقتة، لكنها تزيد من تأثير الاضطراب وتُفاقم عواقبه الجسدية والنفسية على المدى الطويل.</p>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+                    {MALAD.map((m, i) => (
+                        <div key={i} 
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = `0 12px 30px ${COLORS.primary}1f`; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                            style={{ ...s.card, flex: "1 1 280px", maxWidth: "calc(33.33% - 12px)", minWidth: "280px" }}>
+                            <div style={{ fontSize: 24, marginBottom: 10 }}>{m.icon}</div>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3d1f4b", fontSize: "0.95rem", marginBottom: 4 }}>{m.title}</div>
+                            <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 10, letterSpacing: "0.05em" }}>{m.en}</div>
+                            <p style={{ fontSize: "0.85rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{m.desc}</p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Bottom: Full-width Rectangle */}
+                <div 
+                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = `0 12px 30px ${COLORS.primary}1f`; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                    style={{ ...s.card, flex: "1 1 100%", display: "grid", gridTemplateColumns: "auto 1fr", gap: 24, alignItems: "center", marginTop: 4 }}>
+                    <div style={{ fontSize: 32, padding: "0 10px" }}>{REASSURANCE.icon}</div>
+                    <div>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3d1f4b", fontSize: "1rem" }}>{REASSURANCE.title}</div>
+                            <div style={{ fontSize: 11, color: COLORS.muted, letterSpacing: "0.05em" }}>{REASSURANCE.en}</div>
+                        </div>
+                        <p style={{ fontSize: "0.875rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{REASSURANCE.desc}</p>
+                    </div>
+                </div>
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── PERSONALITY ───────────────────────────────────────────────────────────
+const TRAITS = [
+    { ar: "الاندفاعية العاطفية", en: "Emotional Impulsivity", desc: "ردود أفعال مكثفة وسريعة غير متناسبة مع الموقف وصعوبة في تهدئتها." },
+    { ar: "حساسية الرفض المؤلمة", en: "RSD", desc: "ألم عاطفي حاد عند الشعور بالرفض أو الانتقاد، يعاني منها 98% من المصابين." },
+    { ar: "عدم الاتساق في الأداء", en: "Inconsistency", desc: "قدرة استثنائية في بعض الأيام وشلل تام في أيام أخرى دون سبب واضح." },
+    { ar: "الإبداع ✨", en: "Creative Thinking", desc: "ميل طبيعي لرؤية روابط غير متوقعة وابتكار حلول غير تقليدية." },
+    { ar: "فرط التركيز ✨", en: "Hyperfocus", desc: "قدرة على الانغماس الكلي في الاهتمامات التي تحفز الدوبامين." },
+    { ar: "الكمالية الدفاعية", en: "Perfectionism", desc: "كمالية مبالغ فيها لإخفاء الأعراض وإثبات الكفاءة للآخرين." },
+    { ar: "الحاجة للتحفيز", en: "High Stimulation", desc: "الملل السريع جداً والبحث المستمر عن التجديد كمصدر للدوبامين." },
+];
+
+function Personality() {
+    return (
+        <FadeSection>
+            <span style={s.label}>السمات الشخصية</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: COLORS.primary }}>ADHD </span><span style={{ color: "#3d1f4b" }}>يُغيّر شخصيتك</span></h2>
+            <p style={{ fontSize: "0.875rem", color: COLORS.muted, marginBottom: 24 }}>العيش مع ADHD مزمن يحدث تغييرات في شخصيتك بمرور الوقت.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {TRAITS.map((t, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateX(-12px)"; e.currentTarget.style.borderColor = "#552269"; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.borderColor = "rgba(214,147,106,0.2)"; }}
+                        style={{ ...s.card, display: "grid", gridTemplateColumns: "min(200px,40%) 1fr", gap: 16, alignItems: "start", borderColor: "rgba(214,147,106,0.2)" }}>
+                        <div>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#552269", fontSize: "0.95rem" }}>{t.ar}</div>
+                            <div style={{ fontSize: 11, color: COLORS.muted, marginTop: 3 }}>{t.en}</div>
+                        </div>
+                        <p style={{ fontSize: "0.85rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{t.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── BRAIN JOURNEY ─────────────────────────────────────────────────────────
+const BRAIN_STEPS = [
+    { 
+        n: "١", 
+        label: "قشرة الفص الجبهي — Prefrontal Cortex", 
+        sub: "مركز القيادة — الأكثر تأثراً في ADHD",
+        text: "عند مواجهة مهمة تتطلب تركيزاً مستمراً، تُرسل قشرة الفص الجبهي إشارات لتفعيل الانتباه والتخطيط والتحكم بالاندفاع. في ADHD، هذه المنطقة أبطأ نضجاً وأقل نشاطاً، مما يُضعف قدرتها على 'إدارة' بقية الدماغ بفعالية." 
+    },
+    { 
+        n: "٢", 
+        label: "الدوبامين والنورإبينفرين — Dopamine & Norepinephrine", 
+        sub: "شُح الوقود الكيميائي",
+        text: "في الدماغ الطبيعي، يُفرز الدوبامين بكميات كافية عند البدء بمهمة، مما يجعلها 'تبدو مهمة' ويحفّز الاستمرار. في دماغ ADHD، الدوبامين شحيح في هذه الدوائر — لذا لا يجد الدماغ 'السبب الكافي' للبدء أو الاستمرار حتى في المهام الضرورية." 
+    },
+    { 
+        n: "٣", 
+        label: "الشبكة العصبية الافتراضية — Default Mode Network", 
+        sub: "الضوضاء الداخلية التي لا تصمت",
+        text: "هذه الشبكة — المسؤولة عن الأحلام والتخيل — تبقى نشطة بشكل غير طبيعي حتى أثناء التركيز في ADHD، مما يخلق 'ضوضاء داخلية' مستمرة تُصعّب التركيز وتُفسّر التشتت المزمن." 
+    },
+    { 
+        n: "٤", 
+        label: "العقد القاعدية — Basal Ganglia", 
+        sub: "ضعف التحكم بالاندفاع",
+        text: "تُحدث انخفاضاً في نشاط العقد القاعدية المسؤولة عن تنظيم الحركة والتحكم بالاندفاع، مما يجعل كبح الأفعال الفورية وتأجيل المكافأة أمراً شاقاً للغاية." 
+    },
+    { 
+        n: "٥", 
+        label: "اللوزة الدماغية — Amygdala", 
+        sub: "الانفعالات التي تطغى على المنطق",
+        text: "تُرسل اللوزة الدماغية استجابات عاطفية مبالغ فيها تجاه الإخفاق أو الانتقاد، بينما تعجز قشرة الفص الجبهي الضعيفة عن تهدئتها — وهذا يُفسّر ظاهرة 'حساسية الرفض المؤلمة RSD' بشكل كامل." 
+    },
+];
+
+function BrainStep({ step, index }) {
+    const [ref, visible] = useFadeIn();
+    return (
+        <div ref={ref} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 20, opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(20px)", transition: `opacity 0.5s ${index * 0.12}s ease, transform 0.5s ${index * 0.12}s ease` }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 }}>
+                <div style={{ width: 52, height: 52, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.2rem", color: "#3d1f4b", border: `1.5px solid rgba(74, 143, 168, 0.25)`, background: "#d0dae0", boxShadow: "0 4px 10px rgba(0,0,0,0.05)", flexShrink: 0 }}>{step.n}</div>
+                {index < BRAIN_STEPS.length - 1 && <div style={{ width: 1, height: "100%", background: `linear-gradient(to bottom, rgba(74, 143, 168, 0.3), transparent)`, margin: "8px 0" }} />}
+            </div>
+            <div style={{ ...s.card, marginBottom: 20, borderColor: "rgba(74, 143, 168, 0.25)", padding: "1.5rem 2rem", background: "#ffffff", borderRadius: 20 }}>
+                <div style={{ fontSize: "1.05rem", color: "#552269", fontWeight: "900", fontFamily: "'Tajawal', sans-serif", marginBottom: 4 }}>{step.label}</div>
+                <div style={{ fontSize: "0.85rem", color: "#552269", fontWeight: "700", fontFamily: "'Tajawal', sans-serif", marginBottom: 12 }}>{step.sub}</div>
+                <p style={{ fontSize: "0.9rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{step.text}</p>
+            </div>
         </div>
+    );
+}
 
-        <div style={{ background: "linear-gradient(135deg, #e8f4f8 0%, #f0f8f4 100%)", borderRadius: "16px", padding: "24px 32px", marginTop: "24px", border: "1.5px solid #c8dff4", textAlign: "right" }}>
-          <div style={{ fontSize: "15px", fontWeight: "700", color: "#3b6b8a", marginBottom: "8px" }}>✅ أفضل النتائج تأتي من المنهج المتكامل</div>
-          <div style={{ fontSize: "13px", color: "#5a7a8a", lineHeight: "1.9" }}>
-            الجمع بين العلاج الدوائي والنفسي السلوكي وتعديل نمط الحياة والدعم الاجتماعي والمدرسي — كلٌّ منها يعمل على مستوى مختلف من الاضطراب، وسوياً يُحققون نتائج أفضل بكثير من أي علاج منفرد.
-          </div>
+function BrainJourney() {
+    return (
+        <FadeSection>
+            <span style={s.label}>علم الأعصاب</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>رحلة داخل </span><span style={{ color: COLORS.primary }}>دماغك</span></h2>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                {BRAIN_STEPS.map((step, i) => <BrainStep key={i} step={step} index={i} />)}
+            </div>
+            <div style={{ 
+                background: "rgba(74, 143, 168, 0.08)", 
+                border: "2px solid rgba(74, 143, 168, 0.25)", 
+                borderRadius: 35, 
+                padding: "2.5rem", 
+                marginTop: 24,
+                textAlign: "right"
+            }}>
+                <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3d1f4b", marginBottom: 24, fontSize: "1.05rem", lineHeight: 1.5 }}>
+                    نتيجة هذا الخلل في الدوبامين والنورإبينفرين<br/>تحدث هذه التأثيرات:
+                </p>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    {[
+                        { t: "صعوبة في بدء المهام حتى المهمة منها (Task Initiation Deficit).", s: "“أعرف أنني يجب أن أبدأ، لكن لا أستطيع”." },
+                        { t: "الانتقال المتكرر بين المهام دون إنهاء أي منها — دوامة مستمرة من البدايات بلا نهايات.", s: "" },
+                        { t: "فرط التركيز على أنشطة ذات تحفيز عالٍ مقابل شلل تام أمام أنشطة روتينية أو ذات تحفيز منخفض.", s: "" },
+                        { t: "تفاوت حاد في الأداء بين يوم وآخر بحسب مستوى التحفيز المتاح — لا يمكن التنبؤ بأداء اليوم.", s: "" }
+                    ].map((it, i, a) => (
+                        <div key={i} style={{ 
+                            fontSize: "0.95rem", 
+                            color: "#3d1f4b", 
+                            fontWeight: "700", 
+                            padding: "1rem 0", 
+                            borderBottom: i < a.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none", 
+                            display: "flex", 
+                            gap: 12, 
+                            alignItems: "flex-start",
+                            lineHeight: 1.6
+                        }}>
+                            <span style={{ color: COLORS.primary, fontSize: "1.2rem", marginTop: -2 }}>•</span>
+                            <span>
+                                {it.t}
+                                {it.s && <span style={{ display: "block", color: "#5d5c5d", fontWeight: "600", fontSize: "0.9rem", marginTop: 4 }}>{it.s}</span>}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── TREATMENT ─────────────────────────────────────────────────────────────
+const TREATMENTS = [
+    { 
+        icon: "🧩", 
+        en: "Cognitive Behavioral Therapy", 
+        title: "العلاج السلوكي المعرفي (CBT)", 
+        color: "#552269", 
+        pts: [
+            ["التثقيف النفسي:", "فهم أن التسويف وصعوبة البدء ليسا كسلاً، بل خللاً في نظام الدوبامين يمكن تجاوزه بالاستراتيجيات الصحيحة. التعامل مع ADHD كاختلاف لا كعيب."],
+            ["إعادة الهيكلة المعرفية:", "تحدي الأفكار مثل 'أنا فاشل' أو 'لن أستطيع أبداً' وربطها بالاضطراب لا بالشخصية. تغيير الحوار الداخلي من العقاب إلى الحل."],
+            ["تدريب المهارات:", "تعليم التخطيط، تقسيم المهام إلى خطوات صغيرة قابلة للتنفيذ، وبناء أنظمة شخصية تعوّض الضعف في الوظائف التنفيذية."],
+            ["التعرض التدريجي:", "مواجهة تدريجية للمهام المؤجلة لكسر الدوامة السلبية. تعليم الدماغ أن البدء ممكن دون الحاجة لضغط الموعد النهائي."]
+        ] 
+    },
+    { 
+        icon: "💊", 
+        en: "Pharmacotherapy", 
+        title: "العلاج الدوائي", 
+        color: COLORS.primary, 
+        pts: [
+            ["الأدوية المنشطة", "كالميثيلفينيدات (ريتالين) والأمفيتامينات. هي الأكثر فعالية — ترفع الدوبامين والنورإبينفرين في قشرة الفص الجبهي مباشرةً. تحسين واضح في التركيز والتنظيم والتحكم."],
+            ["الأدوية غير المنشطة", "كأتوموكسيتين (ستراتيرا) وجوانفاسين. تُستخدم عند عدم تحمل المنشطات أو وجود حالات مصاحبة كالقلق أو اضطراب النوم."],
+            ["ناهضات ألفا لعلاج الحساسية العاطفية", "كلونيدين وجوانفاسين — تُستخدم تحديداً لعلاج حساسية الرفض المؤلمة (RSD). تعمل على تهدئة نشاط النورإبينفرين وتقلل شدة الاستجابات العاطفية بشكل ملحوظ."],
+            ["مضادات اكتئاب من نوع SNRIs", "في حالات ADHD المصحوبة باكتئاب أو قلق مزمن — تساعد على تنظيم كلّ من الدوبامين والسيروتونين والنورإبينفرين معاً."]
+        ] 
+    },
+];
+
+function Treatment() {
+    const [open, setOpen] = useState(-1);
+    return (
+        <FadeSection>
+            <span style={s.label}>العلاج</span>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>طريقك نحو </span><span style={{ color: COLORS.primary }}>التعافي</span></h2>
+            <div style={{ flexDirection: "column", gap: 12, display: "flex" }}>
+                {TREATMENTS.map((t, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { if (open !== i) e.currentTarget.style.borderColor = t.color; }}
+                        onMouseLeave={e => { if (open !== i) e.currentTarget.style.borderColor = COLORS.border; }}
+                        style={{ background: COLORS.card, border: `1px solid ${open === i ? t.color : COLORS.border}`, borderRadius: 16, overflow: "hidden", transition: "border-color 0.3s" }}>
+                        <div onClick={() => setOpen(open === i ? -1 : i)} style={{ display: "flex", alignItems: "center", gap: 16, padding: "1.25rem 1.5rem", cursor: "pointer" }}>
+                            <div style={{ width: 46, height: 46, borderRadius: 12, background: `${t.color}14`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{t.icon}</div>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: COLORS.muted, letterSpacing: "0.08em", marginBottom: 3 }}>{t.en}</div>
+                                <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color: t.color, fontSize: "0.95rem" }}>{t.title}</div>
+                            </div>
+                            <div style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: COLORS.muted, fontSize: 18, transition: "transform 0.3s", transform: open === i ? "rotate(45deg)" : "none" }}>+</div>
+                        </div>
+                        {open === i && (
+                            <div style={{ padding: "0 1.5rem 1.5rem" }}>
+                                {t.badge && <span style={{ display: "inline-block", background: `${t.color}14`, border: `1px solid ${t.color}40`, color: t.color, borderRadius: 50, padding: "4px 14px", fontSize: 12, marginBottom: 14, fontWeight: "bold" }}>✦ {t.badge}</span>}
+                                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                    {t.pts.map(([bold, rest], j, a) => (
+                                        <li key={j} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
+                                            <span style={{ color: t.color, fontSize: "0.5rem", marginTop: 7, flexShrink: 0 }}>●</span>
+                                            <span>{bold && <strong style={{ color: "#5d5c5d", fontFamily: "'Tajawal', sans-serif" }}>{bold}</strong>} {rest}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+            <div style={{ background: "linear-gradient(135deg, #e8f4f8 0%, #f0f8f4 100%)", borderRadius: "16px", padding: "1.5rem", marginTop: "1.5rem", border: `1px solid ${COLORS.border}` }}>
+                <p style={{ fontWeight: "900", color: COLORS.primary, marginBottom: 8 }}>✅ المنهج المتكامل</p>
+                <p style={{ fontSize: "13px", color: "#5d5c5d", lineHeight: "1.8", fontWeight: "600" }}>الجمع بين العلاج الدوائي والنفسي وتعديل نمط الحياة هو الطريق الأمثل. الأدوية تهيئ الدماغ، والاستراتيجيات السلوكية تبني المهارات.</p>
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── APP ───────────────────────────────────────────────────────────────────
+export default function ADHDDetail() {
+    useEffect(() => {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
+        document.head.appendChild(link);
+        const style = document.createElement("style");
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#4a8fa8; border-radius:2px }`;
+        document.head.appendChild(style);
+    }, []);
+
+    return (
+        <div style={s.page}>
+            <Hero />
+            <div style={{ background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)' }}>
+                <Definition />
+                <Divider />
+                <Types />
+                <Divider />
+                <Symptoms />
+                <Divider />
+                <Causes />
+                <Divider />
+                <Maladaptive />
+                <Divider />
+                <Personality />
+                <Divider />
+                <BrainJourney />
+                <Divider />
+                <Treatment />
+                <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
+                    <Link to="/disease/eating-disorder" style={{ textDecoration: 'none' }}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#493054"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#3d1f4b"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#3d1f4b', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(61, 31, 75, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                            <span>اضطراب الأكل</span>
+                            <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
+                        </div>
+                    </Link>
+                </div>
+                <div style={{ textAlign: "center", padding: "2.5rem 1.5rem", borderTop: `1px solid ${COLORS.border}`, fontSize: 13, color: COLORS.muted }}>
+                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض ADHD، تحدث مع <span style={{ color: "#3d1f4b" }}>متخصص نفسي</span>
+                </div>
+            </div>
         </div>
-
-        <p style={{ fontSize: "12px", color: "#bbb", textAlign: "center", marginTop: "28px" }}>
-          هذا المحتوى لأغراض تثقيفية فقط. إذا كنت تعاني من أعراض القلق وفرط الحركة، تحدث مع <strong style={{ color: "#4a8fa8" }}>متخصص نفسي</strong>.
-        </p>
-      </div>
-
-    </div>
-  );
+    );
 }
