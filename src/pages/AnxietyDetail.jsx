@@ -513,8 +513,8 @@ export default function App() {
                 <Divider />
                 <Treatment />
                 <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
-                    <Link to="/disease/depression" style={{ textDecoration: 'none' }}>
-                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = COLORS.coral; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#493054"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#493054', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(73, 48, 84, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                    <Link to="/disease/depression" style={{ textDecoration: 'none' }} onClick={() => window.scrollTo(0, 0)}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#c1232b"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#9a0000"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#9a0000', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(154, 0, 0, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
                             <span>اضطراب الاكتئاب</span>
                             <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
                         </div>

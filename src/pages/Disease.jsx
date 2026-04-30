@@ -14,7 +14,7 @@ function Disease() {
 
   const disorders = [
     { id: 4, label: "اضطراب القلق",                           sub: "(Anxiety)",           border: "#d6936a", path: "/disease/anxiety" },
-    { id: 5, label: "الاكتئاب",                               sub: "(Depression)",        border: "#545454", path: "/disease/depression" },
+    { id: 5, label: "الاكتئاب",                               sub: "(Depression)",        border: "#9a0000", path: "/disease/depression" },
     { id: 2, label: "اضطراب نقص الانتباه مع فرط النشاط",     sub: "(ADHD)",              border: "#abc3d1", path: "/disease/adhd" },
     { id: 1, label: "اضطراب الأكل",                           sub: "(Eating Disorders)", border: "#ddbcd0", path: "/disease/eating-disorder" },
     { id: 3, label: "اضطراب ما بعد الصدمة",                   sub: "(PTSD)",              border: "#ab9685", path: "/disease/ptsd" },

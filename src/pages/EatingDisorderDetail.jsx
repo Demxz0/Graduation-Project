@@ -164,16 +164,37 @@ function Symptoms() {
                     <button key={i} onClick={() => setTab(i)} style={{ background: "none", border: "none", color: tab === i ? "#3d1f4b" : COLORS.muted, fontWeight: tab === i ? "bold" : "normal", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", padding: "0.65rem 1.1rem", cursor: "pointer", borderBottom: `2px solid ${tab === i ? "#3d1f4b" : "transparent"}`, marginBottom: -1, whiteSpace: "nowrap", transition: "color 0.3s" }}>{t.label}</button>
                 ))}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                {cur.items.map((item, i) => (
-                    <div key={i}
-                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
-                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
-                        style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+            {tab < 3 ? (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                    {cur.items.map((item, i) => (
+                        <div key={i}
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                            style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
+                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div style={{ background: "rgba(193,35,43,0.06)", border: "2px solid rgba(193,35,43,0.5)", borderRadius: 14, padding: "1.5rem" }}>
+                    <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#c1232b", marginBottom: 16, fontSize: "1.1rem" }}>🍱 تنبيه: تتميز نوبات النهم بفقدان السيطرة التام واستهلاك كميات ضخمة من الطعام:</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 24 }}>
+                        {[
+                            { title: "أعراض النوبة الحادة", items: ["نوبات أكل مفاجئة وغير متحكم بها بكميات ضخمة", "شعور بفقدان السيطرة التام على عملية الأكل", "الاستمرار في الأكل حتى الشعور بألم جسدي حاد"] },
+                            { title: "الآثار النفسية واللاحقة", items: ["مشاعر ذنب وخزي شديدة بعد الانتهاء من الأكل", "محاولة تعويض النوبة بالسلوك التطهيري القاسي", "انسحاب اجتماعي مفاجئ وتقلبات مزاجية حادة"] },
+                        ].map(col => (
+                            <div key={col.title}>
+                                <p style={{ fontSize: "0.95rem", color: "#c1232b", fontWeight: "900", marginBottom: 12 }}>{col.title}</p>
+                                {col.items.map((it, i) => (
+                                    <div key={i} style={{ fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", padding: "0.4rem 0", borderBottom: "1px solid rgba(193,35,43,0.15)", display: "flex", gap: 8, alignItems: "flex-start" }}>
+                                        <span style={{ color: "#c1232b", flexShrink: 0, fontSize: "0.9rem", marginTop: 2 }}>⚡</span>{it}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
         </FadeSection>
     );
 }
@@ -185,6 +206,7 @@ const CAUSES = [
         color: "#9e728a", 
         title: "العوامل الجينية والوراثية", 
         borderColor: "#d68cb9", 
+        circleBg: "linear-gradient(180deg, #af6c86, #3d1f4b)",
         items: [
             "استعداد وراثي لزيادة القلق أو الكمالية",
             "حساسية أعلى في النواقل العصبية المرتبطة بالمكافأة مثل السيروتونين والدوبامين",
@@ -197,6 +219,7 @@ const CAUSES = [
         color: "#3d1f4b", 
         title: "العوامل النفسية والشخصية:", 
         borderColor: "#552269", 
+         circleBg: "linear-gradient(180deg, #af6c86, #e2d0eb)",
         items: [
             "المثالية المفرطة (Perfectionism): السعي للكمال والشعور بالذنب عند عدم تحقيق معايير صارمة.",
             "انخفاض تقدير الذات: ربط القيمة الشخصية بالوزن أو شكل الجسم فقط.",
@@ -229,7 +252,7 @@ function Causes() {
                 {CAUSES.map((c, i) => (
                     <div key={i} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 20, alignItems: "start" }}>
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <div style={{ width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.2rem", color: "#fff", background: "linear-gradient(135deg, #af6c86, #e2d0eb)", boxShadow: "0 4px 10px rgba(175, 108, 134, 0.2)", flexShrink: 0 }}>{c.n}</div>
+                            <div style={{ width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.2rem", color: "#fff", background: c.circleBg || "linear-gradient(135deg, #af6c86, #e2d0eb)", boxShadow: "0 4px 10px rgba(175, 108, 134, 0.2)", flexShrink: 0 }}>{c.n}</div>
                             {i < CAUSES.length - 1 && <div style={{ width: 1, height: "100%", minHeight: 40, background: `linear-gradient(to bottom, #af6c8650, transparent)`, marginTop: 4 }} />}
                         </div>
                         <div style={{
@@ -500,15 +523,15 @@ export default function EatingDisorderDetail() {
                 <Divider />
                 <Treatment />
                 <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
-                    <Link to="/disease/ptsd" style={{ textDecoration: 'none' }}>
-                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#493054"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#3d1f4b"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#3d1f4b', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(61, 31, 75, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                    <Link to="/disease/ptsd" style={{ textDecoration: 'none' }} onClick={() => window.scrollTo(0, 0)}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#7a5356"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#8a6366"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#8a6366', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(138, 99, 102, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
                             <span>اضطراب PTSD</span>
                             <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
                         </div>
                     </Link>
                 </div>
                 <div style={{ textAlign: "center", padding: "2.5rem 1.5rem", borderTop: `1px solid ${COLORS.border}`, fontSize: 13, color: COLORS.muted }}>
-                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض اضطراب الأكل، تحدث مع <span style={{ color: "#3d1f4b" }}>متخصص نفسي</span>
+                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض اضطراب الأكل، تحدث مع <span style={{ color: COLORS.primary }}>متخصص نفسي</span>
                 </div>
             </div>
         </div>

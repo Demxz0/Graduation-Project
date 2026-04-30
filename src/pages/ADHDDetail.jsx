@@ -163,16 +163,37 @@ function Symptoms() {
                     <button key={i} onClick={() => setTab(i)} style={{ background: "none", border: "none", color: tab === i ? "#3d1f4b" : COLORS.muted, fontWeight: tab === i ? "bold" : "normal", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", padding: "0.65rem 1.1rem", cursor: "pointer", borderBottom: `2px solid ${tab === i ? "#3d1f4b" : "transparent"}`, marginBottom: -1, whiteSpace: "nowrap", transition: "color 0.3s" }}>{t.label}</button>
                 ))}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                {cur.items.map((item, i) => (
-                    <div key={i}
-                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
-                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
-                        style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+            {tab < 3 ? (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                    {cur.items.map((item, i) => (
+                        <div key={i}
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                            style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
+                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div style={{ background: "rgba(193,35,43,0.06)", border: "2px solid rgba(193,35,43,0.5)", borderRadius: 14, padding: "1.5rem" }}>
+                    <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#c1232b", marginBottom: 16, fontSize: "1.1rem" }}>🌡️ تنبيه: تظهر الأعراض العاطفية في ADHD كـ 'عمى تنظيمي' للمشاعر يؤدي لردود فعل حادة:</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 24 }}>
+                        {[
+                            { title: "الاندفاعية العاطفية", items: ["التقلبات العاطفية المفاجئة والحادة دون سبب واضح", "الإحباط السريع جداً عند مواجهة أبسط العقبات", "صعوبة بالغة في العودة للهدوء بعد حدوث الانفعال"] },
+                            { title: "الحساسية والأثر النفسي", items: ["حساسية مفرطة ومؤلمة تجاه النقد أو الرفض (RSD)", "تدني الثقة بالنفس نتيجة تراكم الإخفاقات اليومية", "الشعور المستمر بالإرهاق من محاولة 'التظاهر' بالثبات العاطفي"] },
+                        ].map(col => (
+                            <div key={col.title}>
+                                <p style={{ fontSize: "0.95rem", color: "#c1232b", fontWeight: "900", marginBottom: 12 }}>{col.title}</p>
+                                {col.items.map((it, i) => (
+                                    <div key={i} style={{ fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", padding: "0.4rem 0", borderBottom: "1px solid rgba(193,35,43,0.15)", display: "flex", gap: 8, alignItems: "flex-start" }}>
+                                        <span style={{ color: "#c1232b", flexShrink: 0, fontSize: "0.9rem", marginTop: 2 }}>⚡</span>{it}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
         </FadeSection>
     );
 }
@@ -183,9 +204,10 @@ const CAUSES_DATA = [
         n: "١",
         title: "العوامل الجينية والوراثية",
         color: "#5b4269",
-        bgCircle: "#e0dce6",
+        bgCircle: "linear-gradient(180deg, #3d1f4b, #af6c86)",
+        circleColor: "#fff",
         desc: "ADHD من أعلى الاضطرابات النفسية في نسبة الوراثة - تصل إلى 76%. إذا كان أحد الوالدين مصاباً، فالاحتمال مرتفع جداً أن ينتقل للأبناء.",
-        type: "pills",
+        type: "list",
         items: [
             "تأخر في نضج قشرة الفص الجبهي (Prefrontal Cortex) مقارنة بالأقران في نفس العمر.",
             "ارتباط جينات محددة مثل DRD4 و DRD5 و CDH13 بزيادة خطر الإصابة واضطراب إشارات الدوبامين.",
@@ -197,8 +219,12 @@ const CAUSES_DATA = [
         n: "٢",
         title: "العوامل البيئية والضغوطات",
         color: "#5b8091",
-        bgCircle: "#d0dae0",
-        type: "list",
+        bgCircle: "linear-gradient(135deg, #abc3d1, #5d6174)",
+        circleColor: "#fff",
+        desc: "تساهم العوامل البيئية في تطور أعراض الاضطراب من خلال التأثير على نضج الدماغ في مراحل مبكرة.",
+        type: "pills",
+        pillBg: "rgba(92, 127, 148, 0.15)",
+        pillColor: "#5d5c5d",
         items: [
             "التعرض للتبغ أو الكحول أو المواد السامة خلال فترة الحمل",
             "الولادة المبكرة أو انخفاض وزن الولادة بشكل ملحوظ",
@@ -211,7 +237,8 @@ const CAUSES_DATA = [
         n: "٣",
         title: "العوامل العضوية والطبية",
         color: "#c46a20",
-        bgCircle: "#f5e6d3",
+        bgCircle: "linear-gradient(90deg, #b84700, #7f2a3b)",
+        circleColor: "#fff",
         type: "list",
         items: [
             "بطء في استقلاب الجلوكوز في المناطق الدماغية المسؤولة عن الانتباه والحركة.",
@@ -250,7 +277,16 @@ function Causes() {
                             {c.type === "pills" ? (
                                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                                     {c.items.map((item, idx) => (
-                                        <span key={idx} style={{ background: c.bgCircle, color: "#3d1f4b", borderRadius: 50, padding: "4px 12px", fontSize: "0.75rem", fontWeight: "bold" }}>{item}</span>
+                                        <span key={idx} style={{ 
+                                            background: c.pillBg || c.bgCircle, 
+                                            color: c.pillColor || "#3d1f4b", 
+                                            border: `1px solid ${c.color}60`,
+                                            borderRadius: 50, 
+                                            padding: "4px 12px", 
+                                            fontSize: "0.75rem", 
+                                            fontWeight: "bold",
+                                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                                        }}>{item}</span>
                                     ))}
                                 </div>
                             ) : (
@@ -604,15 +640,15 @@ export default function ADHDDetail() {
                 <Divider />
                 <Treatment />
                 <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
-                    <Link to="/disease/eating-disorder" style={{ textDecoration: 'none' }}>
-                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#493054"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#3d1f4b"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#3d1f4b', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(61, 31, 75, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                    <Link to="/disease/eating-disorder" style={{ textDecoration: 'none' }} onClick={() => window.scrollTo(0, 0)}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#946182"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#7a4d68"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#7a4d68', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(122, 77, 104, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
                             <span>اضطراب الأكل</span>
                             <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
                         </div>
                     </Link>
                 </div>
                 <div style={{ textAlign: "center", padding: "2.5rem 1.5rem", borderTop: `1px solid ${COLORS.border}`, fontSize: 13, color: COLORS.muted }}>
-                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض ADHD، تحدث مع <span style={{ color: "#3d1f4b" }}>متخصص نفسي</span>
+                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض ADHD، تحدث مع <span style={{ color: COLORS.primary }}>متخصص نفسي</span>
                 </div>
             </div>
         </div>

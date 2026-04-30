@@ -4,23 +4,26 @@ import { Link } from "react-router-dom";
 const COLORS = {
     bg: "#f4f4ff",
     bg2: "#eeeeff",
-    primary: "#8a6366", // PTSD Rose/Brown
-    secondary: "#3d1f4b", // Consistent Deep Purple
-    accent: "#8a6366", // Updated to match primary theme
+    coral: "#8a6366", // PTSD Theme color (replacing orange)
+    teal: "#5c7f94",
+    lavender: "#8a6366",
+    gold: "#8a6366",
+    white: "#1a1a2e",
+    accent: "#8a6366",
     muted: "#7a7a9a",
-    border: "rgba(138, 99, 102, 0.15)",
-    card: "rgba(138, 99, 102, 0.04)",
+    border: "rgba(138, 99, 102, 0.2)",
+    card: "rgba(138, 99, 102, 0.06)",
 };
 
 const s = {
-    page: { fontFamily: "'Tajawal', sans-serif", background: COLORS.bg, color: "#1a1a2e", direction: "rtl", minHeight: "100vh", overflowX: "hidden" },
+    page: { fontFamily: "'Tajawal', sans-serif", background: COLORS.bg, color: COLORS.white, direction: "rtl", minHeight: "100vh", overflowX: "hidden" },
     section: { maxWidth: "min(1200px, 92vw)", margin: "0 auto", padding: "4rem clamp(1rem, 3vw, 3rem)" },
     label: { fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 10, display: "block" },
     h2: { fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.5rem)", lineHeight: 1.2, marginBottom: "1.5rem" },
     card: { background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 14, padding: "1.25rem 1.5rem", transition: "all 0.3s ease" },
     divider: { display: "flex", alignItems: "center", gap: 16, padding: "0 1.5rem", maxWidth: "min(1200px, 92vw)", margin: "0 auto" },
     divLine: { flex: 1, height: 1, background: COLORS.border },
-    divDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.accent },
+    divDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.coral },
 };
 
 function useFadeIn() {
@@ -53,16 +56,16 @@ function Hero() {
     useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
     const fade = (delay) => ({ opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(24px)", transition: `opacity 0.8s ${delay}s ease, transform 0.8s ${delay}s ease` });
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(221, 188, 208, 0.3) 0%, rgba(182, 199, 239, 0.3) 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #f5edee 0%, #fcf9f9 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 50% at 50% 30%, rgba(138, 99, 102, 0.08) 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 20% 80%, rgba(138, 99, 102, 0.05) 0%, transparent 50%)", pointerEvents: "none" }} />
             <p style={{ ...fade(0.2), fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 28 }}>الاضطرابات النفسية · اضطراب ما بعد الصدمة</p>
             <h1 style={{ ...fade(0.4), fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,4rem)", lineHeight: 1.1, margin: 0 }}>
-                <span style={{ display: "block", color: COLORS.primary }}>الأحداث تنتهي...</span>
-                <span style={{ display: "block", color: COLORS.primary }}>ويبقى الأثر</span>
+                <span style={{ display: "block", color: COLORS.coral }}>الأحداث تنتهي...</span>
+                <span style={{ display: "block", color: COLORS.coral }}>ويبقى الأثر</span>
             </h1>
-            <div style={{ ...fade(0.6), width: 60, height: 2, background: `linear-gradient(90deg, ${COLORS.primary}, #5d4345)`, margin: "1.75rem auto" }} />
+            <div style={{ ...fade(0.6), width: 60, height: 2, background: `linear-gradient(90deg, ${COLORS.coral}, #5d4345)`, margin: "1.75rem auto" }} />
             <p style={{ ...fade(0.8), fontSize: "1.05rem", color: "rgba(26,26,46,0.65)", maxWidth: 480, lineHeight: 1.8 }}>
-                PTSD ليس ضعفاً، هو استجابة دماغك لتجربة قاسية، يعيش معه <strong style={{ color: COLORS.primary }}>أكثر من ٣٠٠ مليون شخص</strong> حول العالم.
+                PTSD ليس ضعفاً، هو استجابة دماغك لتجربة قاسية، يعيش معه <strong style={{ color: COLORS.coral }}>أكثر من ٣٠٠ مليون شخص</strong> حول العالم.
             </p>
         </div>
     );
@@ -73,14 +76,14 @@ function Definition() {
     return (
         <FadeSection>
             <span style={s.label}>التعريف</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>ما هو </span><span style={{ color: COLORS.accent }}>PTSD؟</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>ما هو </span><span style={{ color: COLORS.coral }}>PTSD؟</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 16 }}>
                 {[
-                    { title: "الاستجابة الطبيعية", color: COLORS.primary, text: "من الطبيعي الشعور بالضيق والحزن بعد تجربة صادمة. الدماغ يمر بمرحلة معالجة طبيعية تنتهي تدريجياً مع مرور الوقت." },
-                    { title: "اضطراب ما بعد الصدمة", color: COLORS.accent, text: "استجابة دماغية ممتدة لحدث يهدد الحياة، حيث يظل الجهاز العصبي في حالة تأهب دائم وكأن الخطر لم ينتهِ أبداً." },
+                    { title: "الاستجابة الطبيعية", color: "#3d1f4b", text: "من الطبيعي الشعور بالضيق والحزن بعد تجربة صادمة. الدماغ يمر بمرحلة معالجة طبيعية تنتهي تدريجياً مع مرور الوقت." },
+                    { title: "اضطراب ما بعد الصدمة", color: COLORS.coral, text: "استجابة دماغية ممتدة لحدث يهدد الحياة، حيث يظل الجهاز العصبي في حالة تأهب دائم وكأن الخطر لم ينتهِ أبداً." },
                 ].map(({ title, color, text }) => (
                     <div key={title}
-                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "0 15px 35px rgba(138, 99, 102, 0.15)"; }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = `0 15px 35px ${COLORS.coral}15`; }}
                         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
                         style={{ ...s.card, position: "relative", overflow: "hidden" }}>
                         <div style={{ position: "absolute", top: 0, right: 0, width: 80, height: 80, borderRadius: "50%", background: color, filter: "blur(40px)", opacity: 0.15, pointerEvents: "none" }} />
@@ -107,7 +110,7 @@ function Types() {
     return (
         <FadeSection>
             <span style={s.label}>الأنواع</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>أنواع </span><span style={{ color: COLORS.accent }}>الاضطراب</span><span style={{ color: "#3d1f4b" }}> وأشكاله</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>أنواع </span><span style={{ color: COLORS.coral }}>الاضطراب</span><span style={{ color: "#3d1f4b" }}> وأشكاله</span></h2>
             <p style={{ fontFamily: "'Tajawal', sans-serif", color: "#3d1f4b", borderRight: `3px solid #3d1f4b`, paddingRight: 16, marginBottom: 28, fontStyle: "italic", fontWeight: "bold" }}>كل احد فينا مميز حتى باضطرابه</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", alignItems: "flex-start" }}>
                 {TYPES.map((t, i) => {
@@ -159,22 +162,43 @@ function Symptoms() {
     return (
         <FadeSection>
             <span style={s.label}>الأعراض</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>كيف يظهر </span><span style={{ color: COLORS.accent }}>PTSD</span><span style={{ color: "#3d1f4b" }}> في جسدك وعقلك؟</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>كيف يظهر </span><span style={{ color: COLORS.coral }}>PTSD</span><span style={{ color: "#3d1f4b" }}> في جسدك وعقلك؟</span></h2>
             <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${COLORS.border}`, marginBottom: 24, overflowX: "auto" }}>
                 {TABS.map((t, i) => (
                     <button key={i} onClick={() => setTab(i)} style={{ background: "none", border: "none", color: tab === i ? "#3d1f4b" : COLORS.muted, fontWeight: tab === i ? "bold" : "normal", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", padding: "0.65rem 1.1rem", cursor: "pointer", borderBottom: `2px solid ${tab === i ? "#3d1f4b" : "transparent"}`, marginBottom: -1, whiteSpace: "nowrap", transition: "color 0.3s" }}>{t.label}</button>
                 ))}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                {cur.items.map((item, i) => (
-                    <div key={i}
-                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
-                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
-                        style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+            {tab < 3 ? (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                    {cur.items.map((item, i) => (
+                        <div key={i}
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                            style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
+                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div style={{ background: "rgba(193,35,43,0.06)", border: "2px solid rgba(193,35,43,0.5)", borderRadius: 14, padding: "1.5rem" }}>
+                    <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#c1232b", marginBottom: 16, fontSize: "1.1rem" }}>⚡ تنبيه: تتميز أعراض الاستثارة بردود فعل حادة وحالة تأهب دائم للجهاز العصبي:</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 24 }}>
+                        {[
+                            { title: "سلوكيات حادة ومفاجئة", items: ["نوبات غضب مفاجئة وسلوك عدواني تجاه المحيط", "السلوك المتهور والأفعال الخطيرة دون تفكير", "رد فعل الجفلة المبالغ فيه (الفزع من الأصوات أو الحركات)"] },
+                            { title: "يقظة وتوتر مستمر", items: ["اليقظة المفرطة وترقب الخطر الدائم في كل مكان", "صعوبة شديدة في التركيز اليومي وتشتت الانتباه", "اضطرابات النوم الشديدة والكوابيس المتكررة"] },
+                        ].map(col => (
+                            <div key={col.title}>
+                                <p style={{ fontSize: "0.95rem", color: "#c1232b", fontWeight: "900", marginBottom: 12 }}>{col.title}</p>
+                                {col.items.map((it, i) => (
+                                    <div key={i} style={{ fontSize: "0.9rem", color: "#3d1f4b", fontWeight: "bold", padding: "0.4rem 0", borderBottom: "1px solid rgba(193,35,43,0.15)", display: "flex", gap: 8, alignItems: "flex-start" }}>
+                                        <span style={{ color: "#c1232b", flexShrink: 0, fontSize: "0.9rem", marginTop: 2 }}>⚡</span>{it}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
         </FadeSection>
     );
 }
@@ -217,7 +241,7 @@ function Causes() {
     return (
         <FadeSection>
             <span style={s.label}>الأسباب</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>من أين يأتي </span><span style={{ color: COLORS.accent }}>PTSD؟</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>من أين يأتي </span><span style={{ color: COLORS.coral }}>PTSD؟</span></h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 {CAUSES.map((c, i) => (
                     <div key={i} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 20, alignItems: "start" }}>
@@ -258,7 +282,7 @@ function Maladaptive() {
     return (
         <FadeSection>
             <span style={s.label}>آليات التكيف</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>حين تُخطئ </span><span style={{ color: COLORS.accent }}>طريقة التعامل</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>حين تُخطئ </span><span style={{ color: COLORS.coral }}>طريقة التعامل</span></h2>
             <p style={{ fontSize: "0.875rem", color: "#5d5c5d", marginBottom: 28, lineHeight: 1.7 }}>هي استجابات تبدو منطقية للبقاء بأمان على المدى القصير، لكنها تُديم الصدمة وتُعمّقها وتُضيّق آفاق الحياة تدريجياً على المدى الطويل.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
@@ -321,7 +345,7 @@ function Personality() {
     return (
         <FadeSection>
             <span style={s.label}>السمات الشخصية</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: COLORS.accent }}>PTSD </span><span style={{ color: "#3d1f4b" }}>يُغيّر شخصيتك</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: COLORS.coral }}>PTSD </span><span style={{ color: "#3d1f4b" }}>يُغيّر شخصيتك</span></h2>
             <p style={{ fontSize: "0.875rem", color: COLORS.muted, marginBottom: 24 }}>العيش مع PTSD مزمن يحدث تغييرات في شخصيتك بمرور الوقت.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {TRAITS.map((t, i) => (
@@ -343,12 +367,12 @@ function Personality() {
 
 // ── BRAIN JOURNEY ─────────────────────────────────────────────────────────
 const BRAIN_STEPS = [
-    { n: "١", label: "AMYGDALA · اللوزة الدماغية", color: COLORS.accent, text: "تصبح مفرطة النشاط، تُطلق إنذارات خوف بأدنى محفز يشبه الصدمة حتى ولو كان آمناً." },
-    { n: "٢", label: "HIPPOCAMPUS · الحُصين", color: COLORS.accent, text: "ينكمش حجمه، فيفشل في تصنيف الذكريات زمنياً، مما يبقي ذكرى الصدمة 'طازجة' لا ماضية." },
-    { n: "٣", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: COLORS.accent, text: "تضعف قدرتها على كبح ردود الفعل العصبية وإقناع الدماغ بأن الخطر قد انتهى فعلاً." },
-    { n: "٤", label: "MEDIAL PFC · القشرة الإنسية", color: COLORS.accent, text: "يقل نشاطها، مما يُفسر صعوبة التعبير عن الصدمة وربط المشاعر بالكلمات بوضوح." },
-    { n: "٥", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: COLORS.accent, text: "اختلال في الكورتيزول والأدرينالين ونقص السيروتونين، مما يُديم حالة التأهب." },
-    { n: "٦", label: "DEFAULT MODE NETWORK · الشبكة الافتراضية", color: COLORS.accent, text: "تبقى نشطة بشكل غير منتظم، مما يجعل العقل يعود قسراً للحظات الصدمة بدل الهدوء." },
+    { n: "١", label: "AMYGDALA · اللوزة الدماغية", color: "#8a6366", text: "تصبح مفرطة النشاط، تُطلق إنذارات خوف بأدنى محفز يشبه الصدمة حتى ولو كان آمناً." },
+    { n: "٢", label: "HIPPOCAMPUS · الحُصين", color: "#8a6366", text: "ينكمش حجمه، فيفشل في تصنيف الذكريات زمنياً، مما يبقي ذكرى الصدمة 'طازجة' لا ماضية." },
+    { n: "٣", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: "#8a6366", text: "تضعف قدرتها على كبح ردود الفعل العصبية وإقناع الدماغ بأن الخطر قد انتهى فعلاً." },
+    { n: "٤", label: "MEDIAL PFC · القشرة الإنسية", color: "#8a6366", text: "يقل نشاطها، مما يُفسر صعوبة التعبير عن الصدمة وربط المشاعر بالكلمات بوضوح." },
+    { n: "٥", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: "#8a6366", text: "اختلال في الكورتيزول والأدرينالين ونقص السيروتونين، مما يُديم حالة التأهب." },
+    { n: "٦", label: "DEFAULT MODE NETWORK · الشبكة الافتراضية", color: "#8a6366", text: "تبقى نشطة بشكل غير منتظم، مما يجعل العقل يعود قسراً للحظات الصدمة بدل الهدوء." },
 ];
 
 function BrainStep({ step, index }) {
@@ -374,7 +398,7 @@ function BrainJourney() {
     return (
         <FadeSection>
             <span style={s.label}>علم الأعصاب</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>رحلة داخل </span><span style={{ color: COLORS.accent }}>دماغك</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>رحلة داخل </span><span style={{ color: COLORS.coral }}>دماغك</span></h2>
             <div style={{ display: "flex", flexDirection: "column" }}>
                 {BRAIN_STEPS.map((step, i) => <BrainStep key={i} step={step} index={i} />)}
             </div>
@@ -382,8 +406,8 @@ function BrainJourney() {
                 <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3d1f4b", marginBottom: 16, fontSize: "0.95rem" }}>النتيجة المباشرة:</p>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 24 }}>
                     {[
-                        { title: "في لحظات الفلاشباك", color: "#3d1f4b", items: ["تسارع ضربات القلب", "ضيق في التنفس", "الشعور بأن الصدمة تقع الآن"] },
-                        { title: "في الحياة اليومية", color: COLORS.accent, items: ["صعوبة في الثقة بالآخرين", "إرهاق من حالة التأهب", "مشاعر انفصال عن المستقبل"] },
+                        { title: "في لحظات الفلاشباك", color: "#c1232b", items: ["تسارع ضربات القلب", "ضيق في التنفس", "الشعور بأن الصدمة تقع الآن"] },
+                        { title: "في الحياة اليومية", color: "#8a6366", items: ["صعوبة في الثقة بالآخرين", "إرهاق من حالة التأهب", "مشاعر انفصال عن المستقبل"] },
                     ].map((col, idx) => (
                         <div key={col.title}>
                             <p style={{ fontSize: "0.95rem", color: col.color, fontWeight: "900", letterSpacing: "0.05em", marginBottom: 12 }}>{col.title}</p>
@@ -404,7 +428,7 @@ function BrainJourney() {
 const TREATMENTS = [
     { icon: "🧩", en: "Trauma-Focused Therapy", title: "١. العلاج النفسي التخصصي (EMDR/CBT)", color: "#3d1f4b", pts: [["EMDR:", "إعادة معالجة الذكرى لتصنيفها كـ'ماضٍ' لا كحاضر جارٍ."], ["TF-CBT:", "مواجهة الذكريات تدريجياً مع تحدي الأفكار المشوهة."], ["علاج PE:", "التعامل المنهجي مع المواقف المتجنبة لتعلم الأمان."], ["معالجة المعرفة:", "تغيير الأفكار الصلبة التي تلوّن رؤية العالم."]] },
     { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#8a6366", pts: [["SSRIs/SNRIs:", "لتنظيم السيروتونين وتخفيف أعراض الاقتحام والقلق."], ["Prazosin:", "لعلاج الكوابيس تحديداً وتحسين جودة النوم."], ["المثبتات المزاجية:", "للمساعدة في تنظيم ردود الأفعال العاطفية المكثفة."]] },
-    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المتكامل", color: "#d68cb9", badge: "الأفضل نتائج", pts: [["دمج المسارين:", "الأدوية تهدئ اللوزة لتتيح الاستفادة من الجلسات النفسية."], ["الدعم المستمر:", "تحسين قدرة الجهاز العصبي على الاسترخاء التدريجي."]] },
+    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المتكامل", color: "#8a6366", badge: "الأفضل نتائج", pts: [["دمج المسارين:", "الأدوية تهدئ اللوزة لتتيح الاستفادة من الجلسات النفسية."], ["الدعم المستمر:", "تحسين قدرة الجهاز العصبي على الاسترخاء التدريجي."]] },
     { icon: "🌿", en: "Lifestyle", title: "٤. نمط الحياة والدعم", color: "#3a6e4f", pts: [["تقنيات التأريض:", "قاعدة 5-4-3-2-1 الحسية لإيقاف الفلاشباك."], ["الاستقرار الجسدي:", "اليوغا والمشي لخفض الكورتيزول طبيعياً."], ["الأمان الاجتماعي:", "بناء شبكة دعم تتيح التعبير دون حكم مسبق."]] },
 ];
 
@@ -413,7 +437,7 @@ function Treatment() {
     return (
         <FadeSection>
             <span style={s.label}>العلاج</span>
-            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>طريقك نحو </span><span style={{ color: COLORS.accent }}>التعافي</span></h2>
+            <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>طريقك نحو </span><span style={{ color: COLORS.coral }}>التعافي</span></h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {TREATMENTS.map((t, i) => (
                     <div key={i}
@@ -480,15 +504,15 @@ export default function PTSDDetail() {
                 <Divider />
                 <Treatment />
                 <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
-                    <Link to="/disease/anxiety" style={{ textDecoration: 'none' }}>
-                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#493054"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#3d1f4b"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#3d1f4b', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(73, 48, 84, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                    <Link to="/disease/anxiety" style={{ textDecoration: 'none' }} onClick={() => window.scrollTo(0, 0)}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = "#cf6d1d"; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#E67E22"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#E67E22', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(230, 126, 34, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
                             <span>اضطراب القلق</span>
                             <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
                         </div>
                     </Link>
                 </div>
                 <div style={{ textAlign: "center", padding: "2.5rem 1.5rem", borderTop: `1px solid ${COLORS.border}`, fontSize: 13, color: COLORS.muted }}>
-                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض PTSD، تحدث مع <span style={{ color: "#3d1f4b" }}>متخصص نفسي</span>
+                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض PTSD، تحدث مع <span style={{ color: COLORS.coral }}>متخصص نفسي</span>
                 </div>
             </div>
         </div>
