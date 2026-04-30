@@ -55,7 +55,7 @@ function Hero() {
     useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
     const fade = (delay) => ({ opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(24px)", transition: `opacity 0.8s ${delay}s ease, transform 0.8s ${delay}s ease` });
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #f5f5f5 0%, #e8e8eb 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #f7dede 0%, #fae0e0 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 50% at 50% 30%, rgba(84,84,84,0.08) 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 20% 80%, rgba(115,115,115,0.05) 0%, transparent 50%)", pointerEvents: "none" }} />
             <p style={{ ...fade(0.2), fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 28 }}>الاضطرابات النفسية · الاكتئاب</p>
             <h1 style={{ ...fade(0.4), fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,4rem)", lineHeight: 1.1, margin: 0 }}>
@@ -354,7 +354,7 @@ function BrainStep({ step, index }) {
     return (
         <div ref={ref} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 16, opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(20px)", transition: `opacity 0.5s ${index * 0.12}s ease, transform 0.5s ${index * 0.12}s ease` }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ width: 52, height: 52, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.1rem", color: "#552269", border: `2px solid ${COLORS.coral}`, background: COLORS.coral, flexShrink: 0 }}>{step.n}</div>
+                <div style={{ width: 52, height: 52, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.1rem", color: "#fff", border: `2px solid ${COLORS.coral}`, background: COLORS.coral, flexShrink: 0 }}>{step.n}</div>
                 {index < BRAIN_STEPS.length - 1 && <div style={{ width: 1, height: 32, background: `linear-gradient(to bottom, ${COLORS.coral}, transparent)`, margin: "4px 0" }} />}
             </div>
             <div style={{ ...s.card, marginBottom: 12, borderColor: COLORS.coral }}>
@@ -367,7 +367,6 @@ function BrainStep({ step, index }) {
         </div>
     );
 }
-
 function BrainJourney() {
     return (
         <FadeSection>
