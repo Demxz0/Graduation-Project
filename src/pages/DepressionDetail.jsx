@@ -1,550 +1,475 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
-
+const COLORS = {
+    bg: "#f4f4ff",
+    bg2: "#eeeeff",
+    coral: "#545454", // Using the grey from Disease.jsx for Depression
+    teal: "#737373",
+    lavender: "#545454",
+    gold: "#545454",
+    white: "#1a1a2e",
+    muted: "#7a7a9a",
+    border: "rgba(84,84,84,0.2)",
+    card: "rgba(84,84,84,0.06)",
+};
 
 const s = {
-  page: { background: "#f4f4ff", minHeight: "100vh", direction: "rtl", fontFamily: "'Tajawal', sans-serif" },
-  breadcrumb: { textAlign: "center", fontSize: "13px", color: "#ababab", marginBottom: "12px" },
-  heroSection: {
-    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-    padding: "80px 20px 60px", textAlign: "center",
-    background: "linear-gradient(135deg, #f5f5f5 0%, #e8e8eb 100%)",
-  },
-  heroTitle: {
-    fontSize: "44.5px", fontWeight: "700", color: "#3a3a3a", marginBottom: "16px",
-    textShadow: "2px 2px 12px rgba(58, 58, 58, 0.25)", fontFamily: "'Tajawal', sans-serif",
-  },
-  heroSub: { fontSize: "18px", color: "#525252", maxWidth: "560px" },
-  sectionWrapper: { maxWidth: "860px", margin: "0 auto", padding: "60px 24px" },
-  sectionLabel: { fontSize: "12px", color: "#ababab", letterSpacing: "1px", marginBottom: "6px", textAlign: "right" },
-  sectionTitle: { fontSize: "28px", fontWeight: "700", color: "#2a2a2a", marginBottom: "32px", textAlign: "right" },
-  sectionTitleHighlight: { color: "#737373" },
-  divider: { border: "none", borderTop: "1px solid #d5d5d8", margin: "0 auto", maxWidth: "2000px" },
-  defGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" },
-  defCard: (borderColor) => ({ background: "white", borderRadius: "16px", padding: "24px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
-  defCardBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: color, borderRadius: "16px 16px 0 0" }),
-  defCardTitle: { fontSize: "18px", fontWeight: "700", color: "#2a2a2a", marginBottom: "10px" },
-  defCardText: { fontSize: "14px", color: "#525252", lineHeight: "1.8" },
-  typesGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" },
-  typeCard: () => ({
-    background: "white", borderRadius: "14px", padding: "24px 24px 20px",
-    border: "2px solid white", cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s",
-    display: "flex", flexDirection: "row", justifyContent: "flex-start",
-    alignItems: "center", gap: "16px", position: "relative", overflow: "hidden",
-    boxShadow: "0 2px 12px rgba(58,58,58,0.07)",
-  }),
-  typeNum: (color) => ({ fontSize: "28px", fontWeight: "700", color, opacity: 0.5, flexShrink: 0 }),
-  typeLabel: { fontSize: "16px", fontWeight: "700" },
-  typeSub: { fontSize: "12px", color: "#ababab" },
-  tabRow: { display: "flex", gap: "0", marginBottom: "28px", borderBottom: "2px solid #737373" },
-  tab: (active) => ({
-    padding: "10px 20px", fontSize: "15px", cursor: "pointer", fontFamily: "'Tajawal', sans-serif",
-    color: active ? "#3a3a3a" : "#ababab", background: "none", border: "none",
-    borderBottom: active ? "2px solid #3a3a3a" : "2px solid transparent",
-    marginBottom: "-2px", transition: "0.2s", fontWeight: active ? "700" : "400",
-  }),
-  symptomsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" },
-  symptomCard: () => ({
-    background: "white", borderRadius: "12px", padding: "16px 20px",
-    border: "1.5px solid #e4e4e4",
-    fontSize: "14px", color: "#2a2a2a", display: "flex", alignItems: "flex-start", gap: "10px",
-    transition: "transform 0.2s, box-shadow 0.2s",
-    boxShadow: "0 4px 12px rgba(58,58,58,0.06)",
-  }),
-  dot: (color) => ({ width: "8px", height: "8px", borderRadius: "50%", background: color, flexShrink: 0, marginTop: "6px" }),
-  causeBlock: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "0", border: "1.5px solid #e4e4e4", position: "relative" },
-  causeBlockHighlight: { background: "white", borderRadius: "16px", padding: "28px 32px", marginBottom: "0", border: "2px solid #737373" },
-  causeTitle: { fontSize: "17px", fontWeight: "700", color: "#2a2a2a", marginBottom: "14px", textAlign: "right" },
-  causeLine: { fontSize: "14px", color: "#525252", lineHeight: "2", borderBottom: "1px solid #f5f5f5", padding: "6px 0", textAlign: "right" },
-  tagRow: { display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "12px", justifyContent: "flex-end" },
-  tag: (color) => ({ background: color, borderRadius: "30px", padding: "6px 16px", fontSize: "13px", color: "#2a2a2a" }),
-  copingGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" },
-  copingCard: { background: "white", borderRadius: "14px", padding: "20px", border: "1.5px solid #e4e4e4", transition: "border 0.2s" },
-  copingCardWide: { gridColumn: "span 3", background: "white", borderRadius: "14px", padding: "20px 28px", border: "1.5px solid #e4e4e4", transition: "border 0.2s" },
-  copingIcon: { fontSize: "22px", marginBottom: "8px" },
-  copingTitle: { fontSize: "15px", fontWeight: "700", color: "#2a2a2a", marginBottom: "4px" },
-  copingEn: { fontSize: "11px", color: "#c8c8c8", marginBottom: "10px" },
-  copingText: { fontSize: "13px", color: "#737373", lineHeight: "1.7" },
-  traitsGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "14px" },
-  traitCard: (borderColor) => ({ background: "white", borderRadius: "14px", padding: "18px 16px", border: `2px solid ${borderColor}`, position: "relative", overflow: "hidden" }),
-  traitBar: (color) => ({ position: "absolute", top: 0, left: 0, right: 0, height: "5px", background: color }),
-  traitTitle: { fontSize: "14px", fontWeight: "700", color: "#2a2a2a", marginBottom: "4px" },
-  traitEn: { fontSize: "11px", color: "#c8c8c8", marginBottom: "8px" },
-  traitText: { fontSize: "12px", color: "#737373", lineHeight: "1.6" },
-  brainList: { display: "flex", flexDirection: "column", gap: "12px" },
-  brainNum: (bg) => ({ minWidth: "40px", height: "40px", borderRadius: "50%", background: bg, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px" }),
-  brainTitle: { fontSize: "16px", fontWeight: "700", color: "#2a2a2a", marginBottom: "4px" },
-  brainText: { fontSize: "13px", color: "#525252", lineHeight: "1.7" },
-  resultBox: { background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #e4e4e4", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px" },
-  resultColTitle: { fontSize: "14px", fontWeight: "700", color: "#3a3a3a", marginBottom: "14px" },
-  resultItem: { fontSize: "14px", color: "#3a3a3a", lineHeight: "2", display: "flex", alignItems: "center", gap: "8px" },
-  resultDot: (c) => ({ width: "6px", height: "6px", borderRadius: "50%", background: c, flexShrink: 0 }),
+    page: { fontFamily: "'Tajawal', sans-serif", background: COLORS.bg, color: COLORS.white, direction: "rtl", minHeight: "100vh", overflowX: "hidden" },
+    section: { maxWidth: "min(1200px, 92vw)",   margin: "0 auto",  padding: "4rem clamp(1rem, 3vw, 3rem)"  },
+    label: { fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 10, display: "block" },
+    h2: { fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.5rem)", lineHeight: 1.2, marginBottom: "1.5rem" },
+    card: { background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 14, padding: "1.25rem 1.5rem", transition: "all 0.3s ease" },
+    divider: { display: "flex", alignItems: "center", gap: 16, padding: "0 1.5rem", maxWidth: "min(1200px, 92vw)", margin: "0 auto" },
+    divLine: { flex: 1, height: 1, background: COLORS.border },
+    divDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.coral },
 };
 
-// ======================== البيانات ========================
+function useFadeIn() {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+    }, []);
+    return [ref, visible];
+}
 
-const symptomTabs = ["العاطفية والنفسية", "الجسدية", "المعرفية", "العلامات الحادة"];
-const symptomData = {
-  "العاطفية والنفسية": [
-    { text: "حزن عميق ومستمر لمعظم ساعات اليوم", color: "#ababab" },
-    { text: "فقدان المتعة والاهتمام بالأنشطة المحبوبة (Anhedonia)", color: "#ababab" },
-    { text: "شعور بالفراغ الداخلي والخدر العاطفي", color: "#8f8f8f" },
-    { text: "يأس وشعور بأن المستقبل مظلم لا أمل فيه", color: "#8f8f8f" },
-    { text: "مشاعر ذنب مفرطة وانتقاد مستمر للذات", color: "#737373" },
-    { text: "انسحاب اجتماعي والعزلة عن الأسرة والأصدقاء", color: "#737373" },
-  ],
-  "الجسدية": [
-    { text: "إرهاق مزمن وفقدان الطاقة دون مجهود يذكر", color: "#ababab" },
-    { text: "اضطرابات النوم: أرق شديد أو نوم مفرط", color: "#ababab" },
-    { text: "تغيرات في الشهية وفي الوزن (زيادة أو نقص)", color: "#8f8f8f" },
-    { text: "بطء ملحوظ في الحركة والكلام (Psychomotor Retardation)", color: "#8f8f8f" },
-    { text: "آلام جسدية غير مفسرة: رأس، ظهر، معدة", color: "#737373" },
-    { text: "انخفاض الدافع الجنسي واضطراب الوظائف الجسدية", color: "#737373" },
-  ],
-  "المعرفية": [
-    { text: "صعوبة شديدة في التركيز واتخاذ القرارات", color: "#ababab" },
-    { text: "بطء التفكير والشعور بضبابية ذهنية (Brain Fog)", color: "#ababab" },
-    { text: "أفكار سلبية متكررة وتشاؤم تجاه كل شيء", color: "#8f8f8f" },
-    { text: "اجترار الأفكار المؤلمة بشكل قهري ومستمر", color: "#8f8f8f" },
-    { text: "انخفاض تقدير الذات والشعور بعدم الكفاءة", color: "#737373" },
-    { text: "تشوهات إدراكية: تضخيم السلبي وتجاهل الإيجابي", color: "#737373" },
-  ],
-  "العلامات الحادة": [
-    { text: "أفكار متكررة عن الموت أو انعدام الرغبة في الحياة", color: "#ababab" },
-    { text: "أفكار انتحارية مع أو بدون خطة محددة", color: "#ababab" },
-    { text: "الإهمال التام للنظافة الشخصية والمظهر", color: "#8f8f8f" },
-    { text: "العجز عن أداء أبسط مهام الحياة اليومية", color: "#8f8f8f" },
-    { text: "الانسحاب الكامل من العلاقات والحياة الاجتماعية", color: "#737373" },
-    { text: "حالات ذهانية: أوهام أو هلوسة في الاكتئاب الشديد", color: "#737373" },
-  ],
-};
-
-const types = [
-  { id: 1, label: "الاكتئاب الاكلينيكي / الكبير", en: "Major Depressive Disorder", color: "#3a3a3a" },
-  { id: 2, label: "الاكتئاب المستمر / الخفيف", en: "Persistent Depressive Disorder", color: "#525252" },
-  { id: 3, label: "خلل تنظيم المزاج التخريبي", en: "DMDD", color: "#737373" },
-  { id: 4, label: "اضطراب ما قبل الدورة", en: "PMDD", color: "#8f8f8f" },
-  { id: 5, label: "الناجم عن الأدوية أو المواد", en: "Substance/Medication-Induced", color: "#ababab" },
-  { id: 6, label: "الناتج عن حالة طبية أخرى", en: "Due to Another Medical Condition", color: "#525252" },
-  { id: 7, label: "الاكتئاب غير المحدد", en: "Unspecified Depressive Disorder", color: "#8f8f8f" },
-  { id: 8, label: "اضطراب ثنائي القطب", en: "Bipolar Disorder", color: "#3a3a3a" },
-];
-
-const typeColors = ["#3a3a3a", "#525252", "#737373", "#8f8f8f", "#ababab", "#525252", "#8f8f8f", "#3a3a3a"];
-
-const typeDetails = {
-  1: [
-    "النوع الأكثر شيوعاً ومعروفة — نوبة واحدة أو أكثر من الاكتئاب الشديد تستمر أسبوعين على الأقل.",
-    "يتميز بحزن عميق أو فقدان كامل للاهتمام بالحياة، مصحوباً بأعراض جسدية ومعرفية واضحة.",
-    "قد يُصنَّف كـ خفيف أو متوسط أو شديد — وقد يصحبه أعراض ذهانية في الحالات القصوى.",
-  ],
-  2: [
-    "مزاج حزين مستمر لمدة سنتين على الأقل (سنة عند الأطفال) دون انقطاع لمدة شهرين.",
-    "أعراضه أقل حدة من الاكتئاب الكبير، لكن ديمومتها تُنهك الشخص وتُشعره أن الحزن جزء من شخصيته.",
-    "كثيراً ما يُوصف بأنه 'اكتئاب بطيء النار' — يصعب تشخيصه لأن المصاب اعتاد عليه ولا يتوقع تحسناً.",
-  ],
-  3: [
-    "نوبات غضب شديدة ومتكررة عند الأطفال والمراهقين، تفوق كثيراً ما يستدعيه الموقف.",
-    "المزاج العام في ما بين النوبات يكون حزيناً أو غاضباً أغلب الوقت.",
-    "يؤثر على الأداء في المدرسة والعلاقات الأسرية ويختلف عن ثنائي القطب الذي لا يُشخَّص لمن دون 18 عاماً.",
-  ],
-  4: [
-    "اكتئاب وقلق شديد يظهر قبل الدورة الشهرية بأسبوع إلى أسبوعين ويختفي بعد بدئها.",
-    "تغيرات مزاجية حادة، تعب، اضطرابات نوم أو شهية، شعور بفقدان السيطرة.",
-    "أشد بكثير من متلازمة ما قبل الدورة (PMS) العادية — يُعطل الحياة اليومية بشكل كبير.",
-  ],
-  5: [
-    "أعراض اكتئابية واضحة ناجمة مباشرة عن تناول مواد معينة أو الانسحاب منها.",
-    "تتحسن عادةً عند تعديل الدواء أو التوقف عن المادة المسببة.",
-    "من أسبابها: الكحول، المنشطات، الستيرويدات، بعض أدوية ضغط الدم أو بعض المضادات الحيوية.",
-  ],
-  6: [
-    "اكتئاب مرتبط بحالة طبية عضوية كالغدة الدرقية الخاملة، السرطان، أمراض القلب، السكتة الدماغية.",
-    "يحتاج علاج الحالة الطبية الأساسية لتحسين المزاج.",
-    "لا يُعدّ كسلاً أو ضعف شخصية — بل تأثير بيولوجي مباشر للمرض على الدماغ.",
-  ],
-  7: [
-    "أعراض اكتئابية واضحة لكنها لا تنطبق تماماً على أي تشخيص محدد من الأنواع السابقة.",
-    "يحتاج تقييم دقيق من متخصص لفهم الصورة الكاملة وتقديم الدعم المناسب.",
-    "وجود الأعراض والمعاناة الحقيقية يكفي للحصول على المساعدة — بغض النظر عن دقة التصنيف.",
-  ],
-  8: [
-    "نوبات اكتئاب متناوبة مع نوبات هوس أو فرط نشاط — يختلف جوهرياً عن الاكتئاب الأحادي.",
-    "في الاكتئاب: حزن، فقدان طاقة، قلة اهتمام. في الهوس: نشاط زائد، اندفاع، شعور بالعظمة أحياناً.",
-    "علاجه يختلف عن باقي أنواع الاكتئاب — الأدوية المثبتة للمزاج (كالليثيوم) هي الركيزة الأساسية.",
-  ],
-};
-
-const copingCards = [
-  { icon: "🛌", title: "الانسحاب والعزلة", en: "Social Withdrawal", text: "تجنب الناس والتجمعات لأن 'كل شيء يتطلب جهداً كبيراً'. يُعزز الاكتئاب بحرمان الدماغ من الدعم الاجتماعي والمحفزات الإيجابية." },
-  { icon: "📱", title: "الإفراط في الشاشات", en: "Excessive Screen Time", text: "التسمر أمام الشاشات كوسيلة لملء الفراغ والهروب من الأفكار السوداء. يُقلل جودة النوم ويُعمّق الانعزال ويُغذّي المقارنات المؤلمة." },
-  { icon: "🍔", title: "الإفراط أو الامتناع عن الأكل", en: "Emotional Eating / Restriction", text: "استخدام الطعام كمهدئ عاطفي أو العقاب بالجوع. كلاهما يُراكم مشاعر الذنب ويُضاعف الأعراض." },
-  { icon: "🍺", title: "تعاطي المواد", en: "Substance Use", text: "اللجوء للكحول أو المخدرات لتخدير الشعور بالفراغ والحزن. تُنشط في البداية ثم تُهبط المزاج أكثر مما أنقذته." },
-  { icon: "😔", title: "اجترار الأفكار", en: "Rumination", text: "الدوران في نفس الأفكار السلبية مراراً — 'لماذا أنا هكذا؟' — بلا توصل لحل. يُثبّت الدماغ على الأسوأ ويمنع التعافي." },
-  { icon: "🔇", title: "إسكات المشاعر", en: "Emotional Suppression", text: "رفض الاعتراف بالحزن أو إخفاؤه خلف قناع 'أنا بخير'. الضغط الداخلي يتراكم حتى ينفجر أو يتحول لأعراض جسدية." },
-];
-
-const traitCards = [
-  { title: "العصابية العالية", en: "High Neuroticism", text: "الميل الشديد لتجربة المشاعر السلبية والتأثر المفرط بالضغوط اليومية البسيطة.", color: "#f0f0f0", bar: "#3a3a3a" },
-  { title: "الكمالية المرضية", en: "Perfectionism", text: "معايير مرتفعة جداً تتحول لسلاح ضد الذات عند أي إخفاق مهما كان صغيراً.", color: "#e8e8e8", bar: "#525252" },
-  { title: "الانطوائية المفرطة", en: "Extreme Introversion", text: "ميل للهروب للداخل وتجنب التفاعل مع العالم الخارجي كوسيلة للحماية.", color: "#e0e0e0", bar: "#737373" },
-  { title: "انخفاض الإحساس بالقيمة", en: "Low Self-Worth", text: "شعور جوهري بعدم الاستحقاق وأن الآخرين أفضل بطبيعتهم — لا كردة فعل على حدث.", color: "#d8d8d8", bar: "#8f8f8f" },
-  { title: "الاعتمادية العاطفية", en: "Emotional Dependency", text: "الحاجة المفرطة لتأكيد الآخرين للشعور بأن الحياة تستحق أو أن الفرد محبوب.", color: "#f0f0f0", bar: "#3a3a3a" },
-  { title: "السلبية المتعلَّمة", en: "Learned Helplessness", text: "قناعة عميقة بأن لا شيء يمكن فعله لتغيير الوضع — بعد تجارب متكررة من الإخفاق.", color: "#e8e8e8", bar: "#525252" },
-  { title: "التشاؤم المزمن", en: "Chronic Pessimism", text: "تلقائية في توقع الأسوأ في كل موقف — لا كاختيار بل كبرمجة ذهنية ترسّخت بمرور الوقت.", color: "#e0e0e0", bar: "#737373" },
-  { title: "انخفاض الانفتاح على التجربة", en: "Low Openness", text: "رفض أو عجز عن تجربة أشياء جديدة بسبب انعدام الحافز الداخلي والطاقة الذهنية.", color: "#d8d8d8", bar: "#8f8f8f" },
-];
-
-const brainSteps = [
-  { title: "قشرة الفص الجبهي", en: "Prefrontal Cortex", text: "تنخفض نشاطاً في الاكتئاب — مما يُضعف التخطيط، صنع القرار، والتحكم في المشاعر. يصبح التفكير في 'الخطوة التالية' مرهقاً للغاية حتى لأبسط المهام.", bg: "#3a3a3a" },
-  { title: "نظام المكافأة والدوبامين", en: "Reward System — Dopamine", text: "يُصبح نظام المكافأة خاملاً — الدوبامين لا يُفرز باندفاعه الطبيعي عند إنجاز شيء أو تحقيق هدف. يُفسر هذا لماذا لا يُشعر الاكتئاب بأي متعة حقيقية من الأشياء التي كانت ممتعة.", bg: "#525252" },
-  { title: "اللوزة الدماغية", en: "Amygdala", text: "تُصبح مفرطة النشاط وحساسيتها تجاه المحفزات السلبية ترتفع بشكل ملحوظ — فأي تعليق بسيط يُفسَّر كهجوم، وأي فشل صغير يُشعر بالكارثة.", bg: "#737373" },
-  { title: "الحُصين والذاكرة", en: "Hippocampus", text: "يُصبح أصغر حجماً مع الاكتئاب المزمن بسبب الكورتيزول المرتفع. يُفسر الذاكرة السلبية الانتقائية — تتذكر المصائب وتنسى الإنجازات.", bg: "#8f8f8f" },
-  { title: "محور HPA والكورتيزول", en: "HPA Axis — Cortisol", text: "يعمل محور الإجهاد بشكل مفرط في الاكتئاب — مستويات الكورتيزول مرتفعة بشكل مزمن مما يُضر بخلايا الدماغ ويُعيق إنتاج الناقلات العصبية المهدئة.", bg: "#525252" },
-  { title: "السيروتونين والنورإبينفرين", en: "Serotonin & Norepinephrine", text: "انخفاض في السيروتونين يُؤثر على النوم، الشهية، والمزاج. انخفاض في النورإبينفرين يُسبب الإرهاق وصعوبة التركيز وبطء التفكير.", bg: "#ababab" },
-];
-
-const treatments = [
-  {
-    id: 1, icon: "🧩", en: "Cognitive Behavioral Therapy", label: "العلاج السلوكي المعرفي (CBT)", color: "#e4e4e4",
-    details: [
-      "إعادة الهيكلة المعرفية: ملاحظة الأفكار السلبية التلقائية وتحديها بالمنطق والأدلة — 'هل هذا الدليل حقيقي أم تفسير مشوّه؟'",
-      "تفعيل السلوك (Behavioral Activation): إعادة إدخال الأنشطة الممتعة تدريجياً حتى وإن لم تكن هناك رغبة — الحركة تسبق الحافز وليس العكس.",
-      "جدولة الأنشطة: بناء روتين منظم يُعيد الإحساس بالسيطرة والإنجاز في حياة يسيطر عليها الاكتئاب.",
-      "التعامل مع اجترار الأفكار: تقنيات قطع الدوامة الذهنية قبل أن تتعمق وتضخم الأعراض.",
-    ],
-  },
-  {
-    id: 2, icon: "💊", en: "Pharmacotherapy", label: "العلاج الدوائي", color: "#d8d8d8",
-    details: [
-      "SSRIs (الخط الأول): كسيرترالين وفلوكستين — ترفع السيروتونين تدريجياً. تبدأ تأثيرها بعد 2-4 أسابيع، وتحتاج صبراً وانتظاماً.",
-      "SNRIs: كفينلافاكسين ودولوكستين — تُعالج السيروتونين والنورإبينفرين معاً، مفيدة خاصةً مع الإرهاق والألم الجسدي.",
-      "Bupropion: يعمل على الدوبامين والنورإبينفرين — خيار ممتاز عند فقدان الطاقة وصعوبة التركيز.",
-      "مثبتات المزاج (لثنائي القطب): كالليثيوم واللاموتريجين — ضرورية لثنائي القطب وخطيرة الغياب.",
-    ],
-  },
-  {
-    id: 3, icon: "⚡", en: "Combined Treatment", label: "العلاج المدمج", color: "#c8c8c8", badge: "الأفضل نتائج",
-    details: [
-      "دمج CBT مع الأدوية يُعطي أفضل النتائج وأقل معدلات انتكاس — الأدوية تُخفف الأعراض بما يُمكّن المريض من الاستفادة من جلسات العلاج فعلياً.",
-    ],
-  },
-  {
-    id: 4, icon: "✨", en: "Other Evidence-Based Therapies", label: "علاجات نفسية أخرى", color: "#e4e4e4",
-    details: [
-      "العلاج الشخصي (IPT): يُركز على تحسين العلاقات الاجتماعية ومهارات التواصل كأداة للتعافي.",
-      "العلاج بالقبول والالتزام (ACT): قبول المشاعر الصعبة دون مقاومة والتصرف بما يتوافق مع القيم الشخصية.",
-      "التحفيز المغناطيسي للدماغ (TMS) أو العلاج الكهربائي (ECT): في حالات الاكتئاب الشديد المقاوم للأدوية.",
-    ],
-  },
-  {
-    id: 5, icon: "🌿", en: "Lifestyle & Support", label: "تعديل نمط الحياة والدعم", color: "#d8d8d8",
-    details: [
-      "الرياضة: 30 دقيقة يومياً من التمارين الهوائية مثبتة علمياً بتأثير مساوٍ للأدوية في الاكتئاب المتوسط.",
-      "تنظيم النوم: جدول نوم ثابت يُعيد توازن الإيقاع البيولوجي الذي يختل في الاكتئاب بشكل كبير.",
-      "التغذية: نظام غذائي متوازن غني بأوميغا-3 وحمض الفوليك — يدعم إنتاج الناقلات العصبية.",
-      "الدعم الاجتماعي: التحدث مع شخص موثوق يُفرز الأوكسيتوسين ويُكسر دوامة العزلة المُعمِّقة للاكتئاب.",
-    ],
-  },
-];
-
-// ======================== المكوّن ========================
-
-export default function DepressionDetail() {
-  const [activeTab, setActiveTab] = useState("العاطفية والنفسية");
-  const [expandedType, setExpandedType] = useState(null);
-  const [expandedTreatment, setExpandedTreatment] = useState(null);
-
-  return (
-    <div style={s.page}>
-
-      {/* Hero */}
-      <div style={s.heroSection}>
-        <div style={s.breadcrumb}>الاضطرابات النفسية &gt; الاكتئاب</div>
-        <h1 className="responsive-title-hero" style={{ fontSize: "44.5px", fontWeight: "700", color: "#3a3a3a", marginBottom: "16px", textShadow: "2px 2px 12px rgba(58, 58, 58, 0.25)", fontFamily: "'Tajawal', sans-serif" }}>الاكتئاب... ليس حزناً عابراً</h1>
-        <p style={s.heroSub}>
-          الاكتئاب ليس ضعفاً ولا كسلاً، هو اضطراب حقيقي يُعاني منه{" "}
-          <strong style={{ color: "#3a3a3a" }}>أكثر من 280 مليون شخص</strong>{" "}
-          حول العالم
-        </p>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* التعريف */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>التعريف</div>
-        <h2 style={s.sectionTitle}>ما هو <span style={s.sectionTitleHighlight}>الاكتئاب</span>؟</h2>
-        <div className="responsive-grid-2" style={{ gap: "20px" }}>
-          <div style={s.defCard("#e4e4e4")}>
-            <div style={s.defCardBar("#737373")} />
-            <div style={s.defCardTitle}>الحزن الطبيعي</div>
-            <div style={s.defCardText}>
-              شعور طبيعي يمر به الجميع كاستجابة لخسارة أو ضغط أو صدمة — مؤقت ومحدود ومرتبط بسبب واضح، ويتحسن مع الوقت والدعم.
-            </div>
-          </div>
-          <div style={s.defCard("#c8c8c8")}>
-            <div style={s.defCardBar("#3a3a3a")} />
-            <div style={s.defCardTitle}>اضطراب الاكتئاب</div>
-            <div style={s.defCardText}>
-              حالة طبية تُؤثر على الدماغ وتُغير كيمياءه وبنيته. تمتد أسبوعين أو أكثر وتُعطل الحياة اليومية — لا يمكن "التغلب عليها بالإرادة" لأنها بيولوجية في جوهرها.
-            </div>
-          </div>
+function FadeSection({ children, style }) {
+    const [ref, visible] = useFadeIn();
+    return (
+        <div ref={ref} style={{ ...s.section, ...style, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 0.8s ease, transform 0.8s ease" }}>
+            {children}
         </div>
-      </div>
+    );
+}
 
-      <hr style={s.divider} />
+function Divider() {
+    return <div style={s.divider}><div style={s.divLine} /><div style={s.divDot} /><div style={s.divLine} /></div>;
+}
 
-      {/* الأنواع */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأنواع</div>
-        <h2 style={s.sectionTitle}>أنواع <span style={s.sectionTitleHighlight}>الاضطراب</span> وأشكاله</h2>
-        <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>كل أحد فينا مميز بطريقته، حتى في اضطرابه.</p>
-        <div className="responsive-grid-2" style={{ gap: "16px" }}>
-          {types.map((t) => (
-            <div key={t.id} style={{ display: "flex", flexDirection: "column" }}>
-              <div
-                style={s.typeCard()}
-                onClick={() => setExpandedType(expandedType === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.03)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(58,58,58,0.12)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(58,58,58,0.07)"; }}
-              >
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: typeColors[t.id - 1], borderRadius: "14px 14px 0 0" }} />
-                <div style={s.typeNum(typeColors[t.id - 1])}>{t.id}</div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ ...s.typeLabel, color: typeColors[t.id - 1] }}>{t.label}</div>
-                  <div style={s.typeSub}>{t.en}</div>
-                </div>
-              </div>
-              {expandedType === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "16px 20px", fontSize: "14px", color: "#525252", lineHeight: "1.9", border: `2px solid ${typeColors[t.id - 1]}`, borderTop: "none", textAlign: "right", marginTop: "-4px" }}>
-                  {typeDetails[t.id].map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < typeDetails[t.id].length - 1 ? "1px solid #f5f5f5" : "none" }}>
-                      <span style={{ color: "#c8c8c8", flexShrink: 0 }}>—</span>
-                      <span>{line}</span>
+// ── HERO ──────────────────────────────────────────────────────────────────
+function Hero() {
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
+    const fade = (delay) => ({ opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(24px)", transition: `opacity 0.8s ${delay}s ease, transform 0.8s ${delay}s ease` });
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "8rem 1.5rem 6.5rem", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #f5f5f5 0%, #e8e8eb 100%)", boxShadow: "inset 0 60px 100px -30px rgba(0,0,0,0.04)" }}>
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 50% at 50% 30%, rgba(84,84,84,0.08) 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 20% 80%, rgba(115,115,115,0.05) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <p style={{ ...fade(0.2), fontSize: 11, letterSpacing: "0.3em", color: COLORS.muted, textTransform: "uppercase", marginBottom: 28 }}>الاضطرابات النفسية · الاكتئاب</p>
+            <h1 style={{ ...fade(0.4), fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "clamp(2.2rem,6vw,4rem)", lineHeight: 1.1, margin: 0 }}>
+                <span style={{ display: "block", color: "#545454" }}>الاكتئاب...</span>
+                <span style={{ display: "block", color: "#545454" }}>ليس حزناً عابراً</span>
+            </h1>
+            <div style={{ ...fade(0.6), width: 60, height: 2, background: `linear-gradient(90deg, ${COLORS.coral}, ${COLORS.teal})`, margin: "1.75rem auto" }} />
+            <p style={{ ...fade(0.8), fontSize: "1.05rem", color: "rgba(26,26,46,0.65)", maxWidth: 480, lineHeight: 1.8 }}>
+                الاكتئاب ليس ضعفاً ولا كسلاً، هو اضطراب حقيقي يُعاني منه <strong style={{ color: COLORS.coral }}>أكثر من 280 مليون شخص</strong> حول العالم.
+            </p>
+        </div>
+    );
+}
+
+// ── DEFINITION ────────────────────────────────────────────────────────────
+function Definition() {
+    return (
+        <FadeSection>
+            <span style={s.label}>التعريف</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3d1f4b" }}>ما هو </span><span style={{ color: COLORS.coral }}>الاكتئاب؟</span></h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 16 }}>
+                {[
+                    { title: "الحزن الطبيعي", color: "#3d1f4b", text: "شعور طبيعي يمر به الجميع كاستجابة لخسارة أو ضغط أو صدمة — مؤقت ومحدود ومرتبط بسبب واضح، ويتحسن مع الوقت والدعم." },
+                    { title: "اضطراب الاكتئاب", color: "#545454", text: "حالة طبية تُؤثر على الدماغ وتُغير كيمياءه وبنيته. تمتد أسبوعين أو أكثر وتُعطل الحياة اليومية — لا يمكن 'التغلب عليها بالإرادة' لأنها بيولوجية في جوهرها." },
+                ].map(({ title, color, text }) => (
+                    <div key={title}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = "0 15px 35px rgba(84,84,84,0.15)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                        style={{ ...s.card, position: "relative", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", top: 0, right: 0, width: 80, height: 80, borderRadius: "50%", background: color, filter: "blur(40px)", opacity: 0.15, pointerEvents: "none" }} />
+                        <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color, fontSize: "1.1rem", marginBottom: 10 }}>{title}</div>
+                        <p style={{ fontSize: "0.875rem", color: "#5d5c5d", lineHeight: 1.8, margin: 0 }}>{text}</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <p style={{ fontSize: "13px", color: "#c8c8c8", textAlign: "center", marginTop: "16px" }}>اضغط على أي بطاقة لعرض التفاصيل</p>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* الأعراض */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأعراض</div>
-        <h2 style={s.sectionTitle}>كيف يظهر <span style={s.sectionTitleHighlight}>الاكتئاب</span> في جسدك وعقلك؟</h2>
-        <div style={s.tabRow}>
-          {symptomTabs.map(tab => (
-            <button key={tab} style={s.tab(activeTab === tab)} onClick={() => setActiveTab(tab)}>{tab}</button>
-          ))}
-        </div>
-        <div className="responsive-grid-2" style={{ gap: "12px" }}>
-          {(symptomData[activeTab] || []).map((item, i) => (
-            <div key={i} style={s.symptomCard()}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(58,58,58,0.12)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(58,58,58,0.06)"; }}
-            >
-              <div style={s.dot(item.color)} />
-              {item.text}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* الأسباب */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>الأسباب</div>
-        <h2 style={s.sectionTitle}>من أين يأتي <span style={s.sectionTitleHighlight}>الاكتئاب</span>؟</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3a3a3a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>1</div>
-            <div style={{ ...s.causeBlock, flex: 1 }}>
-              <div style={s.causeTitle}>اختلال النواقل العصبية البيولوجية</div>
-              <div style={s.causeLine}>السيروتونين: أكثر الناقلات ارتباطاً بالاكتئاب — إما ينخفض إنتاجه أو تقل حساسية المستقبلات الخاصة به، مما يُؤثر على المزاج والنوم والشهية.</div>
-              <div style={s.causeLine}>الدوبامين: ناقل المتعة والمكافأة والحافز — انخفاضه يُفسر فقدان المتعة من كل شيء (Anhedonia) الذي يُعدّ العلامة الأبرز للاكتئاب.</div>
-              <div style={s.causeLine}>النورإبينفرين: اضطرابه يُسبب الإرهاق المزمن وبطء التفكير وصعوبة التركيز.</div>
-              <div style={s.causeLine}>GABA: ناقل التهدئة — انخفاضه يُسبب القلق المصاحب للاكتئاب في معظم الحالات.</div>
-              <div style={{ ...s.causeLine, borderBottom: "none" }}>الغلوتامات: ناقل تنشيطي رئيسي، يؤدي اختلال توازنه مع GABA إلى اضطراب في استقرار النشاط العصبي.</div>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3a3a3a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>2</div>
-            <div style={{ ...s.causeBlockHighlight, flex: 1 }}>
-              <div style={s.causeTitle}>العوامل الوراثية والجينية</div>
-              <div style={{ fontSize: "14px", color: "#525252", marginBottom: "12px", textAlign: "right" }}>الاكتئاب وراثي جزئياً (37–50%) — الجينات تُفسر نصف الخطر، والنصف الآخر بيئي ونفسي:</div>
-              <div style={s.tagRow}>
-                {["إذا أصيب أحد الوالدين: الخطر يرتفع 2-3 أضعاف", "إذا أصيب كلاهما: الخطر يرتفع 4-6 أضعاف", "في التوائم المتطابقة: 40-70% نسبة التوافق", "لا يوجد جين واحد مسؤول — عشرات الجينات تتفاعل مع البيئة", "الجنس البيولوجي: النساء أكثر عرضة بسبب التقلبات الهرمونية"].map((t, i) => (
-                  <span key={i} style={s.tag(["#f0f0f0", "#e4e4e4", "#d8d8d8", "#ebebeb", "#e0e0e0"][i % 5])}>{t}</span>
                 ))}
-              </div>
             </div>
-          </div>
+        </FadeSection>
+    );
+}
 
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "#3a3a3a", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "16px", flexShrink: 0, marginTop: "4px" }}>3</div>
-            <div style={{ ...s.causeBlock, flex: 1 }}>
-              <div style={s.causeTitle}>العوامل البيئية والنفسية</div>
-              <div style={s.causeLine}>تجارب الطفولة السلبية (ACEs): الإساءة الجسدية والعاطفية والجنسية والإهمال — من أقوى العوامل المرتبطة بالاكتئاب لاحقاً.</div>
-              <div style={s.causeLine}>الضغوط المزمنة والمتراكمة: مشاكل مالية، علاقات صعبة، ضغط العمل المستمر دون راحة.</div>
-              <div style={s.causeLine}>الخسائر الكبرى: فقدان عزيز، فشل علاقة، خسارة وظيفة — خاصةً عند من لديهم استعداد جيني مسبق.</div>
-              <div style={{ ...s.causeLine, borderBottom: "none" }}>العزلة الاجتماعية: غياب الدعم الاجتماعي من أقوى محركات نشوء الاكتئاب وتفاقمه.</div>
+// ── TYPES ─────────────────────────────────────────────────────────────────
+const TYPES = [
+    { n: "١", en: "Major Depressive Disorder", ar: "الاكتئاب الإكلينيكي / الكبير", color: "#3a3a3a", pts: ["النوع الأكثر شيوعاً ومعروفة — نوبة واحدة أو أكثر من الاكتئاب الشديد تستمر أسبوعين على الأقل.", "يتميز بحزن عميق أو فقدان كامل للاهتمام بالحياة، مصحوباً بأعراض جسدية ومعرفية واضحة.", "قد يُصنَّف كـ خفيف أو متوسط أو شديد — وقد يصحبه أعراض ذهانية في الحالات القصوى."] },
+    { n: "٢", en: "Persistent Depressive Disorder", ar: "الاكتئاب المستمر / الخفيف", color: "#525252", pts: ["مزاج حزين مستمر لمدة سنتين على الأقل (سنة عند الأطفال) دون انقطاع لمدة شهرين.", "أعراضه أقل حدة من الاكتئاب الكبير، لكن ديمومتها تُنهك الشخص وتُشعره أن الحزن جزء من شخصيته.", "كثيراً ما يُوصف بأنه 'اكتئاب بطيء النار' — يصعب تشخيصه لأن المصاب اعتاد عليه ولا يتوقع تحسناً."] },
+    { n: "٣", en: "DMDD", ar: "خلل تنظيم المزاج التخريبي", color: "#737373", pts: ["نوبات غضب شديدة ومتكررة عند الأطفال والمراهقين، تفوق كثيراً ما يستدعيه الموقف.", "المزاج العام في ما بين النوبات يكون حزيناً أو غاضباً أغلب الوقت.", "يؤثر على الأداء في المدرسة والعلاقات الأسرية ويختلف عن ثنائي القطب الذي لا يُشخَّص لمن دون 18 عاماً."] },
+    { n: "٤", en: "PMDD", ar: "اضطراب ما قبل الدورة", color: "#8f8f8f", pts: ["اكتئاب وقلق شديد يظهر قبل الدورة الشهرية بأسبوع إلى أسبوعين ويختفي بعد بدئها.", "تغيرات مزاجية حادة، تعب، اضطرابات نوم أو شهية، شعور بفقدان السيطرة.", "أشد بكثير من متلازمة ما قبل الدورة (PMS) العادية — يُعطل الحياة اليومية بشكل كبير."] },
+    { n: "٥", en: "Substance/Medication-Induced", ar: "الناجم عن الأدوية أو المواد", color: "#ababab", pts: ["أعراض اكتئابية واضحة ناجمة مباشرة عن تناول مواد معينة أو الانسحاب منها.", "تتحسن عادةً عند تعديل الدواء أو التوقف عن المادة المسببة.", "من أسبابها: الكحول، المنشطات، الستيرويدات، بعض أدوية ضغط الدم أو بعض المضادات الحيوية."] },
+    { n: "٦", en: "Due to Another Medical Condition", ar: "الناتج عن حالة طبية أخرى", color: "#525252", pts: ["اكتئاب مرتبط بحالة طبية عضوية كالغدة الدرقية الخاملة، السرطان، أمراض القلب، السكتة الدماغية.", "يحتاج علاج الحالة الطبية الأساسية لتحسين المزاج.", "لا يُعدّ كسلاً أو ضعف شخصية — بل تأثير بيولوجي مباشر للمرض على الدماغ."] },
+    { n: "٧", en: "Unspecified Depressive Disorder", ar: "الاكتئاب غير المحدد", color: "#8f8f8f", pts: ["أعراض اكتئابية واضحة لكنها لا تنطبق تماماً على أي تشخيص محدد من الأنواع السابقة.", "يحتاج تقييم دقيق من متخصص لفهم الصورة الكاملة وتقديم الدعم المناسب.", "وجود الأعراض والمعاناة الحقيقية يكفي للحصول على المساعدة — بغض النظر عن دقة التصنيف."] },
+    { n: "٨", en: "Bipolar Disorder", ar: "اضطراب ثنائي القطب", color: "#3a3a3a", pts: ["نوبات اكتئاب متناوبة مع نوبات هوس أو فرط نشاط — يختلف جوهرياً عن الاكتئاب الأحادي.", "في الاكتئاب: حزن، فقدان طاقة، قلة اهتمام. في الهوس: نشاط زائد، اندفاع، شعور بالعظمة أحياناً.", "علاجه يختلف عن باقي أنواع الاكتئاب — الأدوية المثبتة للمزاج (كالليثيوم) هي الركيزة الأساسية."] },
+];
+
+function Types() {
+    const [open, setOpen] = useState(-1);
+    return (
+        <FadeSection>
+            <span style={s.label}>الأنواع</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3d1f4b" }}>أنواع </span><span style={{ color: COLORS.coral }}>الاضطراب</span><span style={{ color: "#3d1f4b" }}> وأشكاله</span></h2>
+            <p style={{ fontFamily: "'Tajawal', sans-serif", color: "#3a3a3a", borderRight: `3px solid #3a3a3a`, paddingRight: 16, marginBottom: 28, fontStyle: "italic", fontWeight: "bold" }}>كل احد فينا مميز حتى باضطرابه</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", alignItems: "flex-start" }}>
+                {TYPES.map((t, i) => {
+                    const isOpened = open === i;
+                    return (
+                        <div key={i} onClick={() => setOpen(isOpened ? -1 : i)}
+                            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = isOpened ? "translateY(-2px)" : "none"; e.currentTarget.style.boxShadow = "none"; }}
+                            style={{ background: COLORS.card, borderRight: `1px solid ${isOpened ? t.color : COLORS.border}`, borderBottom: `1px solid ${isOpened ? t.color : COLORS.border}`, borderLeft: `1px solid ${isOpened ? t.color : COLORS.border}`, borderTop: `5px solid ${t.color}`, borderRadius: 14, overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s, transform 0.2s", transform: isOpened ? "translateY(-2px)" : "none", flex: "1 1 280px", maxWidth: "380px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "1rem 1.25rem" }}>
+                                <span style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.8rem", color: t.color, opacity: 0.25, lineHeight: 1 }}>{t.n}</span>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 3, letterSpacing: "0.05em" }}>{t.en}</div>
+                                    <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color: t.color, fontSize: "0.9rem" }}>{t.ar}</div>
+                                </div>
+                                <div style={{ fontSize: 18, color: COLORS.muted, transition: "transform 0.3s", transform: isOpened ? "rotate(45deg)" : "none" }}>+</div>
+                            </div>
+                            {isOpened && (
+                                <div style={{ padding: "0 1.25rem 1.25rem" }}>
+                                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                        {t.pts.map((pt, j) => (
+                                            <li key={j} style={{ fontSize: "0.85rem", color: "rgba(26,26,46,0.7)", padding: "0.4rem 0", borderBottom: j < t.pts.length - 1 ? "1px solid rgba(84,84,84,0.1)" : "none", lineHeight: 1.7 }}>
+                                                <span style={{ color: t.color, marginLeft: 8 }}>—</span>{pt}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
-          </div>
+            <p style={{ textAlign: "center", fontSize: 12, color: COLORS.muted, marginTop: 14 }}>اضغط على أي بطاقة لعرض التفاصيل</p>
+        </FadeSection>
+    );
+}
 
-        </div>
-      </div>
+// ── SYMPTOMS ──────────────────────────────────────────────────────────────
+const TABS = [
+    { label: "الأعراض العاطفية والنفسية", id: "emotional", color: "#3a3a3a", items: ["حزن عميق ومستمر لمعظم ساعات اليوم", "فقدان المتعة والاهتمام بالأنشطة المحبوبة (Anhedonia)", "شعور بالفراغ الداخلي والخدر العاطفي", "يأس وشعور بأن المستقبل مظلم لا أمل فيه", "مشاعر ذنب مفرطة وانتقاد مستمر للذات", "انسحاب اجتماعي والعزلة عن الأسرة والأصدقاء"] },
+    { label: "الأعراض الجسدية", id: "physical", color: "#525252", items: ["إرهاق مزمن وفقدان الطاقة دون مجهود يذكر", "اضطرابات النوم: أرق شديد أو نوم مفرط", "تغيرات في الشهية وفي الوزن (زيادة أو نقص)", "بطء ملحوظ في الحركة والكلام (Psychomotor Retardation)", "آلام جسدية غير مفسرة: رأس، ظهر، معدة", "انخفاض الدافع الجنسي واضطراب الوظائف الجسدية"] },
+    { label: "الأعراض المعرفية", id: "cognitive", color: "#737373", items: ["صعوبة شديدة في التركيز واتخاذ القرارات", "بطء التفكير والشعور بضبابية ذهنية (Brain Fog)", "أفكار سلبية متكررة وتشاؤم تجاه كل شيء", "اجترار الأفكار المؤلمة بشكل قهري ومستمر", "انخفاض تقدير الذات والشعور بعدم الكفاءة", "تشوهات إدراكية: تضخيم السلبي وتجاهل الإيجابي"] },
+    { label: "العلامات الحادة", id: "acute", color: "#c1232b", items: ["أفكار متكررة عن الموت أو انعدام الرغبة في الحياة", "أفكار انتحارية مع أو بدون خطة محددة", "الإهمال التام للنظافة الشخصية والمظهر", "العجز عن أداء أبسط مهام الحياة اليومية", "الانسحاب الكامل من العلاقات والحياة الاجتماعية", "حالات ذهانية: أوهام أو هلوسة في الاكتئاب الشديد"] },
+];
 
-      <hr style={s.divider} />
-
-      {/* آليات التكيف */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>آليات التكيف</div>
-        <h2 style={s.sectionTitle}>حين تُخطئ <span style={s.sectionTitleHighlight}>طريقة التعامل</span></h2>
-        <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>استجابات تبدو منطقية لتخفيف الألم مؤقتاً — لكنها تُطيل الاكتئاب وتُعمّق دوامته على المدى الطويل.</p>
-        <div className="responsive-grid-3" style={{ gap: "16px" }}>
-          {copingCards.map((c, i) => (
-            <div key={i} style={s.copingCard}
-              onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8f8f8f"; }}
-              onMouseLeave={e => { e.currentTarget.style.border = "1.5px solid #e4e4e4"; }}
-            >
-              <div style={s.copingIcon}>{c.icon}</div>
-              <div style={s.copingTitle}>{c.title}</div>
-              <div style={s.copingEn}>{c.en}</div>
-              <div style={s.copingText}>{c.text}</div>
+function Symptoms() {
+    const [tab, setTab] = useState(0);
+    const cur = TABS[tab];
+    return (
+        <FadeSection>
+            <span style={s.label}>الأعراض</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3d1f4b" }}>كيف يظهر </span><span style={{ color: "#545454" }}>الاكتئاب</span><span style={{ color: "#3d1f4b" }}> في جسدك وعقلك؟</span></h2>
+            <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${COLORS.border}`, marginBottom: 24, overflowX: "auto" }}>
+                {TABS.map((t, i) => (
+                    <button key={i} onClick={() => setTab(i)} style={{ background: "none", border: "none", color: tab === i ? "#3a3a3a" : COLORS.muted, fontWeight: tab === i ? "bold" : "normal", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", padding: "0.65rem 1.1rem", cursor: "pointer", borderBottom: `2px solid ${tab === i ? "#3a3a3a" : "transparent"}`, marginBottom: -1, whiteSpace: "nowrap", transition: "color 0.3s" }}>{t.label}</button>
+                ))}
             </div>
-          ))}
-          <div style={s.copingCardWide}
-            onMouseEnter={e => { e.currentTarget.style.border = "1.5px solid #8f8f8f"; }}
-            onMouseLeave={e => { e.currentTarget.style.border = "1.5px solid #e4e4e4"; }}
-          >
-            <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-              <div style={{ fontSize: "22px" }}>🌑</div>
-              <div>
-                <div style={s.copingTitle}>دوامة الاكتئاب السلبية</div>
-                <div style={s.copingEn}>The Depression Spiral</div>
-                <div style={s.copingText}>الاكتئاب يُخفض الطاقة → تُقل النشاط → يتراكم الشعور بعدم الإنجاز → يزداد الاكتئاب → تقل الطاقة أكثر. كسر هذه الدوامة يتطلب التدخل من خارجها، وليس الانتظار لـ'الشعور بالرغبة' أولاً.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* السمات الشخصية */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>السمات الشخصية</div>
-        <h2 style={s.sectionTitle}>الاكتئاب يُغيِّر <span style={s.sectionTitleHighlight}>شخصيتك</span></h2>
-        <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>العيش مع اكتئاب مزمن يُحدث تغييرات عميقة في الشخصية وطريقة رؤية الذات والعالم.</p>
-        <div className="responsive-grid-4" style={{ gap: "14px" }}>
-          {traitCards.map((t, i) => (
-            <div key={i} style={s.traitCard(t.color)}>
-              <div style={s.traitBar(t.bar)} />
-              <div style={{ height: "8px" }} />
-              <div style={s.traitTitle}>{t.title}</div>
-              <div style={s.traitEn}>{t.en}</div>
-              <div style={s.traitText}>{t.text}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* رحلة داخل الدماغ */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>علم الأعصاب</div>
-        <h2 style={s.sectionTitle}>رحلة داخل <span style={s.sectionTitleHighlight}>دماغك</span></h2>
-        <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "28px" }}>لماذا لا يستطيع المصاب بالاكتئاب 'مجرد التفكير الإيجابي'؟ — ما يحدث في الدماغ يُجيب.</p>
-        <div style={s.brainList}>
-          {brainSteps.map((step, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-              <div style={{ ...s.brainNum(step.bg), flexShrink: 0, marginTop: "4px" }}>{i + 1}</div>
-              <div
-                style={{ background: "white", borderRadius: "14px", padding: "20px 28px", border: "1.5px solid #e4e4e4", flex: 1, transition: "transform 0.2s, box-shadow 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateX(-6px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(58,58,58,0.1)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.boxShadow = "none"; }}
-              >
-                <div style={s.brainTitle}>{step.title} · <span style={{ fontSize: "12px", color: "#c8c8c8", fontWeight: "400" }}>{step.en}</span></div>
-                <div style={s.brainText}>{step.text}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: "white", borderRadius: "16px", padding: "28px 32px", border: "1.5px solid #e4e4e4", marginTop: "28px" }}>
-          <div style={{ fontSize: "16px", fontWeight: "700", color: "#2a2a2a", marginBottom: "20px", textAlign: "right" }}>النتيجة: ماذا تشعر في جسدك وعقلك؟</div>
-          <div className="responsive-grid-2" style={{ background: "white", borderRadius: "16px", padding: "28px 36px", border: "1.5px solid #e4e4e4", gap: "32px" }}>
-            <div>
-              <div style={s.resultColTitle}>في المزاج والعقل</div>
-              {["حزن عميق لا يتحرك بالمنطق", "فقدان الاهتمام بكل الأشياء", "عجز عن الشعور بالسعادة", "أفكار سلبية تلقائية لا تتوقف"].map((t, i) => (
-                <div key={i} style={s.resultItem}><div style={s.resultDot("#3a3a3a")} />{t}</div>
-              ))}
-            </div>
-            <div>
-              <div style={{ ...s.resultColTitle, color: "#737373" }}>في الجسد والطاقة</div>
-              {["إرهاق لا مبرر له حتى بعد النوم", "بطء في الحركة والكلام", "اضطراب في النوم والشهية", "آلام جسدية غير مفسرة"].map((t, i) => (
-                <div key={i} style={s.resultItem}><div style={s.resultDot("#737373")} />{t}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr style={s.divider} />
-
-      {/* العلاج */}
-      <div style={s.sectionWrapper}>
-        <div style={s.sectionLabel}>العلاج</div>
-        <h2 style={s.sectionTitle}>طريقك نحو <span style={s.sectionTitleHighlight}>التعافي</span></h2>
-        <p style={{ fontSize: "14px", color: "#ababab", textAlign: "right", marginBottom: "24px" }}>الاكتئاب من أكثر الاضطرابات النفسية قابليةً للعلاج — معظم المصابين يتحسنون مع العلاج المناسب.</p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {treatments.map((t) => (
-            <div key={t.id}>
-              <div
-                style={{ background: "white", borderRadius: expandedTreatment === t.id ? "14px 14px 0 0" : "14px", padding: "20px 24px", border: `2px solid ${expandedTreatment === t.id ? t.color : "#e4e4e4"}`, cursor: "pointer", transition: "border 0.2s", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                onClick={() => setExpandedTreatment(expandedTreatment === t.id ? null : t.id)}
-                onMouseEnter={e => { e.currentTarget.style.border = `2px solid ${t.color}`; }}
-                onMouseLeave={e => { if (expandedTreatment !== t.id) e.currentTarget.style.border = "2px solid #e4e4e4"; }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                  <span style={{ fontSize: "24px", width: "44px", height: "44px", background: t.color, borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>{t.icon}</span>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: "11px", color: "#c8c8c8", marginBottom: "2px" }}>{t.en}</div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <div style={{ fontSize: "17px", fontWeight: "700", color: "#2a2a2a" }}>{t.label}</div>
-                      {t.badge && <span style={{ fontSize: "11px", background: "#f0f0f0", color: "#525252", borderRadius: "20px", padding: "2px 10px" }}>✦ {t.badge}</span>}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                {cur.items.map((item, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)"; e.currentTarget.style.borderColor = cur.color; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                        style={{ ...s.card, display: "flex", alignItems: "center", gap: 12, fontSize: "0.9rem", color: "#3a3a3a", fontWeight: "bold", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", flex: "1 1 240px", maxWidth: "380px", minHeight: "60px" }}>
+                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: cur.color, flexShrink: 0 }} />{item}
                     </div>
-                  </div>
-                </div>
-                <span style={{ fontSize: "22px", color: "#c8c8c8" }}>{expandedTreatment === t.id ? "−" : "+"}</span>
-              </div>
-              {expandedTreatment === t.id && (
-                <div style={{ background: "white", borderRadius: "0 0 14px 14px", padding: "4px 24px 20px", border: `2px solid ${t.color}`, borderTop: "none" }}>
-                  {t.details.map((line, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", padding: "10px 0", borderBottom: i < t.details.length - 1 ? "1px solid #f5f5f5" : "none", fontSize: "14px", color: "#525252", lineHeight: "1.9", textAlign: "right" }}>
-                      <span style={{ color: "#8f8f8f", flexShrink: 0, fontSize: "16px" }}>•</span>
-                      <span>{line}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+                ))}
             </div>
-          ))}
-        </div>
-        <p style={{ fontSize: "12px", color: "#c8c8c8", textAlign: "center", marginTop: "28px" }}>
-          هذا المحتوى لأغراض تثقيفية فقط. إذا كنت تعاني من أعراض الاكتئاب، تحدث مع <strong style={{ color: "#3a3a3a" }}>متخصص نفسي</strong>.
-        </p>
-      </div>
+        </FadeSection>
+    );
+}
 
-    </div>
-  );
+// ── CAUSES ────────────────────────────────────────────────────────────────
+const CAUSES = [
+    {
+        n: "١", label: "بيولوجية", color: "#3a3a3a", title: "اختلال النواقل العصبية البيولوجية", circleBg: "linear-gradient(135deg, #3a3a3a, #737373)", circleColor: "#fff", borderColor: "#3a3a3a", content: (
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {["السيروتونين: أكثر الناقلات ارتباطاً بالاكتئاب — انخفاضه يُؤثر على المزاج والنوم والشهية.", "الدوبامين: ناقل المتعة والمكافأة والحافز — انخفاضه يُفسر فقدان المتعة من كل شيء (Anhedonia).", "النورإبينفرين: اضطرابه يُسبب الإرهاق المزمن وبطء التفكير وصعوبة التركيز.", "GABA: ناقل التهدئة — انخفاضه يُسبب القلق المصاحب للاكتئاب.", "الغلوتامات: اختلال توازنه يؤدي إلى اضطراب في استقرار النشاط العصبي."].map((p, i, a) => (
+                    <li key={i} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.5rem 0", borderBottom: i < a.length - 1 ? `1px solid rgba(0,0,0,0.05)` : "none", lineHeight: 1.7, fontWeight: "600" }}>{p}</li>
+                ))}
+            </ul>
+        )
+    },
+    {
+        n: "٢", label: "جينية", color: "#525252", title: "العوامل الوراثية والجينية", circleBg: "linear-gradient(135deg, #525252, #ababab)", circleColor: "#fff", borderColor: "#525252", content: (
+            <div>
+                <p style={{ fontSize: "0.875rem", color: "#5d5c5d", marginBottom: 14, lineHeight: 1.7, fontWeight: "600" }}>الاكتئاب وراثي جزئياً (37–50%) — الجينات تُفسر نصف الخطر، والنصف الآخر بيئي ونفسي:</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {["وراثة أحد الوالدين", "تفاعل الجينات مع البيئة", "النساء أكثر عرضة هرمونياً", "التوائم المتطابقة (40-70%)"].map(tag => (
+                        <span key={tag} style={{ background: "rgba(82, 82, 82, 0.15)", color: "#5d5c5d", borderRadius: 50, padding: "4px 12px", fontSize: "0.75rem", fontWeight: "bold" }}>{tag}</span>
+                    ))}
+                </div>
+            </div>
+        )
+    },
+    {
+        n: "٣", label: "بيئية ونفسية", color: "#737373", title: "العوامل البيئية والنفسية", circleBg: "linear-gradient(90deg, #737373, #ababab)", circleColor: "#fff", borderGradient: "linear-gradient(to right, #737373, #ababab)", content: (
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {["تجارب الطفولة السلبية (ACEs): الإساءة والإهمال.", "الضغوط المزمنة والمتراكمة: مشاكل مالية أو ضغط العمل.", "الخسائر الكبرى: فقدان عزيز أو فشل علاقة.", "العزلة الاجتماعية وغياب الدعم الاجتماعي."].map((p, i, a) => (
+                    <li key={i} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.5rem 0", borderBottom: i < a.length - 1 ? `1px solid rgba(0,0,0,0.05)` : "none", lineHeight: 1.7, fontWeight: "600" }}>{p}</li>
+                ))}
+            </ul>
+        )
+    },
+];
+
+function Causes() {
+    return (
+        <FadeSection>
+            <span style={s.label}>الأسباب</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3a3a3a" }}>من أين يأتي </span><span style={{ color: COLORS.coral }}>الاكتئاب؟</span></h2>
+            <p style={{ fontSize: "0.875rem", color: COLORS.muted, marginBottom: 32 }}>هناك ٣ مسببات رئيسية لاضطراب الاكتئاب</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                {CAUSES.map((c, i) => (
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 20, alignItems: "start" }}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <div style={{ width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.1rem", color: c.circleColor || c.color, border: c.circleBg ? "none" : `1px solid ${c.color}`, background: c.circleBg || `${c.color}18`, flexShrink: 0 }}>{c.n}</div>
+                            {i < CAUSES.length - 1 && <div style={{ width: 1, height: 40, background: `linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)`, marginTop: 4 }} />}
+                        </div>
+                        <div style={{
+                            marginBottom: 0,
+                            background: c.borderGradient ? `linear-gradient(#ffffff, #ffffff) padding-box, ${c.borderGradient} border-box` : "#ffffff",
+                            border: `2px solid ${c.borderGradient ? "transparent" : c.borderColor}`,
+                            borderRadius: "20px",
+                            padding: "1.5rem",
+                            boxShadow: "0 4px 15px rgba(0,0,0,0.03)"
+                        }}>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: c.color, fontSize: "1.05rem", marginBottom: 14 }}>{c.title}</div>
+                            {c.content}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── MALADAPTIVE ───────────────────────────────────────────────────────────
+const MALAD = [
+    { icon: "🛌", title: "الانسحاب والعزلة", en: "Social Withdrawal", desc: "تجنب الناس والتجمعات لأن كل شيء يتطلب جهداً كبيراً. يُحرم الدماغ من الدعم الاجتماعي والمحفزات الإيجابية.", color: COLORS.coral },
+    { icon: "📱", title: "الإفراط في الشاشات", en: "Excessive Screen Time", desc: "الهروب من الأفكار السوداء عبر الشاشات. يُقلل جودة النوم ويُعمّق الانعزال ويُغذّي المقارنات المؤلمة.", color: COLORS.coral },
+    { icon: "🍔", title: "اضطراب الأكل", en: "Emotional Eating / Restriction", desc: "استخدام الطعام كمهدئ عاطفي أو العقاب بالجوع. كلاهما يُراكم مشاعر الذنب ويُضاعف الأعراض.", color: COLORS.coral },
+    { icon: "💊", title: "تعاطي المواد", en: "Substance Use", desc: "اللجوء للكحول أو المخدرات لتخدير الشعور بالفراغ والحزن. تُهبط المزاج أكثر على المدى الطويل.", color: COLORS.coral },
+    { icon: "💭", title: "اجترار الأفكار", en: "Rumination", desc: "الدوران في نفس الأفكار السلبية مراراً — 'لماذا أنا هكذا؟'. يُثبّت الدماغ على الأسوأ ويمنع التعافي.", color: COLORS.coral },
+    { icon: "🔇", title: "إسكات المشاعر", en: "Emotional Suppression", text: "رفض الاعتراف بالحزن أو إخفاؤه. الضغط الداخلي يتراكم حتى يتحول لأعراض جسدية.", color: COLORS.coral },
+];
+
+function Maladaptive() {
+    return (
+        <FadeSection>
+            <span style={s.label}>آليات التكيف</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3a3a3a" }}>حين تُخطئ </span><span style={{ color: COLORS.coral }}>طريقة التعامل</span></h2>
+            <p style={{ fontSize: "0.875rem", color: "#5d5c5d", marginBottom: 28, lineHeight: 1.7 }}>استجابات تبدو منطقية لتخفيف الألم مؤقتاً — لكنها تُطيل الاكتئاب وتُعمّق دوامته على المدى الطويل.</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+                {MALAD.map((m, i) => (
+                    <div key={i} 
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 12px 30px rgba(84,84,84,0.12)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                        style={{ ...s.card, paddingTop: "1rem", flex: "1 1 260px", maxWidth: "calc(33.33% - 12px)", minWidth: "260px", minHeight: "180px" }}>
+                        <div style={{ fontSize: 24, marginBottom: 10, lineHeight: 1, marginTop: "-0.25rem" }}>{m.icon}</div>
+                        <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3a3a3a", fontSize: "0.95rem", marginBottom: 4 }}>{m.title}</div>
+                        <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 10, letterSpacing: "0.05em" }}>{m.en}</div>
+                        <p style={{ fontSize: "0.85rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{m.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── PERSONALITY ───────────────────────────────────────────────────────────
+const TRAITS = [
+    { ar: "العصابية العالية", en: "High Neuroticism", desc: "الميل الشديد لتجربة المشاعر السلبية والتأثر المفرط بالضغوط اليومية البسيطة." },
+    { ar: "الكمالية المرضية", en: "Perfectionism", desc: "معايير مرتفعة جداً تتحول لسلاح ضد الذات عند أي إخفاق مهما كان صغيراً." },
+    { ar: "الانطوائية المفرطة", en: "Extreme Introversion", desc: "ميل للهروب للداخل وتجنب التفاعل مع العالم الخارجي كوسيلة للحماية." },
+    { ar: "انخفاض الإحساس بالقيمة", en: "Low Self-Worth", desc: "شعور جوهري بعدم الاستحقاق وأن الآخرين أفضل بطبيعتهم — لا كردة فعل على حدث." },
+    { ar: "الاعتمادية العاطفية", en: "Emotional Dependency", desc: "الحاجة المفرطة لتأكيد الآخرين للشعور بأن الحياة تستحق أو أن الفرد محبوب." },
+    { ar: "السلبية المتعلَّمة", en: "Learned Helplessness", desc: "قناعة عميقة بأن لا شيء يمكن فعله لتغيير الوضع — بعد تجارب متكررة من الإخفاق." },
+    { ar: "التشاؤم المزمن", en: "Chronic Pessimism", desc: "تلقائية في توقع الأسوأ في كل موقف — كبرمجة ذهنية ترسّخت بمرور الوقت." },
+    { ar: "انخفاض الانفتاح على التجربة", en: "Low Openness", desc: "رفض أو عجز عن تجربة أشياء جديدة بسبب انعدام الحافز الداخلي والطاقة الذهنية." },
+];
+
+function Personality() {
+    return (
+        <FadeSection>
+            <span style={s.label}>السمات الشخصية</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: COLORS.coral }}>الاكتئاب </span><span style={{ color: "#3a3a3a" }}>يُغيّر شخصيتك</span></h2>
+            <p style={{ fontSize: "0.875rem", color: COLORS.muted, marginBottom: 24 }}>العيش مع اكتئاب مزمن يُحدث تغييرات عميقة في الشخصية وطريقة رؤية الذات والعالم.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {TRAITS.map((t, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "translateX(-12px)"; e.currentTarget.style.borderColor = "#3a3a3a"; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "translateX(0)"; e.currentTarget.style.borderColor = COLORS.border; }}
+                        style={{ ...s.card, display: "grid", gridTemplateColumns: "min(200px,40%) 1fr", gap: 16, alignItems: "start" }}>
+                        <div>
+                            <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3a3a3a", fontSize: "0.95rem" }}>{t.ar}</div>
+                            <div style={{ fontSize: 11, color: COLORS.muted, marginTop: 3 }}>{t.en}</div>
+                        </div>
+                        <p style={{ fontSize: "0.85rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{t.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── BRAIN JOURNEY ─────────────────────────────────────────────────────────
+const BRAIN_STEPS = [
+    { n: "١", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: COLORS.coral, text: "تنخفض نشاطاً في الاكتئاب — مما يُضعف التخطيط، صنع القرار، والتحكم في المشاعر. يصبح التفكير في 'الخطوة التالية' مرهقاً للغاية." },
+    { n: "٢", label: "REWARD SYSTEM · نظام المكافأة", color: COLORS.teal, text: "يُصبح نظام المكافأة خاملاً — الدوبامين لا يُفرز باندفاعه الطبيعي، مما يُفسد الشعور بالمتعة حتى في الأشياء المحبوبة." },
+    { n: "٣", label: "AMYGDALA · اللوزة الدماغية", color: COLORS.coral, text: "تُصبح مفرطة النشاط وحساسيتها تجاه المحفزات السلبية ترتفع — فأي فشل صغير يُشعر بالكارثة." },
+    { n: "٤", label: "HIPPOCAMPUS · الحُصين والذاكرة", color: COLORS.coral, text: "يُصبح أصغر حجماً مع الاكتئاب المزمن بسبب الكورتيزول المرتفع، مما يجعلك تتذكر المصائب وتنسى الإنجازات." },
+    { n: "٥", label: "HPA AXIS · محور الإجهاد", color: COLORS.coral, text: "يعمل محور الإجهاد بشكل مفرط — مستويات الكورتيزول مرتفعة بشكل مزمن مما يُضر بخلايا الدماغ." },
+    { n: "٦", label: "NEUROTRANSMITTERS · النواقل العصبية", color: COLORS.teal, text: "انخفاض في السيروتونين يُؤثر على النوم والمزاج، وانخفاض النورإبينفرين يُسبب الإرهاق وبطء التفكير." },
+];
+
+function BrainStep({ step, index }) {
+    const [ref, visible] = useFadeIn();
+    return (
+        <div ref={ref} style={{ display: "grid", gridTemplateColumns: "60px 1fr", gap: 16, opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(20px)", transition: `opacity 0.5s ${index * 0.12}s ease, transform 0.5s ${index * 0.12}s ease` }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{ width: 52, height: 52, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", fontWeight: 900, fontSize: "1.1rem", color: "white", border: `2px solid ${COLORS.coral}`, background: COLORS.coral, flexShrink: 0 }}>{step.n}</div>
+                {index < BRAIN_STEPS.length - 1 && <div style={{ width: 1, height: 32, background: `linear-gradient(to bottom, ${COLORS.coral}, transparent)`, margin: "4px 0" }} />}
+            </div>
+            <div style={{ ...s.card, marginBottom: 12, borderColor: COLORS.coral }}>
+                <div style={{ fontSize: 12, color: "#3a3a3a", letterSpacing: "0.1em", marginBottom: 6, fontWeight: "900", fontFamily: "'Tajawal', sans-serif" }}>{step.label}</div>
+                <p style={{ fontSize: "0.875rem", color: "#3a3a3a", lineHeight: 1.8, margin: 0, fontWeight: "700" }}>
+                    {step.text.split('—')[0]}— 
+                    <span style={{ color: "#5d5c5d", fontWeight: "600" }}>{step.text.split('—').slice(1).join('—')}</span>
+                </p>
+            </div>
+        </div>
+    );
+}
+
+function BrainJourney() {
+    return (
+        <FadeSection>
+            <span style={s.label}>علم الأعصاب</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3a3a3a" }}>رحلة داخل </span><span style={{ color: COLORS.coral }}>دماغك</span></h2>
+            <p style={{ textAlign: "center", fontSize: "0.875rem", color: COLORS.muted, marginBottom: 32 }}>لماذا لا يستطيع المصاب بالاكتئاب 'مجرد التفكير الإيجابي'؟</p>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                {BRAIN_STEPS.map((step, i) => <BrainStep key={i} step={step} index={i} />)}
+            </div>
+            <div style={{ background: "rgba(84,84,84,0.06)", border: "1px solid rgba(84,84,84,0.2)", borderRadius: 14, padding: "1.5rem", marginTop: 16 }}>
+                <p style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: "#3a3a3a", marginBottom: 16, fontSize: "0.95rem" }}>النتيجة: ماذا تشعر في جسدك وعقلك؟</p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 24 }}>
+                    {[
+                        { title: "في المزاج والعقل", color: "#3a3a3a", items: ["حزن عميق لا يتحرك بالمنطق", "فقدان الاهتمام بكل الأشياء", "عجز عن الشعور بالسعادة", "أفكار سلبية تلقائية لا تتوقف"] },
+                        { title: "في الجسد والطاقة", color: "#737373", items: ["إرهاق لا مبرر له حتى بعد النوم", "بطء في الحركة والكلام", "اضطراب في النوم والشهية", "آلام جسدية غير مفسرة"] },
+                    ].map((col, idx) => (
+                        <div key={col.title}>
+                            <p style={{ fontSize: "0.95rem", color: col.color, fontWeight: "900", letterSpacing: "0.05em", marginBottom: 12 }}>{col.title}</p>
+                            {col.items.map((it, i) => (
+                                <div key={i} style={{ fontSize: "0.85rem", color: "#5d5c5d", fontWeight: "600", padding: "0.4rem 0", borderBottom: "1px solid rgba(0,0,0,0.05)", display: "flex", gap: 8, alignItems: "center" }}>
+                                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: col.color, flexShrink: 0 }} />{it}
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── TREATMENT ─────────────────────────────────────────────────────────────
+const TREATMENTS = [
+    { icon: "🧩", en: "Cognitive Behavioral Therapy", title: "١. العلاج السلوكي المعرفي (CBT)", color: "#3a3a3a", pts: [["إعادة الهيكلة المعرفية:", "ملاحظة الأفكار السلبية التلقائية وتحديها بالمنطق والأدلة."], ["تفعيل السلوك:", "إعادة إدخال الأنشطة الممتعة تدريجياً — الحركة تسبق الحافز وليس العكس."], ["جدولة الأنشطة:", "بناء روتين منظم يُعيد الإحساس بالسيطرة والإنجاز."], ["التعامل مع الاجترار:", "تقنيات قطع الدوامة الذهنية قبل أن تتضخم الأعراض."]] },
+    { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#525252", pts: [["SSRIs (الخط الأول):", "مثل سيرترالين وفلوكستين — ترفع السيروتونين تدريجياً (تحتاج 2-4 أسابيع)."], ["SNRIs:", "تعالج السيروتونين والنورإبينفرين معاً، مفيدة للإرهاق والألم."], ["Bupropion:", "يعمل على الدوبامين والنورإبينفرين — خيار ممتاز عند فقدان الطاقة."], ["مثبتات المزاج:", "ضرورية لثنائي القطب كالليثيوم واللاموتريجين."]] },
+    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المدمج", color: "#737373", badge: "الأفضل نتائج", pts: [["", "دمج CBT مع الأدوية يُعطي أفضل النتائج وأقل معدلات انتكاس — الأدوية تُخفف الأعراض بما يُمكّن المريض من الاستفادة من الجلسات."]] },
+    { icon: "✨", en: "Other Therapies", title: "٤. علاجات نفسية أخرى", color: "#8f8f8f", pts: [["العلاج الشخصي (IPT):", "يُركز على تحسين العلاقات الاجتماعية ومهارات التواصل."], ["العلاج بالقبول والالتزام (ACT):", "قبول المشاعر الصعبة دون مقاومة والتصرف وفق القيم."], ["التحفيز الدماغي (TMS/ECT):", "في حالات الاكتئاب الشديد المقاوم للأدوية."]] },
+    { icon: "🌿", en: "Lifestyle & Support", title: "٥. تعديل نمط الحياة والدعم", color: "#3a3a3a", pts: [["الرياضة:", "30 دقيقة يومياً مثبتة علمياً بتأثير مساوٍ للأدوية في الحالات المتوسطة."], ["تنظيم النوم:", "جدول نوم ثابت يُعيد توازن الإيقاع البيولوجي."], ["التغذية:", "نظام غني بأوميغا-3 وحمض الفوليك يدعم الدماغ."], ["الدعم الاجتماعي:", "التحدث مع شخص موثوق يُكسر دوامة العزلة."]] },
+];
+
+function Treatment() {
+    const [open, setOpen] = useState(-1);
+    return (
+        <FadeSection>
+            <span style={s.label}>العلاج</span>
+            <h2 style={{ ...s.h2, color: "#3a3a3a" }}><span style={{ color: "#3a3a3a" }}>طريقك نحو </span><span style={{ color: COLORS.coral }}>التعافي</span></h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {TREATMENTS.map((t, i) => (
+                    <div key={i}
+                        onMouseEnter={e => { if (open !== i) e.currentTarget.style.borderColor = t.color; }}
+                        onMouseLeave={e => { if (open !== i) e.currentTarget.style.borderColor = COLORS.border; }}
+                        style={{ background: COLORS.card, border: `1px solid ${open === i ? t.color : COLORS.border}`, borderRadius: 16, overflow: "hidden", transition: "border-color 0.3s" }}>
+                        <div onClick={() => setOpen(open === i ? -1 : i)} style={{ display: "flex", alignItems: "center", gap: 16, padding: "1.25rem 1.5rem", cursor: "pointer" }}>
+                            <div style={{ width: 46, height: 46, borderRadius: 12, background: `${t.color}14`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{t.icon}</div>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: COLORS.muted, letterSpacing: "0.08em", marginBottom: 3 }}>{t.en}</div>
+                                <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 700, color: t.color, fontSize: "0.95rem" }}>{t.title}</div>
+                            </div>
+                            <div style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: COLORS.muted, fontSize: 18, transition: "transform 0.3s", transform: open === i ? "rotate(45deg)" : "none" }}>+</div>
+                        </div>
+                        {open === i && (
+                            <div style={{ padding: "0 1.5rem 1.5rem" }}>
+                                {t.badge && <span style={{ display: "inline-block", background: `${t.color}14`, border: `1px solid ${t.color}40`, color: t.color, borderRadius: 50, padding: "4px 14px", fontSize: 12, marginBottom: 14, fontWeight: "bold" }}>✦ {t.badge}</span>}
+                                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                    {t.pts.map(([bold, rest], j, a) => (
+                                        <li key={j} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
+                                            <span style={{ color: t.color, fontSize: "0.5rem", marginTop: 7, flexShrink: 0 }}>●</span>
+                                            <span>{bold && <strong style={{ color: "#3a3a3a", fontFamily: "'Tajawal', sans-serif" }}>{bold}</strong>} {rest}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </FadeSection>
+    );
+}
+
+// ── APP ───────────────────────────────────────────────────────────────────
+export default function DepressionDetail() {
+    useEffect(() => {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
+        document.head.appendChild(link);
+        const style = document.createElement("style");
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#737373; border-radius:2px }`;
+        document.head.appendChild(style);
+    }, []);
+
+    return (
+        <div style={s.page}>
+            <Hero />
+            <div style={{ background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)' }}>
+                <Definition />
+                <Divider />
+                <Types />
+                <Divider />
+                <Symptoms />
+                <Divider />
+                <Causes />
+                <Divider />
+                <Maladaptive />
+                <Divider />
+                <Personality />
+                <Divider />
+                <BrainJourney />
+                <Divider />
+                <Treatment />
+                <div style={{ display: "flex", justifyContent: "center", padding: "2rem 0 1rem" }}>
+                    <Link to="/disease/adhd" style={{ textDecoration: 'none' }}>
+                        <div onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.background = COLORS.coral; }} onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = "#3a3a3a"; }} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.75rem 1.5rem', background: '#3a3a3a', color: 'white', borderRadius: '50px', fontSize: '1rem', fontWeight: 'bold', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 8px 20px rgba(58, 58, 58, 0.25)', fontFamily: "'Tajawal', sans-serif" }}>
+                            <span>اضطراب ADHD</span>
+                            <span style={{ fontSize: '1.2rem', marginTop: -2 }}>←</span>
+                        </div>
+                    </Link>
+                </div>
+                <div style={{ textAlign: "center", padding: "2.5rem 1.5rem", borderTop: `1px solid ${COLORS.border}`, fontSize: 13, color: COLORS.muted }}>
+                    هذا المحتوى لأغراض تثقيفية فقط · إذا كنت تعاني من أعراض الاكتئاب، تحدث مع <span style={{ color: COLORS.coral }}>متخصص نفسي</span>
+                </div>
+            </div>
+        </div>
+    );
 }
