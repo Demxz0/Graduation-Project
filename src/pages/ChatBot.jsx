@@ -21,6 +21,8 @@ const ChatBot = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
+console.log("My API Key is:", process.env.REACT_APP_GROQ_API_KEY);
+
     const userMessage = input;
     setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
     setInput('');
@@ -51,10 +53,10 @@ const ChatBot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`
+          "Authorization": `Bearer ${process.env.REACT_APP_GROQ_API_KEY.trim()}`
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-120b",
+          model: "llama-3.3-70b-versatile",
           max_tokens: 1000,
           messages: [
             { role: "system", content: systemPrompt },
@@ -85,8 +87,9 @@ const ChatBot = () => {
     <div className="chatbot-wrapper">
       {!isOpen ? (
         <button className="chat-toggle-btn" onClick={() => setIsOpen(true)}>
-          🤖
-        </button>
+
+<img src="/ai-chatbot.png" alt="Robot Icon" className="custom-robot-icon" />
+</button>
       ) : (
         <div className="chat-window">
           {/* Header */}
