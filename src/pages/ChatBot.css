@@ -287,3 +287,62 @@
   0%, 100% { transform: translateY(0); opacity: 0.5; }
   50% { transform: translateY(-4px); opacity: 1; }
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .chatbot-wrapper {
+    position: fixed;
+    bottom: 24px;
+    left: 20px;
+    right: auto;
+    width: auto;
+    height: auto;
+    z-index: 2000;
+  }
+
+  .chat-toggle-btn {
+    width: 58px;
+    height: 58px;
+    font-size: 24px;
+  }
+
+  .chat-window {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    animation: slideUpMobile 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  .chat-header {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  .chat-input {
+    font-size: 16px;
+  }
+
+  .chat-footer {
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+}
+
+@keyframes slideUpMobile {
+  0% { opacity: 0; transform: translateY(100%); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.chat-toggle-btn {
+  /* أضف هذا */
+  padding: 0;
+  overflow: hidden;
+}
+
+.custom-robot-icon {
+  width: 40px; /* أو الحجم المناسب لك */
+  height: auto;
+}
