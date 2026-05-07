@@ -119,7 +119,7 @@ function Recovery() {
   const navigate = useNavigate();
   const [headerRef, headerVisible] = useReveal();
   const [gameStarted, setGameStarted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [_isFullscreen, setIsFullscreen] = useState(false);
   const gameContainerRef = useRef(null);
   const iframeRef = useRef(null);
 

@@ -34,7 +34,7 @@ function launchConfetti(e) {
   }
 }
 
-function NavCard({ card, navigate }) {
+function _NavCard({ card, navigate }) {
   const [hovered, setHovered] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -363,7 +363,7 @@ function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  function handleGenClick(id, e) {
+  function _handleGenClick(id, e) {
     setActiveGen(id);
     setGenInfo(genData[id]);
     if (id === 'z') launchConfetti(e);
