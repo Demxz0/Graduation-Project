@@ -52,7 +52,7 @@ const ChatBot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer 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`
+         "Authorization": `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`
         },
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
