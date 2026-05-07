@@ -617,8 +617,10 @@ function Home() {
             { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc: 'أجرِ اختبار الصحة النفسية لتعرف نسبة تعرضك للاضطراب و لتتأكد من حاجتك لمساعدة نفسية.' },
             { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف وتعلم اكثر عن اكثر الاضطرابات النفسية شيوعاً لدى جيل Z و كيفية التعافي من كل اضطراب.' },
             { icon: '🔬', iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:' الدماغ هو بطل القصة استكشف كيفية عمله وبما يتأثر وخذ جولة بين تراكيبه.'  },
-            { icon: '🎮', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية - في هذا القسم بنينا لك ما يناسب اسلوبك في التعلم..لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة في التعامل مع الاضطرابات.'},
+            { icon: '🎮', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية - في هذا القسم بنينا لك ما يناسب اسلوبك في التعلم.'},
             { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc: 'تعرف اكثر على المخاطر المحيطة في هذا الجيل لتستطيع الوقاية منها. ' },
+            { icon: '🎮', iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc: 'لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة في التعامل مع الاضطرابات.' },
+         
           ].map((card, i) => (
             <SectionCard key={i} card={card} navigate={navigate} index={i} />
           ))}

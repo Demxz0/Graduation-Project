@@ -107,45 +107,11 @@ const strategies = [
   },
 ];
 
-const gameFeatures = [
-  { icon: '🎵', label: 'موسيقى مدروسة' },
-  { icon: '🏠', label: 'بيت فيه عدة غرف' },
-  { icon: '🎮', label: 'أسلوب فني Low Poly' },
-  { icon: '⚡', label: 'الغاز وتوعية' },
-];
 
 // ===== المكون الرئيسي =====
 function Recovery() {
   const navigate = useNavigate();
   const [headerRef, headerVisible] = useReveal();
-  const [gameStarted, setGameStarted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false); // eslint-disable-line no-unused-vars
-  const gameContainerRef = useRef(null);
-  const iframeRef = useRef(null);
-
-  function handleStartGame() {
-    setGameStarted(true);
-  }
-
-  function handleFullscreen() {
-    const container = gameContainerRef.current;
-    if (!container) return;
-    if (!document.fullscreenElement) {
-      container.requestFullscreen && container.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen && document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  }
-
-  useEffect(() => {
-    const handleFSChange = () => {
-      if (!document.fullscreenElement) setIsFullscreen(false);
-    };
-    document.addEventListener('fullscreenchange', handleFSChange);
-    return () => document.removeEventListener('fullscreenchange', handleFSChange);
-  }, []);
 
   return (
     <>
@@ -181,9 +147,7 @@ function Recovery() {
           transform: translateX(-5px) !important;
           box-shadow: 0 10px 30px rgba(107,79,160,0.12) !important;
         }
-        .game-feature-tag:hover {
-          transform: translateY(-2px) scale(1.04);
-        }
+          
         @media (max-width: 768px) {
           .pillars-grid { grid-template-columns: 1fr 1fr !important; }
           .strategies-grid { grid-template-columns: 1fr !important; }
@@ -195,16 +159,7 @@ function Recovery() {
           .pillars-grid { grid-template-columns: 1fr !important; }
           .hero-title { font-size: 30px !important; }
         }
-        .game-container:-webkit-full-screen {
-          width: 100vw !important;
-          height: 100vh !important;
-          background: #000;
-        }
-        .game-container:fullscreen {
-          width: 100vw !important;
-          height: 100vh !important;
-          background: #000;
-        }
+       
       `}</style>
 
       <div style={{
@@ -335,13 +290,21 @@ function Recovery() {
 
           {/* ===== ما هو التعافي النفسي ===== */}
           <RevealCard delay={200} style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', textAlign: 'right', marginBottom: '8px' }}>
-              ما هو التعافي النفسي؟
-            </h3>
-            <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginBottom: '20px' }}>
-              لم يعد التعافي يُفهم فقط على أنه اختفاء الأعراض، بل أصبح مفهومًا أوسع يشمل جودة الحياة والقدرة على التكيف
-            </p>
-          </RevealCard>
+  
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+          <div style={{
+          width: '13px', height: '13px', borderRadius: '50%',
+          background: '#7fc2c7', boxShadow: '0 0 10px #7fc7bb80',
+          animation: 'pulse-dot 2s ease-in-out infinite', flexShrink: 0,
+          }} />
+          <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', margin: 0 }}>
+          ما هو التعافي النفسي؟
+          </h3>
+         </div>
+         <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginBottom: '20px' }}>
+          لم يعد التعافي يُفهم فقط على أنه اختفاء الأعراض، بل أصبح مفهومًا أوسع يشمل جودة الحياة والقدرة على التكيف
+         </p>
+        </RevealCard>
 
           {/* ===== نوعا التعافي ===== */}
           <div
@@ -353,7 +316,7 @@ function Recovery() {
                 icon:'⚕️',
                 label: 'التعافي السريري',
                 en: 'Clinical Recovery',
-                desc:'يركز على تقليل الأعراض وتحسّن الحالة وفق تقييم الطبيب المتخصص. يُقاس بمعايير موضوعية وعلمية، ويُتابع من خلال برامج علاجية منظمة.' ,
+                desc:'يركز على تقليل الأعراض وتحسّن الحالة وفق تقييم الطبيب المتخصص. يُقاس بمعايير موضوعية وعلمية، ويُتابع من خلال برامج علاجية منظمة , و قد يتضمن هذا النوع تناول أدوية حسب وصفة الطبيب .' ,
                 color: '#cab7eb',
                 bg: '#f0f7fb',
                 delay: 320,
@@ -422,7 +385,7 @@ function Recovery() {
             ))}
           </div>
 
-          {/* ===== كيف يحدث التعافي ===== */}
+          {/* ===== ما هو التعافي الحقيقي؟ ===== */}
           <RevealCard delay={100} style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <div style={{
@@ -430,7 +393,7 @@ function Recovery() {
                 background: '#4aab72', boxShadow: '0 0 10px #4aab7280',
                 animation: 'pulse-dot 2s ease-in-out infinite 0.5s', flexShrink: 0,
               }} />
-              <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a2555', margin: 0 }}>كيف يحدث التعافي؟</h2>
+              <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a2555', margin: 0 }}> ما هو التعافي الحقيقي؟ </h2>
             </div>
             <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginRight: '24px' }}>
              تُعرّفه الجهات الصحية العالمية كعملية تغيير تساعد الشخص على تحسين صحته، واتخاذ قراراته بنفسه، والوصول إلى إمكاناته
@@ -459,15 +422,24 @@ function Recovery() {
             </div>
           </RevealCard>
 
-          {/* ===== الأركان الأربعة ===== */}
-          <RevealCard delay={100} style={{ marginBottom: '28px' }}>
-            <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', textAlign: 'right', marginBottom: '6px' }}>
-              الأركان الأربعة للتعافي
-            </h3>
-            <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right' }}>
-              يرتكز التعافي على أربعة عناصر أساسية تُكمل كل منها الأخر
-            </p>
-          </RevealCard>
+         {/* ===== الأركان الأربعة ===== */}
+<RevealCard delay={100} style={{ marginBottom: '28px' }}>
+  
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+    <div style={{
+      width: '13px', height: '13px', borderRadius: '50%',
+      background: '#c77f7f', boxShadow: '0 0 10px #c77f7f80',
+      animation: 'pulse-dot 2s ease-in-out infinite', flexShrink: 0,
+    }} />
+    <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', margin: 0 }}>
+      الأركان الأربعة للتعافي
+    </h3>
+  </div>
+  
+  <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right' }}>
+    يرتكز التعافي على أربعة عناصر أساسية تُكمل كل منها الأخر
+  </p>
+</RevealCard>
 
           <div
             className="pillars-grid"
@@ -514,15 +486,25 @@ function Recovery() {
             ))}
           </div>
 
-          {/* ===== استراتيجيات ===== */}
-          <RevealCard delay={100} style={{ marginBottom: '28px' }}>
-            <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', textAlign: 'right', marginBottom: '6px' }}>
-              استراتيجيات تساعد على التعافي
-            </h3>
-            <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right' }}>
-              خطوات عملية وعلمية تدعم رحلتك نحو حياة أكثر توازناً
-            </p>
-          </RevealCard>
+         {/* ===== استراتيجيات ===== */}
+<RevealCard delay={100} style={{ marginBottom: '28px' }}>
+  
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+    <div style={{
+      width: '13px', height: '13px', borderRadius: '50%',
+      background: '#c7b07f', boxShadow: '0 0 10px #c7b07f80',
+      animation: 'pulse-dot 2s ease-in-out infinite', flexShrink: 0,
+    }} />
+    <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#3a2555', margin: 0 }}>
+      استراتيجيات تساعد على التعافي
+    </h3>
+  </div>
+  
+  <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right' }}>
+    خطوات عملية وعلمية تدعم رحلتك نحو حياة أكثر توازناً
+  </p>
+</RevealCard>
+
 <div
   className="strategies-grid"
   style={{
@@ -599,179 +581,6 @@ function Recovery() {
   ))}
 </div>
 
-   {/* ===== قسم اللعبة ===== */}
-          <RevealCard delay={100} style={{ marginBottom: '28px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <div style={{
-                width: '13px', height: '13px', borderRadius: '50%',
-                background: '#c97099', boxShadow: '0 0 10px #c9709980',
-                animation: 'pulse-dot 2s ease-in-out infinite 1s', flexShrink: 0,
-              }} />
-              <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a2555', margin: 0 }}>استمتع وتعلّم</h2>
-            </div>
-            <p style={{ fontSize: '14px', color: '#9586b0', textAlign: 'right', marginRight: '24px' }}>
-              تجربة تفاعلية تأخذك في رحلة داخل عالم رمزي واسع عن الصحة النفسية
-            </p>
-          </RevealCard>
-
-          {/* ===== بطاقة اللعبة ===== */}
-          <RevealCard delay={200} style={{ marginBottom: '20px' }}>
-            <div style={{
-              background: 'white',
-              border: '2px solid #ebe6f7',
-              borderRadius: '24px',
-              padding: '32px',
-              boxShadow: '0 4px 20px rgba(107,79,160,0.08)',
-            }}>
-              <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#3a2555', textAlign: 'right', marginBottom: '14px' }}>
-                لعبة نفسية من منظور الشخص الأول
-              </h3>
-              <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', textAlign: 'right', marginBottom: '20px' }}>
-              تأخذك في رحلة داخل عالم رمزي واسع، حيث تمثل كل منطقة اضطرابًا نفسيًا مختلفًا. يتقدم اللاعب عبر تجاوز تحديات مستوحاة من الواقع، باستخدام أساليب مثبتة علميًا للتعامل مع هذه الاضطرابات والتخفيف منها. 
-              </p>
-
-              {/* مميزات اللعبة */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                {gameFeatures.map((f, i) => (
-                  <div
-                    key={i}
-                    className="game-feature-tag"
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '6px',
-                      background: '#f5f0ff', border: '1.5px solid #d4bfee',
-                      borderRadius: '50px', padding: '7px 14px',
-                      fontSize: '13px', color: '#6b4fa0', fontWeight: '600',
-                      transition: 'all 0.25s ease', cursor: 'default',
-                    }}
-                  >
-                    <span>{f.label}</span>
-                    <span>{f.icon}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* النسخة الحالية */}
-              <div style={{
-                background: 'linear-gradient(135deg, #f8f4ff, #f0f8ff)',
-                border: '1.5px solid #d4bfee',
-                borderRadius: '14px',
-                padding: '20px 22px',
-                marginBottom: '24px',
-                textAlign: 'right',
-              }}>
-                <div style={{ fontSize: '15px', fontWeight: '700', color: '#3a2555', marginBottom: '10px' }}>
-                  النسخة الحالية (Demo):
-                </div>
-                <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', margin: '0 0 10px' }}>
-                 تقدم منطقة واحدة تركز على اضطراب القلق، داخل منزل يحتوي على عدة غرف، كل منها يمثل نوًعا من القلق.يتعين على اللاعب حل الألغاز، واستكشاف الملاحظات الصوتية والمكتوبة التي تقدم محتوى توعوًيا حول القلق وطرق التعامل معه.
-                 </p>
-                <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', margin: 0 }}>
-                 يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى الالعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع، وينخفض عبر اتخاذ قرارات صحيحة واستخدام تقنيات مثل التنفس السليم
-                 </p>
-              </div>
-
-              {/* منطقة اللعبة */}
-              <div
-                ref={gameContainerRef}
-                className="game-container"
-                style={{
-                  position: 'relative',
-                  border: '2px solid #5c3a7a',
-                  borderRadius: '12px',
-                  background: '#f0eaff',
-                  overflow: 'hidden',
-                  minHeight: '320px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {!gameStarted ? (
-                  /* شاشة البداية */
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '60px 20px',
-                    width: '100%',
-                    minHeight: '320px',
-                  }}>
-                    <button
-                      onClick={handleStartGame}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '13px 32px',
-                        borderRadius: '50px',
-                        border: 'none',
-                        background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
-                        color: 'white',
-                        fontSize: '16px',
-                        fontWeight: '700',
-                        fontFamily: "'Tajawal', sans-serif",
-                        cursor: 'pointer',
-                        transition: 'all 0.25s ease',
-                        boxShadow: '0 6px 20px rgba(92,58,122,0.4)',
-                      }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.transform = 'scale(1.06)';
-                        e.currentTarget.style.boxShadow = '0 10px 28px rgba(92,58,122,0.55)';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(92,58,122,0.4)';
-                      }}
-                    >
-                      <span>◄</span>
-                      <span>ابدأ اللعبة</span>
-                    </button>
-                  </div>
-                ) : (
-                  /* منطقة اللعبة عند البدء */
-                  <iframe
-                    ref={iframeRef}
-                    src="https://demxz0.github.io/AnxietyRecoverBuild/"
-                    style={{ width: '100%', height: '100%', minHeight: '320px', border: 'none' }}
-                    title="Mental Health Game"
-                  />
-                )}
-
-                {/* زر التكبير */}
-                <button
-                  onClick={handleFullscreen}
-                  title="تكبير اللعبة"
-                  style={{
-                    position: 'absolute',
-                    bottom: '10px',
-                    right: '10px',
-                    width: '32px',
-                    height: '32px',
-                    background: 'rgba(255,255,255,0.15)',
-                    backdropFilter: 'blur(8px)',
-                    border: '1.5px solid rgba(255,255,255,0.3)',
-                    borderRadius: '7px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s ease',
-                    zIndex: 10,
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.3)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
-                >
-                  {/* أيقونة التكبير */}
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#5c3a7a' }}>
-                    <path d="M1 1h4M1 1v4M15 1h-4M15 1v4M1 15h4M1 15v-4M15 15h-4M15 15v-4"
-                      stroke="#5c3a7a" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </RevealCard>
-
           {/* ===== زر الرئيسية ===== */}
           <RevealCard delay={100}>
             <div style={{ textAlign: 'center', marginTop: '40px' }}>
@@ -803,7 +612,7 @@ function Recovery() {
               </button>
             </div>
           </RevealCard>
-
+          
         </div>
       </div>
     </>
