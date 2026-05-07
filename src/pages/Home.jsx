@@ -34,116 +34,6 @@ function launchConfetti(e) {
   }
 }
 
-function _NavCard({ card, navigate }) {
-  const [hovered, setHovered] = useState(false);
-  const [highlighted, setHighlighted] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const handler = () => {
-      setHighlighted(true);
-      setTimeout(() => setHighlighted(false), 1200);
-    };
-    window.addEventListener(`highlight-${card.sectionId}`, handler);
-    return () => window.removeEventListener(`highlight-${card.sectionId}`, handler);
-  }, [card.sectionId]);
-
-  const isActive = hovered || highlighted;
-
-  return (
-    <div
-      id={card.sectionId}
-      className="reveal"
-      onClick={() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        navigate(card.route);
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: 'flex',
-        alignItems: isMobile ? 'flex-start' : 'center',
-        flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? '16px' : '32px',
-        direction: 'rtl',
-        cursor: 'pointer',
-        padding: isMobile ? '16px 0' : '8px 0',
-        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? 'translateX(-6px)' : 'translateX(0)',
-        width: '100%',
-      }}
-    >
-      {/* البوكس الأبيض */}
-      <div className="nav-card-container" style={{
-        background: isActive ? card.iconBg : 'white',
-        border: `2px solid ${isActive ? card.accentColor + '40' : '#ebe6f7'}`,
-        borderRadius: '22px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: isMobile ? '12px' : '18px',
-        flexShrink: 0,
-        boxShadow: isActive
-          ? `0 12px 32px ${card.accentColor}25`
-          : '0 2px 16px rgba(0,0,0,0.07)',
-        transition: 'all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
-        width: isMobile ? '100%' : 'auto',
-        padding: isMobile ? '16px 12px' : '0',
-        justifyContent: isMobile ? 'flex-start' : 'center',
-      }}>
-       
-        {/* الأيقونة */}
-        <div style={{
-          width: isMobile ? '60px' : '80px',
-          height: isMobile ? '60px' : '80px',
-          fontSize: isMobile ? '28px' : '38px',
-          borderRadius: '16px',
-          background: card.iconBg,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          transition: 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          transform: isActive ? 'rotate(-8deg) scale(1.12)' : 'none',
-        }}>
-          {card.icon}
-        </div>
-         {/* العنوان */}
-        <div style={{
-          fontWeight: '800',
-          fontSize: isMobile ? '18px' : '28px',
-          color: isActive ? card.accentColor : '#2d1f4a',
-          transition: 'color 0.3s',
-          fontFamily: "'Tajawal', sans-serif",
-          whiteSpace: isMobile ? 'normal' : 'nowrap',
-          flex: 1,
-          textAlign: 'right',
-        }}>
-          {card.title}
-        </div>
-      </div>
-
-      {/* الوصف */}
-      <div style={{
-        fontSize: isMobile ? '14px' : '27px',
-        color: '#9586b0',
-        lineHeight: '1.8',
-        textAlign: 'right',
-        fontFamily: "'Tajawal', sans-serif",
-        flex: 1,
-        width: isMobile ? '100%' : 'auto',
-      }}>
-        {card.desc}
-      </div>
-    </div>
-  );
-}
 
 function TimelineCard({ item, width }) {
   const [hovered, setHovered] = useState(false);
@@ -363,11 +253,6 @@ function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  function _handleGenClick(id, e) {
-    setActiveGen(id);
-    setGenInfo(genData[id]);
-    if (id === 'z') launchConfetti(e);
-  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
