@@ -21,7 +21,6 @@ const ChatBot = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-console.log("My API Key is:", process.env.REACT_APP_GROQ_API_KEY);
 
     const userMessage = input;
     setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
@@ -53,7 +52,7 @@ console.log("My API Key is:", process.env.REACT_APP_GROQ_API_KEY);
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.REACT_APP_GROQ_API_KEY.trim()}`
+          "Authorization": `Bearer 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`
         },
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
