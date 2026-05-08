@@ -1,7 +1,7 @@
 import '../App.css';
 import image from '../image.png';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const genData = {
   z: {
@@ -34,8 +34,56 @@ function launchConfetti(e) {
   }
 }
 
+// ----------------------------------------------------
+// Hook  متى تظهر الأرقام على الشاشة لتبدأ بالعد
+// ----------------------------------------------------
+function useRevealOnScroll() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisible(true);
+        observer.unobserve(el);
+      }
+    }, { threshold: 0.1 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, visible];
+}
 
-function TimelineCard({ item, width }) {
+function AnimatedNumber({ endValue, suffix = '', isArabic = false }) {
+  const [count, setCount] = useState(0);
+  const [ref, visible] = useRevealOnScroll();
+
+  useEffect(() => {
+    if (!visible) return;
+    let start = 0;
+    const duration = 2000; 
+    const increment = endValue / (duration / 16);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= endValue) {
+        setCount(endValue);
+        clearInterval(timer);
+      } else {
+        setCount(Math.ceil(start));
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [endValue, visible]);
+
+  const toArabicNumerals = (num) => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+  const displayValue = isArabic ? toArabicNumerals(count) : count;
+
+  return <span ref={ref}>{displayValue}{suffix}</span>;
+}
+
+
+function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }) {
   const [hovered, setHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -45,8 +93,12 @@ function TimelineCard({ item, width }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const isDimmed = hasActiveSelection && !isActive;
+  const currentHoverOrActive = hovered || isActive;
+
   return (
     <div
+      onClick={() => onCardClick(item.year)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -57,14 +109,16 @@ function TimelineCard({ item, width }) {
         display: 'flex',
         alignItems: 'center',
         padding: isMobile ? '0 55px 0 15px' : '0 70px 0 20px',
-        boxShadow: hovered ? `0 10px 25px ${item.color}66` : '0 4px 12px rgba(0,0,0,0.05)',
-        border: `1px solid ${hovered ? item.color : '#f0f0f5'}`,
+        boxShadow: currentHoverOrActive ? `0 10px 25px ${item.color}66` : '0 4px 12px rgba(0,0,0,0.05)',
+        border: `1px solid ${currentHoverOrActive ? item.color : '#f0f0f5'}`,
         cursor: 'pointer',
         transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
+        transform: currentHoverOrActive ? 'translateY(-5px)' : 'translateY(0)',
+        opacity: isDimmed ? 0.6 : 1,
         overflow: 'visible',
         width: isMobile ? '100%' : (width || 'auto'),
         direction: 'rtl',
+        zIndex: currentHoverOrActive ? 5 : 2,
       }}
     >
       {/* المعين — على اليمين */}
@@ -74,21 +128,21 @@ function TimelineCard({ item, width }) {
         width: isMobile ? '46px' : '54px',
         height: isMobile ? '46px' : '54px',
         background: item.color,
-        transform: hovered ? 'rotate(405deg)' : 'rotate(45deg)',
+        transform: currentHoverOrActive ? 'rotate(405deg) scale(1.1)' : 'rotate(45deg)',
         borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 2,
         transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
+        boxShadow: currentHoverOrActive ? `0 4px 15px ${item.color}80` : '0 4px 10px rgba(0,0,0,0.12)',
         flexShrink: 0,
       }}>
         <span style={{
           color: '#493054',
           fontWeight: '900',
           fontSize: '12px',
-          transform: hovered ? 'rotate(-405deg)' : 'rotate(-45deg)',
+          transform: currentHoverOrActive ? 'rotate(-405deg)' : 'rotate(-45deg)',
           transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
           display: 'inline-block',
           whiteSpace: 'nowrap',
@@ -100,11 +154,12 @@ function TimelineCard({ item, width }) {
       {/* النص */}
       <span style={{
         fontSize: isMobile ? '13px' : '14px',
-        color: '#665a78',
+        color: isActive ? '#3a2555' : '#665a78',
         fontWeight: '700',
         flex: 1,
         textAlign: 'right',
         paddingRight: '8px',
+        transition: 'color 0.4s ease',
       }}>
         {item.event}
       </span>
@@ -246,6 +301,7 @@ function Home() {
   const [activeGen, setActiveGen] = useState('z');
   const [genInfo, setGenInfo] = useState(genData['z']);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [activeYears, setActiveYears] = useState([]); 
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -253,6 +309,11 @@ function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const toggleYear = (year) => {
+    setActiveYears((prev) => 
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
@@ -270,7 +331,6 @@ function Home() {
         padding: isMobile ? '20px' : '40px',
       }}>
 
-       
         <img src={image} alt="background" style={{
           position: 'absolute',
           top: 0, left: 0,
@@ -497,7 +557,7 @@ function Home() {
           📌 الأحداث التي شكّلت جيل Z
         </h3>
 
-        <div className="reveal" style={{
+        <div className="reveal" onClick={() => setActiveYears([])} style={{
           maxWidth: '1100px',
           margin: '0 auto 60px',
           direction: 'rtl',
@@ -507,27 +567,72 @@ function Home() {
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
             gap: isMobile ? '16px' : '20px',
             marginBottom: isMobile ? '16px' : '20px',
+            position: 'relative',
+            zIndex: 1,
           }}>
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                right: '40px',
+                left: '40px',
+                height: '3px',
+                background: 'linear-gradient(90deg, #c4b5fd, #e9b89b)',
+                zIndex: 0,
+                transform: 'translateY(-50%)',
+                opacity: 0.4,
+              }}/>
+            )}
             {[
               { year: '٢٠٠٧', event: 'انتشار الهاتف الذكي', color: '#c4b5fd' },
               { year: '٢٠٠٨', event: 'الأزمة المالية العالمية', color: '#b9d1e1' },
               { year: '٢٠١٠', event: 'ثورة السوشيال ميديا', color: '#c3d6ba' },
               { year: '٢٠١٥', event: 'قلق المناخ والمستقبل', color: '#e9b89b' },
             ].map((item, i) => (
-              <TimelineCard key={i} item={item} />
+              <div key={i} onClick={(e) => e.stopPropagation()}>
+                <TimelineCard 
+                  item={item} 
+                  isActive={activeYears.includes(item.year)} 
+                  hasActiveSelection={activeYears.length > 0}
+                  onCardClick={toggleYear} 
+                />
+              </div>
             ))}
           </div>
+
           <div style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: isMobile ? 'column' : 'row',
             gap: isMobile ? '16px' : '20px',
+            position: 'relative',
+            zIndex: 1,
           }}>
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                width: '30%',
+                height: '3px',
+                background: 'linear-gradient(90deg, #dcbacb, #f3d9a6)',
+                zIndex: 0,
+                transform: 'translateY(-50%)',
+                opacity: 0.4,
+              }}/>
+            )}
             {[
               { year: '٢٠٢٠', event: 'جائحة كوفيد-١٩', color: '#dcbacb' },
               { year: '٢٠٢٣', event: 'صعود الذكاء الاصطناعي', color: '#f3d9a6' },
             ].map((item, i) => (
-              <TimelineCard key={i} item={item} width={isMobile ? '100%' : "calc(25% - 10px)"} />
+              <div key={i} onClick={(e) => e.stopPropagation()}>
+                 <TimelineCard 
+                   item={item} 
+                   width={isMobile ? '100%' : "260px"} 
+                   isActive={activeYears.includes(item.year)} 
+                   hasActiveSelection={activeYears.length > 0}
+                   onCardClick={toggleYear} 
+                 />
+              </div>
             ))}
           </div>
         </div>
@@ -551,9 +656,9 @@ function Home() {
             marginBottom: '16px' 
           }}>
             {[
-              { num: '75%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
-              { num: '55%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
-              { num: '46%', label: 'من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية' },
+              { num: 75, suffix: '%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
+              { num: 55, suffix: '%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
+              { num: 46, suffix: '%', label: 'من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية' },
             ].map((s, i) => (
               <div
                 key={i}
@@ -568,7 +673,9 @@ function Home() {
                 onMouseEnter={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.12)'; } }}
                 onMouseLeave={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; } }}
               >
-                <div style={{ fontSize: '32px', fontWeight: '800', color: '#6b4fa0' }}>{s.num}</div>
+                <div style={{ fontSize: '32px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
+                  <AnimatedNumber endValue={s.num} suffix={s.suffix} />
+                </div>
                 <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>{s.label}</div>
               </div>
             ))}
@@ -580,7 +687,9 @@ function Home() {
             padding: '20px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '28px', fontWeight: '800', color: '#6b4fa0' }}>٩ ساعات</div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
+              <AnimatedNumber endValue={9} suffix=" ساعات" isArabic={true} />
+            </div>
             <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة</div>
           </div>
         </div>
@@ -676,7 +785,7 @@ function Home() {
         </div>
 
         <p style={{ textAlign: 'center', fontSize: '12px', color: '#5c4467', margin: '24px 0 0' }}>
-          © 2025 أُجِليك — جميع الحقوق محفوظة
+          © 2026 أُجِليك — جميع الحقوق محفوظة
         </p>
 
       </footer>
