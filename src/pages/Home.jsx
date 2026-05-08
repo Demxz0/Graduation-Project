@@ -1103,12 +1103,12 @@ function Home() {
           margin: '0 auto',
         }}>
           {[
-            { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc: 'أجرِ اختبار الصحة النفسية لتعرف نسبة تعرضك للاضطراب و لتتأكد من حاجتك لمساعدة نفسية.' },
-            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف وتعلم اكثر عن اكثر الاضطرابات النفسية شيوعاً لدى جيل Z و كيفية التعافي من كل اضطراب.' },
-            { icon: '🔬', iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:' الدماغ هو بطل القصة استكشف كيفية عمله وبما يتأثر وخذ جولة بين تراكيبه.'  },
-            { icon: '🌱', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية - في هذا القسم بنينا لك ما يناسب اسلوبك في التعلم.'},
-            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc: 'تعرف اكثر على المخاطر المحيطة في هذا الجيل لتستطيع الوقاية منها. ' },
-            { icon: '🎮', iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc: 'لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة في التعامل مع الاضطرابات.' },
+            { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc:'يحتوي قسم اختبر نفسك على خمسة انواع من الإضطرابات يمكنك اختيار الاضطراب الذي تريد , و إجراء إختباره لتعرف نسبة اصابتك به...كل إضطراب يحتوي على عشرة أسئلة , أجب على كلٍ منها ب (دائماً | أحياناً | نادراً) لتحصل في النهاية على نتيجة الإختبار و تتأكد من حاجتك لمساعدة نفسية.' },
+            { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف على أهم خمس إضطرابات نفسية يعاني منها جيل Z و تعلم أكثر عن كلٍ منهم من حيث المفهوم و الأنواع و الأسباب و كيفية التعافي و غيرها الكثير... هذا القسم هو ملجأك الصحيح اذا كنت تعاني احد هذه الإضطرابات.' },
+            { icon: '🔬', iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:'بطلك المخفي هو دماغك ... استكشف كيفية عمله و خد جولة بين تركيباته بطريقة ممتعه و ملهمه لذهنك!' },
+            { icon: '🌱', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية! تعرف على المفهوم الحقيقي للتعافي و أركانه و السلوكيات المتبعة للتعافي من جميع الاضطرابات النفسية.'},
+            { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc:'تعرف اكثر على المخاطر المحيطة بجيل Z و التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية لهذا الجيل لتستطيع الوقاية منها.' },
+            { icon: '🎮', iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc:'رحلة في عالم القلق ! لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة للتعامل مع إضطراب القلق ... في هذا القسم ستخوض تجربة جديدة كلياً في التعلم.' },
           ].map((card, i) => (
             <SectionCard key={i} card={card} navigate={navigate} index={i} />
           ))}
@@ -1164,7 +1164,7 @@ function Home() {
         </div>
 
         <p style={{ textAlign: 'center', fontSize: '12px', color: '#5c4467', margin: '24px 0 0' }}>
-          © 2026 أُجِليك — جميع الحقوق محفوظة
+          © 2026 أُجليك — جميع الحقوق محفوظة
         </p>
 
       </footer>
