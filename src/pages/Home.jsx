@@ -35,7 +35,118 @@ function launchConfetti(e) {
 }
 
 // ----------------------------------------------------
-// Hook  متى تظهر الأرقام على الشاشة لتبدأ بالعد
+// Component الشبكة العصبية/الرقمية التفاعلية للخلفية
+// ----------------------------------------------------
+function NeuralBackground() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let particles = [];
+    const numParticles = window.innerWidth < 768 ? 40 : 80; // عدد النقاط حسب الشاشة
+    let mouse = { x: null, y: null };
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.7; // سرعة هادئة جداً
+        this.vy = (Math.random() - 0.5) * 0.7;
+        this.radius = Math.random() * 1.5 + 1; // حجم النقاط
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+        if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(155, 127, 199, 0.4)'; // لون النقاط (موف ناعم)
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < numParticles; i++) {
+      particles.push(new Particle());
+    }
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseLeave);
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let i = 0; i < numParticles; i++) {
+        particles[i].update();
+        particles[i].draw();
+        
+        // ربط النقاط ببعضها
+        for (let j = i; j < numParticles; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(155, 127, 199, ${0.2 - distance / 500})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+        
+        // ربط النقاط بمؤشر الماوس (التفاعل الأساسي)
+        if (mouse.x != null && mouse.y != null) {
+          const dx = particles[i].x - mouse.x;
+          const dy = particles[i].y - mouse.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 150) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(155, 127, 199, ${0.5 - distance / 300})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseLeave);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }} />;
+}
+
+// ----------------------------------------------------
+// Hook متى تظهر الأرقام على الشاشة لتبدأ بالعد
 // ----------------------------------------------------
 function useRevealOnScroll() {
   const ref = useRef(null);
@@ -55,6 +166,9 @@ function useRevealOnScroll() {
   return [ref, visible];
 }
 
+// ----------------------------------------------------
+// Component عداد الأرقام الذكي
+// ----------------------------------------------------
 function AnimatedNumber({ endValue, suffix = '', isArabic = false }) {
   const [count, setCount] = useState(0);
   const [ref, visible] = useRevealOnScroll();
@@ -82,7 +196,9 @@ function AnimatedNumber({ endValue, suffix = '', isArabic = false }) {
   return <span ref={ref}>{displayValue}{suffix}</span>;
 }
 
-
+// ----------------------------------------------------
+// Component بطاقة التايملاين
+// ----------------------------------------------------
 function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }) {
   const [hovered, setHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -121,7 +237,6 @@ function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }
         zIndex: currentHoverOrActive ? 5 : 2,
       }}
     >
-      {/* المعين — على اليمين */}
       <div style={{
         position: 'absolute',
         right: isMobile ? '-8px' : '-14px',
@@ -151,7 +266,6 @@ function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }
         </span>
       </div>
 
-      {/* النص */}
       <span style={{
         fontSize: isMobile ? '13px' : '14px',
         color: isActive ? '#3a2555' : '#665a78',
@@ -167,9 +281,11 @@ function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }
   );
 }
 
+// ----------------------------------------------------
+// Component بطاقة أقسام أُجليك (الحجم الأنيق)
+// ----------------------------------------------------
 function SectionCard({ card, navigate, index }) {
   const [hovered, setHovered] = useState(false);
-  const [highlighted, setHighlighted] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -178,124 +294,204 @@ function SectionCard({ card, navigate, index }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    const handler = () => {
-      setHighlighted(true);
-      setTimeout(() => setHighlighted(false), 1200);
-    };
-    window.addEventListener(`highlight-${card.sectionId}`, handler);
-    return () => window.removeEventListener(`highlight-${card.sectionId}`, handler);
-  }, [card.sectionId]);
-
-  const isActive = hovered || highlighted;
+  const isEven = index % 2 === 0;
 
   return (
     <div
       id={card.sectionId}
       className="reveal"
-      onClick={() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        navigate(card.route);
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
         display: 'flex',
+        flexDirection: isMobile ? 'column' : (isEven ? 'row' : 'row-reverse'),
         alignItems: 'center',
-        flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? '20px' : '48px',
+        justifyContent: 'space-between',
+        padding: isMobile ? '10px 0' : '20px 0',
+        gap: isMobile ? '32px' : '6%', 
         direction: 'rtl',
-        cursor: 'pointer',
-        transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? (isMobile ? 'translateY(-6px)' : 'translateX(-10px)') : 'translateX(0)',
+        width: '100%',
       }}
     >
-      {/* البوكس */}
+      {/* النصف النصي */}
       <div style={{
-        background: isActive
-          ? `linear-gradient(135deg, ${card.iconBg}, white)`
-          : 'white',
-        border: `2.5px solid ${isActive ? card.accentColor : card.borderColor + 'aa'}`,
-        borderRadius: '26px',
-        padding: isMobile ? '24px' : '32px 44px',
+        flex: 1.2, 
         display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
-        gap: '20px',
-        flexShrink: 0,
-        width: isMobile ? '100%' : '380px',
-        boxShadow: isActive
-          ? `0 24px 56px ${card.accentColor}40, 0 6px 20px ${card.accentColor}20, inset 0 1px 0 rgba(255,255,255,0.8)`
-          : '0 4px 20px rgba(0,0,0,0.08)',
-        transition: 'all 0.4s cubic-bezier(0.34, 1.4, 0.64, 1)',
-        transform: isActive ? 'scale(1.03)' : 'scale(1)',
-        position: 'relative',
-        overflow: 'hidden',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        textAlign: isMobile ? 'center' : 'right',
+        zIndex: 2,
       }}>
-        {/* خط علوي ملوّن */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
-          background: `linear-gradient(90deg, transparent, ${card.accentColor}cc, transparent)`,
-          opacity: isActive ? 1 : 0,
-          transition: 'opacity 0.35s ease',
-        }} />
-
-        <div style={{
-          position: 'absolute', bottom: '-20px', right: '-20px',
-          width: '120px', height: '120px',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${card.accentColor}18, transparent 70%)`,
-          opacity: isActive ? 1 : 0,
-          transition: 'opacity 0.4s ease',
-          pointerEvents: 'none',
-        }} />
-
-        {/* الأيقونة */}
-        <div style={{
-          width: '80px', height: '80px', fontSize: '38px',
-          borderRadius: '18px',
-          background: isActive
-            ? `linear-gradient(135deg, white, ${card.iconBg})`
-            : card.iconBg,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0,
-          border: `2px solid ${isActive ? card.accentColor + '40' : card.borderColor + '60'}`,
-          transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          transform: isActive ? 'rotate(-10deg) scale(1.15)' : 'none',
-          boxShadow: isActive ? `0 10px 24px ${card.accentColor}30` : 'none',
-        }}>
-          {card.icon}
-        </div>
-
-        {/* العنوان */}
-        <div style={{
-          fontWeight: '800', fontSize: isMobile ? '24px' : '28px',
-          color: isActive ? card.accentColor : '#2d1f4a',
-          transition: 'color 0.3s',
+        <h2 style={{
+          fontSize: isMobile ? '26px' : '34px',
+          fontWeight: '900',
+          color: '#3a2555',
           fontFamily: "'Tajawal', sans-serif",
-          flex: 1, textAlign: isMobile ? 'center' : 'right',
-          letterSpacing: '-0.3px',
+          marginBottom: '16px',
+          lineHeight: '1.4',
+          letterSpacing: '-0.5px',
         }}>
           {card.title}
+        </h2>
+        
+        <p style={{
+          fontSize: isMobile ? '15px' : '16px', 
+          color: '#6b5a8a',
+          lineHeight: '1.8',
+          fontFamily: "'Tajawal', sans-serif",
+          marginBottom: '30px',
+          maxWidth: '500px', 
+          marginRight: isMobile ? 'auto' : '0',
+          marginLeft: isMobile ? 'auto' : '0',
+        }}>
+          {card.desc}
+        </p>
+
+        <div style={{ display: 'flex', justifyContent: isMobile ? 'center' : 'flex-start' }}>
+          <button
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'instant' });
+              navigate(card.route);
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = card.accentColor;
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = `0 10px 20px ${card.accentColor}30`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = card.accentColor;
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            style={{
+              padding: '10px 26px',
+              fontSize: '15px',
+              fontWeight: '800',
+              color: card.accentColor,
+              background: 'transparent',
+              border: `2px solid ${card.accentColor}`,
+              borderRadius: '50px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              fontFamily: "'Tajawal', sans-serif",
+            }}
+          >
+            <span>استكشف القسم</span>
+            <span style={{ fontSize: '18px' }}>←</span>
+          </button>
         </div>
       </div>
 
-      {/* الديسكربشن */}
+      {/* النصف البصري */}
       <div style={{
-        fontSize: isMobile ? '18px' : '24px',
-        color: isActive ? '#5a4a7a' : '#9586b0',
-        lineHeight: '1.8', 
-        textAlign: isMobile ? 'center' : 'right',
-        fontFamily: "'Tajawal', sans-serif",
-        flex: 1,
-        transition: 'color 0.4s',
+        flex: 0.8, 
+        display: 'flex',
+        justifyContent: isMobile ? 'center' : (isEven ? 'flex-end' : 'flex-start'),
+        alignItems: 'center',
+        position: 'relative',
       }}>
-        {card.desc}
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            navigate(card.route);
+          }}
+          style={{
+            width: isMobile ? '240px' : '280px', 
+            height: isMobile ? '240px' : '280px', 
+            background: hovered ? 'white' : `linear-gradient(145deg, white, ${card.iconBg})`,
+            border: `1px solid ${card.borderColor}`,
+            borderRadius: '32px', 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: hovered 
+              ? `0 20px 40px ${card.accentColor}20, inset 0 0 0 2px ${card.accentColor}15` 
+              : '0 10px 25px rgba(0,0,0,0.03)',
+            cursor: 'pointer',
+            transition: 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+            transform: hovered ? 'translateY(-6px) scale(1.03)' : 'translateY(0) scale(1)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{
+            position: 'absolute',
+            width: '200%',
+            height: '200%',
+            background: `radial-gradient(circle at center, ${card.accentColor}10, transparent 50%)`,
+            opacity: hovered ? 1 : 0.5,
+            transition: 'opacity 0.6s ease',
+            pointerEvents: 'none',
+          }}/>
+
+          <div style={{
+            fontSize: isMobile ? '64px' : '72px',
+            zIndex: 1,
+            transform: hovered ? 'scale(1.1) rotate(-5deg)' : 'scale(1) rotate(0deg)',
+            transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            filter: hovered ? `drop-shadow(0 12px 20px ${card.accentColor}30)` : 'drop-shadow(0 8px 12px rgba(0,0,0,0.08))'
+          }}>
+            {card.icon}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
+// ----------------------------------------------------
+// Component الزر المغناطيسي
+// ----------------------------------------------------
+function MagneticButton({ children, onClick, style, primary }) {
+  const buttonRef = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { width, height, left, top } = buttonRef.current.getBoundingClientRect();
+    const x = clientX - (left + width / 2);
+    const y = clientY - (top + height / 2);
+    setPosition({ x: x * 0.25, y: y * 0.25 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      style={{
+        ...style,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        transition: position.x === 0 && position.y === 0 ? 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'transform 0.1s linear, background 0.3s ease, color 0.3s ease',
+      }}
+      onMouseEnter={(e) => {
+        if(primary) {
+          e.currentTarget.style.boxShadow = '0 12px 24px rgba(155, 127, 199, 0.4)';
+          e.currentTarget.style.background = '#8a6bb5'; 
+        } else {
+          e.currentTarget.style.background = 'rgba(155, 127, 199, 0.08)';
+        }
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ----------------------------------------------------
+// الدالة الرئيسية للصفحة (Home)
+// ----------------------------------------------------
 function Home() {
   const navigate = useNavigate();
   const [activeGen, setActiveGen] = useState('z');
@@ -321,7 +517,7 @@ function Home() {
       {/* ===== Hero Section ===== */}
       <div style={{
         position: 'relative',
-        overflowX: 'hidden',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -329,97 +525,148 @@ function Home() {
         minHeight: '100vh',
         textAlign: 'center',
         padding: isMobile ? '20px' : '40px',
+        backgroundColor: '#faf8ff', // لون ناعم مريح
       }}>
 
-        <img src={image} alt="background" style={{
-          position: 'absolute',
-          top: 0, left: 0,
-          width: '100%', height: '100%',
-          objectFit: 'cover',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
+        {/* 1. الشبكة العصبية/الرقمية التفاعلية بالخلفية */}
+        <NeuralBackground />
 
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <h1 className="reveal responsive-title-hero" style={{
-            fontWeight: '500',
-            color: '#493054',
-            marginBottom: '33px',
+        {/* 2. المحتوى (نظيف وأنيق وبأحجام طبيعية) */}
+        <div style={{
+          position: 'relative',
+          zIndex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '-40px', 
+          animation: 'fadeUp 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+        }}>
+          
+          <h1 style={{
+            fontWeight: '900',
+            color: '#3a2555',
+            marginBottom: '16px',
             fontFamily: "'Tajawal', sans-serif",
-            lineHeight: '1.3',
-            maxWidth: '90%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            fontSize: isMobile ? '32px' : '100px',
+            fontSize: isMobile ? '48px' : '80px', // حجم متزن ومريح
+            letterSpacing: '-1px',
+            textShadow: '0 4px 16px rgba(155, 127, 199, 0.1)', 
           }}>
            أُجْلِيكَ
           </h1>
-          <p className="reveal" style={{
-            fontSize: 'clamp(16px, 4vw, 28px)',
-            color: '#6f5779',
+
+          <p style={{
+            fontSize: isMobile ? '16px' : '22px',
+            color: '#5a4a7a',
             fontFamily: "'Tajawal', sans-serif",
-            lineHeight: '1.7',
-            maxWidth: '100%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            marginBottom: '40px',
+            fontWeight: '600',
           }}>
            دعني أُجليك من كل ما يؤذيك
           </p>
+
+          {/* 3. الأزرار المغناطيسية */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: '16px',
+          }}>
+            {/* زر الاختبار (Primary) */}
+            <MagneticButton 
+              onClick={() => navigate('/ikhtbar')} 
+              primary={true}
+              style={{
+                padding: '12px 32px',
+                fontSize: '16px',
+                fontWeight: '700',
+                fontFamily: "'Tajawal', sans-serif",
+                background: '#9b7fc7',
+                color: 'white',
+                border: 'none',
+                borderRadius: '30px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 10px rgba(155, 127, 199, 0.15)',
+              }}
+            >
+              <span>ابدأ الاختبار</span>
+              <span style={{ fontSize: '18px' }}>📝</span>
+            </MagneticButton>
+
+            {/* زر لعبة القلق (Secondary) */}
+            <MagneticButton 
+              onClick={() => navigate('/game')} 
+              primary={false}
+              style={{
+                padding: '12px 32px',
+                fontSize: '16px',
+                fontWeight: '700',
+                fontFamily: "'Tajawal', sans-serif",
+                background: 'rgba(255, 255, 255, 0.8)',
+                color: '#9b7fc7',
+                border: '2px solid #9b7fc7',
+                borderRadius: '30px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              <span>لعبة القلق</span>
+              <span style={{ fontSize: '18px' }}>🎮</span>
+            </MagneticButton>
+          </div>
         </div>
 
-        {/* سهم الـ scroll */}
+        {/* 4. سهم الاستكشاف (أنيق وناعم) */}
         <div
           onClick={() => document.getElementById('learnMore').scrollIntoView({ behavior: 'smooth' })}
           style={{
             position: 'absolute',
-            bottom: '70px',
+            bottom: '30px',
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '8px',
             cursor: 'pointer',
             zIndex: 1,
+            animation: 'fadeIn 2s ease-in forwards',
           }}
         >
-          {[0, 1, 2].map(i => (
-            <div key={i} style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#9b7fc7',
-              animation: `dotBounce 1.4s ease-in-out infinite`,
-              animationDelay: `${i * 0.2}s`,
-            }} />
-          ))}
           <div style={{
-            width: '40px',
-            height: '40px',
+            width: '36px',
+            height: '36px',
             borderRadius: '50%',
-            background: 'rgba(155, 127, 199, 0.15)',
-            backdropFilter: 'blur(8px)',
-            border: '2px solid rgba(155, 127, 199, 0.4)',
+            border: '1px solid rgba(155, 127, 199, 0.4)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '18px',
+            fontSize: '16px',
             color: '#9b7fc7',
-            animation: 'arrowBounce 1.6s ease-in-out infinite',
-            marginTop: '4px',
+            background: 'rgba(255,255,255,0.5)',
+            backdropFilter: 'blur(4px)',
+            animation: 'arrowBounceDown 2s ease-in-out infinite',
           }}>
             ↓
           </div>
         </div>
 
         <style>{`
-          @keyframes arrowBounce {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(10px); }
+          @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
           }
-          @keyframes dotBounce {
-            0%, 100% { opacity: 0.2; transform: translateY(0px); }
-            50% { opacity: 0.7; transform: translateY(4px); }
+          @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+          }
+          @keyframes arrowBounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
           }
           @keyframes confettiFall {
             to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
@@ -693,32 +940,61 @@ function Home() {
             <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة</div>
           </div>
         </div>
-
       </div>
 
       {/* ===== أقسام أُجليك ===== */}
       <div style={{ 
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
         width: '100%',
-        padding: isMobile ? '40px 20px' : '80px 60px',
+        padding: isMobile ? '60px 20px' : '100px 60px',
+        position: 'relative', 
       }}>
-        <h1 className="reveal" style={{
-          fontSize: isMobile ? '28px' : '38px',
-          fontWeight: '800',
-          color: '#6f5779',
-          fontFamily: "'Tajawal', sans-serif",
-          lineHeight: '1.7',
-          marginBottom: isMobile ? '32px' : '56px',
-          direction: 'rtl',
-          textAlign: isMobile ? 'center' : 'right',
+        
+        {/* فاصل جمالي بين الإحصائيات والأقسام */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '200px',
+          height: '4px',
+          background: 'linear-gradient(90deg, transparent, #9b7fc7, transparent)',
+          borderRadius: '2px',
+          opacity: 0.6,
+        }} />
+
+        <div className="reveal" style={{
+          textAlign: 'center',
+          marginBottom: isMobile ? '60px' : '100px', 
         }}>
-          أقسام أُجليك:
-        </h1>
+          <h1 style={{
+            fontSize: isMobile ? '32px' : '46px',
+            fontWeight: '900',
+            color: '#3a2555',
+            fontFamily: "'Tajawal', sans-serif",
+            letterSpacing: '-1px',
+            margin: '0 0 16px 0',
+            display: 'inline-block',
+            position: 'relative',
+          }}>
+            أقسام أُجليك
+            <div style={{
+              position: 'absolute',
+              bottom: '-12px',
+              right: '50%',
+              transform: 'translateX(50%)',
+              width: '40%',
+              height: '5px',
+              background: '#9b7fc7',
+              borderRadius: '4px',
+            }} />
+          </h1>
+        </div>
 
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '32px',
+          gap: isMobile ? '60px' : '100px', 
           maxWidth: '1100px',
           margin: '0 auto',
         }}>
@@ -726,10 +1002,9 @@ function Home() {
             { icon: '📝', iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc: 'أجرِ اختبار الصحة النفسية لتعرف نسبة تعرضك للاضطراب و لتتأكد من حاجتك لمساعدة نفسية.' },
             { icon: '🧩', iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف وتعلم اكثر عن اكثر الاضطرابات النفسية شيوعاً لدى جيل Z و كيفية التعافي من كل اضطراب.' },
             { icon: '🔬', iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:' الدماغ هو بطل القصة استكشف كيفية عمله وبما يتأثر وخذ جولة بين تراكيبه.'  },
-            { icon: '🎮', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية - في هذا القسم بنينا لك ما يناسب اسلوبك في التعلم.'},
+            { icon: '🌱', iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية - في هذا القسم بنينا لك ما يناسب اسلوبك في التعلم.'},
             { icon: '⚠️', iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc: 'تعرف اكثر على المخاطر المحيطة في هذا الجيل لتستطيع الوقاية منها. ' },
             { icon: '🎮', iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc: 'لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة في التعامل مع الاضطرابات.' },
-         
           ].map((card, i) => (
             <SectionCard key={i} card={card} navigate={navigate} index={i} />
           ))}
@@ -763,7 +1038,7 @@ function Home() {
           marginBottom: '28px',
         }}>
           اهم المصادر المرجعية المعتمدة لإستخلاص المعلومات و التقارير في موقع أُجليك : <br/> الرابطة الأمريكية للطب النفسي (APA)، الرابطة الأمريكية لعلم النفس (APA)، منظمة الصحة العالمية (WHO)، معاهد الصحة الوطنية الأمريكية (NIH)، المركز الوطني لمعلومات التكنولوجيا الحيوية (NCBI)، مراكز السيطرة على الأمراض والوقاية منها (CDC)، إدارة خدمات الصحة النفسية وتعاطي المخدرات (SAMHSA)، مايو كلينك (Mayo Clinic)، كليفلاند كلينك (Cleveland Clinic)، هيئة الخدمات الصحية الوطنية (NHS)، الدليل التشخيصي والإحصائي للاضطرابات النفسية (DSM-5).
-           </p>
+        </p>
 
         <div style={{
           animation: 'float 3s ease-in-out infinite',
