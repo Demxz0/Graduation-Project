@@ -6,6 +6,7 @@ import Exam from './pages/Exam';
 import Khattar from './pages/Khattar';
 import Brain from './pages/Brain';
 import Recovery from './pages/Recovery';
+import Game from './pages/Game';
 import { useEffect, useState } from 'react';
 
 import Disease from './pages/Disease';
@@ -68,6 +69,7 @@ function App() {
     { name: "الدماغ",      path: "/",         scrollTo: "brain-section",     directRoute: "/dimagh" },
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
     { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section",   directRoute: "/khattar" },
+    { name: "لعبة القلق", path: "/",         scrollTo: "game-section",   directRoute: "/game" },
   ];
 
   function handleNavClick(link) {
@@ -222,6 +224,7 @@ function App() {
         <Route path="/khattar" element={<Khattar />} />
         <Route path="/dimagh" element={<Brain />} />
         <Route path="/recovery" element={<Recovery />} />
+        <Route path="/game" element={<Game />} />
 
         <Route path="/disease" element={<Disease />} /> 
         <Route path="/disease/anxiety" element={<AnxietyDetail />} />

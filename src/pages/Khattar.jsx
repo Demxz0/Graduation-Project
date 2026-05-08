@@ -74,7 +74,7 @@ const riskFactors = [
     iconBg: '#fff0f0',
     titleAr: 'التعرض للمعلومات المضللة',
     titleEn: 'Misinformation Exposure',
-    desc:'الانتشار السريع للمعلومات غير الدقيقة يسبب تبني أفكار خاطئة، قلق غير مبرر، وصعوبة في اتخاذ قرارات مبنية على حقائق.',
+    desc:'الانتشار السريع للمعلومات غير الدقيقة عبر المنصات الرقمية يؤدي إلى تكوين مفاهيم خاطئة لدى جيل Z و يزيد من مستويات القلق و التشويش الفكري, مما يؤثر سلباً على قدرتهم في اتخاذ قرارات واعية مبنية على معلومات موثوقة..',
     color: '#c96060',
     borderColor: '#e8b0b0',
     bg: '#fff5f5',
@@ -137,7 +137,7 @@ function useRevealOnScroll() {
   return [ref, visible];
 }
 
-function RiskCard({ factor, index }) {
+function RiskCard({ factor, index, isSelected, onToggle }) {
   const [ref, visible] = useRevealOnScroll();
   const [hovered, setHovered] = useState(false);
 
@@ -147,10 +147,13 @@ function RiskCard({ factor, index }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: hovered ? factor.bg : 'white',
-        border: `2px solid ${hovered ? factor.color + '60' : factor.borderColor}`,
+        /* تطبيق تأثير  (Glassmorphism) */
+        background: hovered || isSelected ? factor.bg : 'rgba(255, 255, 255, 0.65)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: `2px solid ${hovered || isSelected ? factor.color + '80' : 'rgba(255, 255, 255, 0.5)'}`,
         borderRadius: '20px',
-        padding: '30px 15px',
+        padding: '30px 15px 25px 15px',
         position: 'relative',
         cursor: 'default',
         transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -159,10 +162,12 @@ function RiskCard({ factor, index }) {
           : 'translateY(50px) scale(0.96)',
         opacity: visible ? 1 : 0,
         transitionDelay: visible ? `${index * 80}ms` : '0ms',
-        boxShadow: hovered
-          ? `0 16px 40px ${factor.color}25, 0 4px 12px ${factor.color}15`
-          : '0 2px 10px rgba(0,0,0,0.05)',
+        boxShadow: hovered || isSelected
+          ? `0 16px 40px ${factor.color}25, 0 0 20px ${factor.color}40`
+          : '0 4px 15px rgba(0,0,0,0.03)',
         direction: 'rtl',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {/* رقم */}
@@ -208,32 +213,71 @@ function RiskCard({ factor, index }) {
           <div style={{
             fontWeight: '700',
             fontSize: '18px',
-            color: hovered ? factor.color : '#2d1f4a',
+            color: hovered || isSelected ? factor.color : '#2d1f4a',
             transition: 'color 0.3s',
             lineHeight: 1.3,
           }}>
             {factor.titleAr}
           </div>
+
           <div style={{
-            fontSize: '12px',
-            color: hovered ? factor.color + 'aa' : '#b0a0c8',
-            fontStyle: 'italic',
+            fontSize: '10px',
+            letterSpacing: '1px',
+            textTransform: 'uppercase',
+            color: hovered || isSelected ? factor.color + 'aa' : '#b0a0c8',
             transition: 'color 0.3s',
+            marginTop: '4px'
           }}>
             {factor.titleEn}
           </div>
         </div>
       </div>
 
-      {/* الوصف */}
       <div style={{
         fontSize: '14px',
         color: '#7a6a98',
-        lineHeight: '1.75',
+        lineHeight: '1.8',
+        textAlign: 'justify',
         transition: 'color 0.3s',
+        flexGrow: 1,
       }}>
         {factor.desc}
       </div>
+
+      {/* زر التقييم الذاتي */}
+      <button
+        onClick={() => onToggle(factor.id)}
+        style={{
+          width: '100%',
+          padding: '10px',
+          marginTop: '20px',
+          borderRadius: '12px',
+          border: `1px solid ${isSelected ? factor.color : factor.color + '50'}`,
+          background: isSelected ? factor.color : 'transparent',
+          color: isSelected ? 'white' : factor.color,
+          fontSize: '14px',
+          fontWeight: '700',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          fontFamily: "'Tajawal', sans-serif",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+        }}
+        onMouseEnter={(e) => {
+          if (!isSelected) e.currentTarget.style.background = factor.color + '15';
+        }}
+        onMouseLeave={(e) => {
+          if (!isSelected) e.currentTarget.style.background = 'transparent';
+        }}
+      >
+        {isSelected ? (
+          <><span>✓</span> أدرك هذا التحدي</>
+        ) : (
+          <>أواجه هذا التحدي ✋</>
+        )}
+      </button>
 
       {/* خط ملون يظهر عند الهوفر */}
       <div style={{
@@ -254,6 +298,27 @@ function RiskCard({ factor, index }) {
 function RiskFactors() {
   const navigate = useNavigate();
   const [headerRef, headerVisible] = useRevealOnScroll();
+  const messageRef = useRef(null);
+
+  // حالة التقييم الذاتي مع حفظها في LocalStorage
+  const [selectedRisks, setSelectedRisks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('userRiskReflections');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('userRiskReflections', JSON.stringify(selectedRisks));
+  }, [selectedRisks]);
+
+  const handleToggleRisk = (id) => {
+    setSelectedRisks((prev) =>
+      prev.includes(id) ? prev.filter((riskId) => riskId !== id) : [...prev, id]
+    );
+  };
 
   return (
     <>
@@ -274,15 +339,30 @@ function RiskFactors() {
           from { opacity: 0; transform: translateY(-30px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes blob-drift {
+          0% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes star-float {
+          0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+          50% { transform: translateY(-18px) scale(1.1); opacity: 0.9; }
+        }
+        
         .risk-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 60px;
+          position: relative;
+          z-index: 1;
         }
-
         @media (min-width: 901px) {
-          .risk-grid > div:last-child:nth-child(10) {
-            grid-column: 2;
+          .risk-grid > div:last-child {
+            grid-column: 1 / -1;
+            max-width: 360px;
+            margin: 0 auto;
+            width: 100%;
           }
         }
 
@@ -301,88 +381,140 @@ function RiskFactors() {
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
         padding: '40px 20px',
+        position: 'relative',
+        overflow: 'hidden', 
       }}>
 
-        {/* ===== الهيدر ===== */}
         <div
           ref={headerRef}
           style={{
             textAlign: 'center',
-            marginBottom: '64px',
-            opacity: headerVisible ? 1 : 0,
-            transform: headerVisible ? 'translateY(0)' : 'translateY(-30px)',
-            transition: 'all 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+            padding: '40px 32px 52px',
+            position: 'relative',
+            overflow: 'hidden',
+            marginBottom: '30px',
+            zIndex: 1,
           }}
         >
-          {/* أيقونة التحذير */}
-          <div style={{
-            fontSize: '48px',
-            marginBottom: '16px',
-            display: 'inline-block',
-            animation: 'pulse-warn 2.5s ease-in-out infinite',
-          }}>
-            ⚠️
-          </div>
+          {/* خلفية دوائر */}
+          {[
+            { top: '-60px', right: '-80px', size: 320, color: '#d4bfee18' },
+            { bottom: '-40px', left: '-60px', size: 240, color: '#c0e8d820' },
+          ].map((c, i) => (
+            <div key={i} style={{
+              position: 'absolute', borderRadius: '50%',
+              width: c.size, height: c.size,
+              background: `radial-gradient(circle, ${c.color}, transparent)`,
+              top: c.top, right: c.right, bottom: c.bottom, left: c.left,
+              pointerEvents: 'none',
+            }} />
+          ))}
 
-          <h1 className="responsive-title-section" style={{
-            fontWeight: '800',
-            color: '#3a2555',
-            marginBottom: '14px',
-            letterSpacing: '-0.5px',
-          }}>
+          {/* نقاط متحركة */}
+          {[...Array(7)].map((_, i) => (
+            <div key={i} style={{
+              position: 'absolute',
+              width: `${5 + (i * 2) % 6}px`,
+              height: `${5 + (i * 2) % 6}px`,
+              borderRadius: '50%',
+              background: `rgba(155,127,199,${0.2 + (i % 4) * 0.1})`,
+              top: `${10 + (i * 14) % 80}%`,
+              left: `${5 + (i * 13) % 90}%`,
+              animation: `star-float ${2.5 + i * 0.4}s ease-in-out infinite`,
+              animationDelay: `${i * 0.3}s`,
+              pointerEvents: 'none',
+            }} />
+          ))}
+
+          <h1
+            className="hero-title"
+            style={{
+              fontSize: '52px',
+              fontWeight: '800',
+              color: '#3a2555',
+              marginBottom: '16px',
+              letterSpacing: '-0.5px',
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? 'translateY(0)' : 'translateY(24px)',
+              transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s',
+            }}
+          >
             مخاطر جيل Z
           </h1>
 
-          {/* الشريط المتحرك */}
-          <div style={{
-            display: 'inline-block',
-            padding: '6px 24px',
-            borderRadius: '50px',
-            background: 'linear-gradient(135deg, #f0eaff, #e8deff)',
-            border: '1px solid #d4bfee',
-            marginBottom: '20px',
-            animation: 'float-badge 3s ease-in-out infinite',
-          }}>
-            <span style={{ fontSize: '14px', color: '#7c6fcd', fontWeight: '700' }}>
-             جيل رقمي ... يواجه تحديات نفسية و سلوكية حقيقة
-            </span>
-          </div>
-
           <p style={{
-            fontSize: '16px',
+            fontSize: '17px',
             color: '#8070a8',
-            maxWidth: '600px',
-            margin: '0 auto',
-            lineHeight: '1.8',
-            padding: '0 15px', 
+            maxWidth: '540px',
+            margin: '0 auto 20px',
+            lineHeight: '1.85',
+            opacity: headerVisible ? 1 : 0,
+            transform: headerVisible ? 'translateY(0)' : 'translateY(18px)',
+            transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s',
           }}>
-          جيل Z هو الجيل الأكثر ارتباطًا بالعالم الرقمي، 
+            جيل Z هو الجيل الأكثر ارتباطًا بالعالم الرقمي،
             <br />
-           ومع هذا الارتباط ظهرت مجموعة من التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية وجودة الحياة.
+            ومع هذا الارتباط ظهرت مجموعة من التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية وجودة الحياة.
           </p>
 
-          {/* خط ملون*/}
           <div style={{
-            width: '120px',
-            height: '3px',
-            borderRadius: '10px',
+            width: '100px', height: '3px', borderRadius: '10px',
+            margin: '0 auto',
             background: 'linear-gradient(90deg, transparent, #9b7fc7, #c97099, transparent)',
             backgroundSize: '200% 100%',
             animation: 'shimmer-line 3s linear infinite',
-            margin: '28px auto 0',
+            opacity: headerVisible ? 1 : 0,
+            transition: 'opacity 0.7s ease 0.4s',
           }} />
         </div>
 
         {/* ===== الشبكة ===== */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="risk-grid">
             {riskFactors.map((factor, i) => (
-              <RiskCard key={factor.id} factor={factor} index={i} />
+              <RiskCard 
+                key={factor.id} 
+                factor={factor} 
+                index={i} 
+                isSelected={selectedRisks.includes(factor.id)}
+                onToggle={handleToggleRisk}
+              />
             ))}
           </div>
 
+          {/* ===== رسالة الدعم بناءً على التقييم الذاتي ===== */}
+          {selectedRisks.length > 0 && (
+            <div 
+              ref={messageRef}
+              style={{
+                marginTop: '60px',
+                padding: '25px',
+                background: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                borderRadius: '20px',
+                textAlign: 'center',
+                border: '1px solid #d4bfee',
+                color: '#3a2555',
+                animation: 'fadeSlideDown 0.6s ease-out',
+                boxShadow: '0 10px 30px rgba(124, 111, 205, 0.1)',
+                maxWidth: '600px',
+                margin: '60px auto 0 auto',
+              }}
+            >
+              <h3 style={{ marginBottom: '12px', color: '#7c6fcd', fontSize: '20px', fontWeight: '800' }}>
+                خطوة رائعة نحو الوعي! 🌟
+              </h3>
+              <p style={{ fontSize: '15px', margin: 0, lineHeight: '1.8', color: '#6a5a8a' }}>
+                لقد قمت بتحديد <strong>{selectedRisks.length}</strong> من التحديات التي قد تواجهها. 
+                الاعتراف بالمشكلة هو أول خطوة وأهمها للتعامل معها بوعي. تذكر دائمًا أنك لست وحدك، 
+                وأن التحكم في تأثير العالم الرقمي يبدأ بقرارك الشخصي.
+              </p>
+            </div>
+          )}
+
           {/* ===== زر الرئيسية ===== */}
-          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <div style={{ textAlign: 'center', marginTop: '60px' }}>
             <button
               onClick={() => navigate('/')}
               style={{
@@ -401,13 +533,27 @@ function RiskFactors() {
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'scale(1.06)';
                 e.currentTarget.style.boxShadow = '0 8px 28px rgba(124,111,205,0.55)';
+                e.currentTarget.querySelector('.icon-arrow').style.transform = 'translateX(-5px)';
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = 'scale(1)';
                 e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,111,205,0.4)';
+                e.currentTarget.querySelector('.icon-arrow').style.transform = 'translateX(0)';
               }}
             >
-              الذهاب إلى الرئيسية
+              <span style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+                <span 
+                  className="icon-arrow" 
+                  style={{ 
+                    fontSize: '18px', 
+                    display: 'inline-block', 
+                    transition: 'transform 0.3s ease' 
+                  }}
+                >
+                  ➔
+                </span>
+                <span>الذهاب إلى الرئيسية</span>
+              </span>
             </button>
           </div>
         </div>
