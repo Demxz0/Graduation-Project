@@ -499,6 +499,10 @@ function Home() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [activeYears, setActiveYears] = useState([]); 
 
+  // تعريف الـ Refs للهيدرات الموحدة
+  const [genZHeaderRef, genZHeaderVisible] = useRevealOnScroll();
+  const [sectionsHeaderRef, sectionsHeaderVisible] = useRevealOnScroll();
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
@@ -561,7 +565,7 @@ function Home() {
             marginBottom: '40px',
             fontWeight: '600',
           }}>
-           دعني أُجليك من كل ما يؤذيك
+            دعني أُجليك من كل ما يؤذيك
           </p>
 
           {/* 3. الأزرار المغناطيسية */}
@@ -671,6 +675,14 @@ function Home() {
           @keyframes confettiFall {
             to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
           }
+          @keyframes shimmer-line {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+          }
+          @keyframes star-float {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+            50% { transform: translateY(-18px) scale(1.1); opacity: 0.9; }
+          }
         `}</style>
       </div>
 
@@ -682,13 +694,75 @@ function Home() {
         fontFamily: "'Tajawal', sans-serif",
       }}>
 
-        {/* العنوان */}
-        <h2 className="reveal responsive-title-section" style={{ fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '10px', fontSize: isMobile ? '24px' : '25px' }}>
-          من هو جيل Z؟
-        </h2>
-        <p className="reveal" style={{ fontSize: isMobile ? '14px' : '16px', color: '#6f5779', textAlign: 'center', marginBottom: '48px', lineHeight: '1.7' }}>
-         تعرف على الجيل الذي نشأ في بيئة رقمية - وكيف أثر ذلك على صحته النفسية
-        </p>
+        {/* ===== هيدر من هو جيل Z (موحد) ===== */}
+        <div
+          ref={genZHeaderRef}
+          style={{
+            textAlign: 'center',
+            padding: '10px 32px 40px',
+            position: 'relative',
+            overflow: 'hidden',
+            width: '100%',
+          }}
+        >
+          {[
+            { top: '-60px', right: 'calc(50% - 250px)', size: 320, color: '#d4bfee18' },
+            { bottom: '-40px', left: 'calc(50% - 300px)', size: 240, color: '#c0e8d820' },
+          ].map((c, i) => (
+            <div key={i} style={{
+              position: 'absolute', borderRadius: '50%',
+              width: c.size, height: c.size,
+              background: `radial-gradient(circle, ${c.color}, transparent)`,
+              top: c.top, right: c.right, bottom: c.bottom, left: c.left,
+              pointerEvents: 'none',
+            }} />
+          ))}
+          {[...Array(7)].map((_, i) => (
+            <div key={`star1-${i}`} style={{
+              position: 'absolute', width: `${5 + (i * 2) % 6}px`, height: `${5 + (i * 2) % 6}px`,
+              borderRadius: '50%', background: `rgba(155,127,199,${0.2 + (i % 4) * 0.1})`,
+              top: `${10 + (i * 14) % 80}%`, left: `${5 + (i * 13) % 90}%`,
+              animation: `star-float ${2.5 + i * 0.4}s ease-in-out infinite`, animationDelay: `${i * 0.3}s`,
+              pointerEvents: 'none',
+            }} />
+          ))}
+
+          <h2
+            className="responsive-title-section"
+            style={{
+              fontSize: isMobile ? '28px' : '36px',
+              fontWeight: '800',
+              color: '#3a2555',
+              marginBottom: '16px',
+              letterSpacing: '-0.5px',
+              opacity: genZHeaderVisible ? 1 : 0,
+              transform: genZHeaderVisible ? 'translateY(0)' : 'translateY(24px)',
+              transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s',
+              fontFamily: "'Tajawal', sans-serif",
+            }}
+          >
+            من هو جيل Z؟
+          </h2>
+          <p style={{
+            fontSize: isMobile ? '15px' : '17px',
+            color: '#8070a8',
+            maxWidth: '540px',
+            margin: '0 auto 20px',
+            lineHeight: '1.85',
+            opacity: genZHeaderVisible ? 1 : 0,
+            transform: genZHeaderVisible ? 'translateY(0)' : 'translateY(18px)',
+            transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s',
+            fontFamily: "'Tajawal', sans-serif",
+          }}>
+            تعرف على الجيل الذي نشأ في بيئة رقمية - وكيف أثر ذلك على صحته النفسية
+          </p>
+          <div style={{
+            width: '100px', height: '3px', borderRadius: '10px', margin: '0 auto',
+            background: 'linear-gradient(90deg, transparent, #9b7fc7, #c97099, transparent)',
+            backgroundSize: '200% 100%', animation: 'shimmer-line 3s linear infinite',
+            opacity: genZHeaderVisible ? 1 : 0, transition: 'opacity 0.7s ease 0.4s',
+          }} />
+        </div>
 
         {/* كاردز الأجيال */}
         <div className="reveal" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '32px' }}>
@@ -963,32 +1037,62 @@ function Home() {
           opacity: 0.6,
         }} />
 
-        <div className="reveal" style={{
-          textAlign: 'center',
-          marginBottom: isMobile ? '60px' : '100px', 
-        }}>
-          <h1 style={{
-            fontSize: isMobile ? '32px' : '46px',
-            fontWeight: '900',
-            color: '#3a2555',
-            fontFamily: "'Tajawal', sans-serif",
-            letterSpacing: '-1px',
-            margin: '0 0 16px 0',
-            display: 'inline-block',
+        {/* ===== هيدر أقسام أُجليك (موحد) ===== */}
+        <div
+          ref={sectionsHeaderRef}
+          style={{
+            textAlign: 'center',
+            padding: '20px 32px 52px',
             position: 'relative',
-          }}>
-            أقسام أُجليك
-            <div style={{
-              position: 'absolute',
-              bottom: '-12px',
-              right: '50%',
-              transform: 'translateX(50%)',
-              width: '40%',
-              height: '5px',
-              background: '#9b7fc7',
-              borderRadius: '4px',
+            overflow: 'hidden',
+            marginBottom: isMobile ? '40px' : '60px',
+            width: '100%',
+          }}
+        >
+          {[
+            { top: '-60px', right: 'calc(50% - 250px)', size: 320, color: '#d4bfee18' },
+            { bottom: '-40px', left: 'calc(50% - 300px)', size: 240, color: '#c0e8d820' },
+          ].map((c, i) => (
+            <div key={i} style={{
+              position: 'absolute', borderRadius: '50%',
+              width: c.size, height: c.size,
+              background: `radial-gradient(circle, ${c.color}, transparent)`,
+              top: c.top, right: c.right, bottom: c.bottom, left: c.left,
+              pointerEvents: 'none',
             }} />
+          ))}
+          {[...Array(7)].map((_, i) => (
+            <div key={`star2-${i}`} style={{
+              position: 'absolute', width: `${5 + (i * 2) % 6}px`, height: `${5 + (i * 2) % 6}px`,
+              borderRadius: '50%', background: `rgba(155,127,199,${0.2 + (i % 4) * 0.1})`,
+              top: `${10 + (i * 14) % 80}%`, left: `${5 + (i * 13) % 90}%`,
+              animation: `star-float ${2.5 + i * 0.4}s ease-in-out infinite`, animationDelay: `${i * 0.3}s`,
+              pointerEvents: 'none',
+            }} />
+          ))}
+
+          <h1
+            style={{
+              fontSize: isMobile ? '36px' : '46px',
+              fontWeight: '900',
+              color: '#3a2555',
+              marginBottom: '16px',
+              letterSpacing: '-1px',
+              opacity: sectionsHeaderVisible ? 1 : 0,
+              transform: sectionsHeaderVisible ? 'translateY(0)' : 'translateY(24px)',
+              transition: 'all 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s',
+              fontFamily: "'Tajawal', sans-serif",
+            }}
+          >
+            أقسام أُجليك
           </h1>
+          
+          <div style={{
+            width: '100px', height: '3px', borderRadius: '10px', margin: '0 auto',
+            background: 'linear-gradient(90deg, transparent, #9b7fc7, #c97099, transparent)',
+            backgroundSize: '200% 100%', animation: 'shimmer-line 3s linear infinite',
+            opacity: sectionsHeaderVisible ? 1 : 0, transition: 'opacity 0.7s ease 0.4s',
+          }} />
         </div>
 
         <div style={{
