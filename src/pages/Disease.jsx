@@ -238,7 +238,7 @@ function Disease() {
             bottom: "30px",
             right: "30px",
             padding: "12px 24px",
-            background: 'linear-gradient(135deg, #9b7fc7, #7c6fcd)',
+           background: 'linear-gradient(135deg,  #b66b8e , #6a4f96f1)',
             color: "white",
             border: "none",
             borderRadius: "50px",

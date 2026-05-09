@@ -64,7 +64,6 @@ function App() {
 
   const navLinks = [
     { name: "الرئيسية",    path: "/",         scrollTo: null,                directRoute: null },
-    { name: "الإختبار",    path: "/",         scrollTo: "exam-section",      directRoute: "/ikhtbar" },
     { name: "الإضطرابات",  path: "/",         scrollTo: "disorders-section", directRoute: "/disease" },
     { name: "الدماغ",      path: "/",         scrollTo: "brain-section",     directRoute: "/dimagh" },
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
@@ -115,98 +114,158 @@ function App() {
       {/* Navbar */}
       <nav style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        margin: "0",
-        padding: isMobile ? "0px 12px" : "0px 28px",
-        height: isMobile ? "auto" : "60px",
-        minHeight: "60px",
-        background: "rgba(255,255,255,0.85)",
-        backdropFilter: "blur(14px)",
-        borderBottom: "1px solid #e0d6f5",
-        position: "sticky",
+        height: isMobile ? "auto" : "72px",
+        background: "white",
+        position: "fixed",
         top: "0",
+        left: "0",
         zIndex: 1000,
-        boxShadow: "0 8px 25px rgba(0,0,0,0.05)",
-        flexWrap: isMobile ? "wrap" : "nowrap",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+        borderBottom: "1px solid #f0f0f0",
       }}>
-
-        <div 
-          style={{ 
-            display: "flex", 
-            alignItems: "center", 
-            gap: "8px",
-            cursor: "pointer" 
-          }}
-          onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-        >
-          <img src={logo} alt="logo" style={{ width: isMobile ? "80px" : "110px", height: "auto" }} />
-         
-        </div>
- 
-        {/* Mobile Toggle Button */}
-        {isMobile && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              background: "transparent",
-              border: "none",
-              fontSize: "24px",
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          maxWidth: "1400px",
+          padding: isMobile ? "8px 16px" : "0 40px",
+          flexWrap: isMobile ? "wrap" : "nowrap",
+          gap: isMobile ? "10px" : "60px", // Gap between logo and buttons
+        }}>
+          {/* 1. Logo */}
+          <div 
+            style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "8px",
               cursor: "pointer",
-              padding: "10px",
-              color: "#493054"
             }}
+            onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           >
-            {isMobileMenuOpen ? "✕" : "☰"}
-          </button>
-        )}
-
-        <div 
-          style={{ 
-            display: isMobileMenuOpen || !isMobile ? "flex" : "none",
-            flexDirection: isMobile ? "column" : "row",
-            gap: isMobile ? "0" : "4px",
-            alignItems: "center",
-            width: isMobile ? "100%" : "auto",
-            backgroundColor: isMobile ? "rgba(255,255,255,0.98)" : "transparent",
-            padding: isMobile ? "10px 0" : "0",
-            borderTop: isMobile ? "1px solid #e0d6f5" : "none",
-          }}>
-          {navLinks.map(link => (
+            <img src={logo} alt="logo" style={{ width: isMobile ? "80px" : "110px", height: "auto" }} />
+          </div>
+  
+          {/* Mobile Toggle Button */}
+          {isMobile && (
             <button
-              key={link.name}
-              onClick={() => handleNavClick(link)}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               style={{
-                color: activeLink === link.name ? "#6b4fa0" : "#737373",
-                fontSize: isMobile ? "15px" : "17px",
-                padding: isMobile ? "12px 20px" : "6px 14px",
-                transition: "0.3s",
                 background: "transparent",
                 border: "none",
-                borderBottom: !isMobile && activeLink === link.name ? "2px solid #6b4fa0" : "2px solid transparent",
-                width: isMobile ? "100%" : "auto",
-                textAlign: "right",
+                fontSize: "24px",
                 cursor: "pointer",
-                fontFamily: "'Tajawal', sans-serif",
-              }}
-              onMouseEnter={e => {
-                if (!isMobile) {
-                  e.currentTarget.style.color = "#6b4fa0";
-                  e.currentTarget.style.background = "#ede8ff";
-                  e.currentTarget.style.borderRadius = "8px";
-                }
-              }}
-              onMouseLeave={e => {
-                if (!isMobile) {
-                  e.currentTarget.style.color = activeLink === link.name ? "#6b4fa0" : "#737373";
-                  e.currentTarget.style.background = "transparent";
-                }
+                padding: "10px",
+                color: "#493054"
               }}
             >
-              {link.name}
+              {isMobileMenuOpen ? "✕" : "☰"}
             </button>
-          ))}
+          )}
+
+          {/* 2 & 3. Links and CTA */}
+          <div 
+            style={{ 
+              display: isMobileMenuOpen || !isMobile ? "flex" : "none",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: "center",
+              width: isMobile ? "100%" : "auto",
+              justifyContent: "center",
+              backgroundColor: isMobile ? "rgba(255,255,255,0.98)" : "transparent",
+              padding: isMobile ? "15px 0" : "0",
+              borderTop: isMobile ? "1px solid #f0f0f0" : "none",
+              marginTop: isMobile ? "8px" : "0",
+              gap: isMobile ? "10px" : "80px", // Increased gap between links and CTA
+            }}>
+            
+            {/* Centered Links Group */}
+            <div style={{ 
+              display: "flex", 
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: "center",
+              width: isMobile ? "100%" : "auto",
+              gap: isMobile ? "0" : "4px",
+              justifyContent: "center",
+            }}>
+              {navLinks.map(link => (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link)}
+                  style={{
+                    color: activeLink === link.name ? "#6b4fa0" : "#737373",
+                    fontSize: isMobile ? "15px" : "16px",
+                    padding: isMobile ? "12px 20px" : "8px 20px",
+                    transition: "0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    background: activeLink === link.name ? "#f3f0ff" : "transparent",
+                    border: activeLink === link.name ? "1px solid #e5dfff" : "1px solid transparent",
+                    boxShadow: activeLink === link.name ? "0 4px 12px rgba(107, 79, 160, 0.12)" : "none",
+                    borderRadius: "30px", // Increased radius to match site style
+                    width: isMobile ? "100%" : "auto",
+                    textAlign: isMobile ? "right" : "center",
+                    cursor: "pointer",
+                    fontFamily: "'Tajawal', sans-serif",
+                    fontWeight: activeLink === link.name ? "700" : "400",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={e => {
+                    if (!isMobile) {
+                      e.currentTarget.style.color = "#6b4fa0";
+                      e.currentTarget.style.background = "#f8f6ff";
+                      e.currentTarget.style.borderRadius = "30px";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!isMobile) {
+                      e.currentTarget.style.color = activeLink === link.name ? "#6b4fa0" : "#737373";
+                      e.currentTarget.style.background = "transparent";
+                    }
+                  }}
+                >
+                  {link.name}
+                </button>
+              ))}
+            </div>
+
+            {/* 3. CTA Button: اختبر نفسك */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "center",
+              width: isMobile ? "100%" : "auto"
+            }}>
+              <button
+                onClick={() => { navigate('/ikhtbar'); window.scrollTo({ top: 0, behavior: 'instant' }); setActiveLink("اختبر نفسك"); }}
+                style={{
+                  background: "#9b7fc7",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "30px", // Increased radius to match site style
+                  padding: isMobile ? "12px 20px" : "10px 24px",
+                  fontSize: "15px",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  fontFamily: "'Tajawal', sans-serif",
+                  width: isMobile ? "90%" : "auto",
+                  marginTop: isMobile ? "10px" : "0",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 4px 12px rgba(155, 127, 199, 0.2)",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "#8a6bb5";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "#9b7fc7";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                اختبر نفسك
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 

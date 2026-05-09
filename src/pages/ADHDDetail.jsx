@@ -77,7 +77,7 @@ function Definition() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 16 }}>
                 {[
                     { title: "الانتباه الطبيعي", color: "#3d1f4b", text: "هو قدرة طبيعية ونظام تنظيمي في الدماغ يساعدك على إنجاز المهام، ترتيب الأولويات، والتحكم في ردود أفعالك بوعي." },
-                    { title: "نقص الانتباه وفرط الحركة", color: COLORS.primary, text: "اضطراب عصبي نمائي يؤثر على كيفية نمو الدماغ وعمله. يبدأ في الطفولة ويستمر للبلوغ. الدماغ لا يعمل بشكل 'خاطئ' — بل يعمل بطريقة مختلفة." },
+                    { title: "نقص الانتباه وفرط الحركة", color: COLORS.primary, text: "اهو اضطراب عصبي نمائي يؤثر على تطور الدماغ ووظائفه، ويبدأ غالبًا في مرحلة الطفولة وقد يستمر إلى مرحلة البلوغ. لا يعني ذلك أن الدماغ يعمل بشكل “خاطئ”، بل يعمل بطريقة مختلفة تؤثر على الانتباه، التحكم بالاندفاع، وتنظيم النشاط." },
                 ].map(({ title, color, text }) => (
                     <div key={title}
                         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-8px)"; e.currentTarget.style.boxShadow = `0 15px 35px ${COLORS.primary}26`; }}
@@ -480,7 +480,7 @@ function BrainStep({ step, index }) {
             <div style={{ ...s.card, marginBottom: 20, borderColor: "rgba(74, 143, 168, 0.25)", padding: "1.5rem 2rem", background: "#ffffff", borderRadius: 20 }}>
                 <div style={{ fontSize: "1.05rem", color: "#552269", fontWeight: "900", fontFamily: "'Tajawal', sans-serif", marginBottom: 4 }}>{step.label}</div>
                 <div style={{ fontSize: "0.85rem", color: "#552269", fontWeight: "700", fontFamily: "'Tajawal', sans-serif", marginBottom: 12 }}>{step.sub}</div>
-                <p style={{ fontSize: "0.9rem", color: "#5d5c5d", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{step.text}</p>
+                <p style={{ fontSize: "0.9rem", color: "#552269", lineHeight: 1.7, margin: 0, fontWeight: "600" }}>{step.text}</p>
             </div>
         </div>
     );
@@ -589,9 +589,9 @@ function Treatment() {
                                 {t.badge && <span style={{ display: "inline-block", background: `${t.color}14`, border: `1px solid ${t.color}40`, color: t.color, borderRadius: 50, padding: "4px 14px", fontSize: 12, marginBottom: 14, fontWeight: "bold" }}>✦ {t.badge}</span>}
                                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                                     {t.pts.map(([bold, rest], j, a) => (
-                                        <li key={j} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
+                                        <li key={j} style={{ fontSize: "0.875rem", color: "#493054", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
                                             <span style={{ color: t.color, fontSize: "0.5rem", marginTop: 7, flexShrink: 0 }}>●</span>
-                                            <span>{bold && <strong style={{ color: "#5d5c5d", fontFamily: "'Tajawal', sans-serif" }}>{bold}</strong>} {rest}</span>
+                                            <span>{bold && <strong style={{ color: "#493054", fontWeight: "800" }}>{bold}</strong>} {rest}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -615,9 +615,16 @@ export default function ADHDDetail() {
         link.rel = "stylesheet";
         link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
         document.head.appendChild(link);
+        
         const style = document.createElement("style");
-        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#4a8fa8; border-radius:2px }`;
+        style.id = "disorder-scrollbar-style";
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:6px } ::-webkit-scrollbar-thumb { background:#4a8fa8; border-radius:10px }`;
         document.head.appendChild(style);
+
+        return () => {
+            const el = document.getElementById("disorder-scrollbar-style");
+            if (el) el.remove();
+        };
     }, []);
 
     return (

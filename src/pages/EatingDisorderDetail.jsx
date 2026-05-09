@@ -97,7 +97,7 @@ function Definition() {
 const TYPES = [
     { n: "١", en: "Anorexia Nervosa", ar: "فقدان الشهية العصبي", color: "#552269", pts: ["تقييد شديد للطعام ناتج عن خوف مكثف من اكتساب الوزن، حتى عند مراحل النحافة الخطيرة.", "تشوه حاد في صورة الجسم: يرى الشخص نفسه سميناً رغم النحافة الواضحة.", "يُعد الأعلى معدل وفيات بين الاضطرابات النفسية بسبب المضاعفات الجسدية."] },
     { n: "٢", en: "Bulimia Nervosa", ar: "النهام العصبي", color: "#8a354c", pts: ["دورة متكررة من نوبات الأكل المفرط (الشراهة) يعقبها سلوك تطهيري كالتفريغ أو الرياضة المفرطة.", "يشعر الشخص بفقدان السيطرة خلال نوبة الأكل، تتبعها مشاعر ذنب وخزي عميقة.", "الوزن قد يبدو طبيعياً مما يجعل المعاناة مخفية عن الآخرين وصعبة التشخيص."] },
-    { n: "٣", en: "Binge Eating Disorder", ar: "اضطراب نهم الطعام", color: "#2a6275", pts: ["نوبات أكل مفرط متكررة دون سلوكيات تطهير، مما يؤدي غالباً لزيادة الوزن.", "الأكل بسرعة كبيرة حتى الشعور بعدم الارتياح الشديد، غالباً بمفرده بسبب الخجل.", "يرتبط بضائقة نفسية واضحة وإحساس عميق بفقدان السيطرة بعد كل نوبة."] },
+    { n: "٣", en: "Binge Eating Disorder", ar: "اضطراب نهم الطعام", color: "#2a6275", pts: ["نوبات أكل مفرطة متكررة دون سلوكيات تطهير، مما يؤدي غالباً لزيادة الوزن.", "الأكل بسرعة كبيرة حتى الشعور بعدم الارتياح الشديد، غالباً بمفرده بسبب الخجل.", "يرتبط بضائقة نفسية واضحة وإحساس عميق بفقدان السيطرة بعد كل نوبة."] },
     { n: "٤", en: "ARFID", ar: "اضطراب تجنب تناول الطعام", color: "#7571b8", pts: ["تجنب طعام معين بناءً على خصائصه الحسية (اللون، القوام) لا بسبب الخوف من الوزن.", "يؤدي لنقص تغذوي خطير ومحدودية اجتماعية، وشائع عند الأطفال والبالغين.", "يرتبط ارتباطاً وثيقاً باضطراب التوحد وفرط الحساسية الحسية."] },
 ];
 
@@ -202,10 +202,10 @@ function Symptoms() {
 // ── CAUSES ────────────────────────────────────────────────────────────────
 const CAUSES = [
     {
-        n: "١", 
-        color: "#9e728a", 
-        title: "العوامل الجينية والوراثية", 
-        borderColor: "#d68cb9", 
+        n: "١",
+        color: "#9e728a",
+        title: "العوامل الجينية والوراثية",
+        borderColor: "#d68cb9",
         circleBg: "linear-gradient(180deg, #af6c86, #3d1f4b)",
         items: [
             "استعداد وراثي لزيادة القلق أو الكمالية",
@@ -215,11 +215,11 @@ const CAUSES = [
         ]
     },
     {
-        n: "٢", 
-        color: "#3d1f4b", 
-        title: "العوامل النفسية والشخصية:", 
-        borderColor: "#552269", 
-         circleBg: "linear-gradient(180deg, #af6c86, #e2d0eb)",
+        n: "٢",
+        color: "#3d1f4b",
+        title: "العوامل النفسية والشخصية:",
+        borderColor: "#552269",
+        circleBg: "linear-gradient(180deg, #af6c86, #e2d0eb)",
         items: [
             "المثالية المفرطة (Perfectionism): السعي للكمال والشعور بالذنب عند عدم تحقيق معايير صارمة.",
             "انخفاض تقدير الذات: ربط القيمة الشخصية بالوزن أو شكل الجسم فقط.",
@@ -229,10 +229,10 @@ const CAUSES = [
         ]
     },
     {
-        n: "٣", 
-        color: "#7a7a9a", 
-        title: "العوامل البيئية والمجتمعية", 
-        borderColor: "#a58e8e", 
+        n: "٣",
+        color: "#7a7a9a",
+        title: "العوامل البيئية والمجتمعية",
+        borderColor: "#a58e8e",
         items: [
             "ثقافة النحافة: الضغوط المجتمعية ووسائل التواصل التي تروج لمعايير جمالية غير واقعية",
             "التربية والبيئة الأسرية: التركيز المفرط على الوزن أو المظهر داخل المنزل، أو النقد المستمر للجسم",
@@ -266,8 +266,8 @@ function Causes() {
                             <div style={{ fontFamily: "'Tajawal', sans-serif", fontWeight: 900, color: c.color, fontSize: "1.05rem", marginBottom: 14 }}>{c.title}</div>
                             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                                 {c.items.map((item, idx) => (
-                                    <li key={idx} style={{ 
-                                        padding: "0.6rem 0", 
+                                    <li key={idx} style={{
+                                        padding: "0.6rem 0",
                                         borderBottom: idx < c.items.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
                                         fontSize: "0.875rem",
                                         color: "#5d5c5d",
@@ -386,12 +386,12 @@ function Personality() {
 
 // ── BRAIN JOURNEY ─────────────────────────────────────────────────────────
 const BRAIN_STEPS = [
-    { n: "١", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: COLORS.accent, text: "خلل في التفكير المنطقي، فتسيطر الأفكار القهرية وتضعف القدرة على تقييم مخاطر الجوع." },
-    { n: "٢", label: "REWARD SYSTEM · مركز المكافأة", color: COLORS.accent, text: "يصبح الدماغ فائق الحساسية للمكافأة (في النهم) أو يفقد استشعار المتعة (في فقدان الشهية)." },
-    { n: "٣", label: "HYPOTHALAMUS · تحت المهاد", color: COLORS.accent, text: "اضطراب حلقة الوصل، مما يؤدي لتوقف إشارات الجوع أو الشبع الحقيقية." },
-    { n: "٤", label: "AMYGDALA · اللوزة الدماغية", color: COLORS.accent, text: "تصبح مفرطة النشاط، مما يولد ذعراً عند رؤية طعام 'ممنوع' أو تغير في الوزن." },
-    { n: "٥", label: "INSULA · القشرة الجزيرية", color: COLORS.accent, text: "خلل في معالجة الإشارات الداخلية، مما يسبب تشوه صورة الجسم ورؤية النفس كسمين." },
-    { n: "٦", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: COLORS.accent, text: "انخفاض السيروتونين يسبب زيادة الوسواس القهري تجاه الأرقام والسعرات." },
+    { n: "١", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: COLORS.accent, text: "خلل في التفكير المنطقي — فتسيطر الأفكار القهرية وتضعف القدرة على تقييم مخاطر الجوع." },
+    { n: "٢", label: "REWARD SYSTEM · مركز المكافأة", color: COLORS.accent, text: "يصبح الدماغ فائق الحساسية للمكافأة (في النهم) — أو يفقد استشعار المتعة (في فقدان الشهية)." },
+    { n: "٣", label: "HYPOTHALAMUS · تحت المهاد", color: COLORS.accent, text: "اضطراب حلقة الوصل — مما يؤدي لتوقف إشارات الجوع أو الشبع الحقيقية." },
+    { n: "٤", label: "AMYGDALA · اللوزة الدماغية", color: COLORS.accent, text: "تصبح مفرطة النشاط — مما يولد ذعراً عند رؤية طعام 'ممنوع' أو تغير في الوزن." },
+    { n: "٥", label: "INSULA · القشرة الجزيرية", color: COLORS.accent, text: "خلل في معالجة الإشارات الداخلية — مما يسبب تشوه صورة الجسم ورؤية النفس كسمين." },
+    { n: "٦", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: COLORS.accent, text: "انخفاض السيروتونين — يسبب زيادة الوسواس القهري تجاه الأرقام والسعرات." },
 ];
 
 function BrainStep({ step, index }) {
@@ -405,8 +405,7 @@ function BrainStep({ step, index }) {
             <div style={{ ...s.card, marginBottom: 12, borderColor: COLORS.accent }}>
                 <div style={{ fontSize: 12, color: "#3d1f4b", letterSpacing: "0.1em", marginBottom: 6, fontWeight: "900", fontFamily: "'Tajawal', sans-serif" }}>{step.label}</div>
                 <p style={{ fontSize: "0.875rem", color: "#3d1f4b", lineHeight: 1.8, margin: 0, fontWeight: "700" }}>
-                    {step.text.split('،')[0]}،
-                    <span style={{ color: "#5d5c5d", fontWeight: "600" }}>{step.text.split('،').slice(1).join('،')}</span>
+                    {step.text}
                 </p>
             </div>
         </div>
@@ -446,8 +445,8 @@ function BrainJourney() {
 // ── TREATMENT ─────────────────────────────────────────────────────────────
 const TREATMENTS = [
     { icon: "🧩", en: "Cognitive Behavioral Therapy", title: "١. العلاج السلوكي المعرفي (CBT)", color: "#3d1f4b", pts: [["تعديل الأفكار:", "تحدي الأفكار السلبية حول الوزن والشكل بالمنطق."], ["كسر الدائرة:", "إنهاء الأكل العاطفي أو التقييد عبر التعرض المنظم."], ["بناء العلاقة:", "بناء علاقة صحية مع الطعام بعيداً عن مشاعر الذنب."], ["إدارة المشاعر:", "تعلم مهارات بديلة للأكل للتعامل مع الضغوط Patterns."]] },
-    { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#7a4d68", pts: [["مضادات الاكتئاب:", "تستخدم لتقليل نوبات الشره وتخفيف القلق."], ["تنظيم المزاج:", "تقليل التوتر المستمر المرتبط بصورة الجسم."], ["إشراف طبي:", "يستخدم دائماً كداعم للعلاج النفسي وتحت إشراف دقيق."]] },
-    { icon: "✨", en: "Integrated Treatment", title: "٣. العلاج المتكامل", color: "#d68cb9", badge: "الأفضل نتائج", pts: [["المعيار الذهبي:", "الجمع بين النفسي والغذائي والدوائي هو الأفضل."], ["دعم التغذية:", "متابعة مع أخصائي تغذية متخصص في اضطرابات الأكل."], ["إشراك العائلة:", "بناء بيئة داعمة وآمنة في المنزل خاصة للشباب."]] },
+    { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#7a4d68", pts: [["مضادات الاكتئاب:", "تستخدم لتقليل نوبات الشره وتخفيف القلق."], ["تنظيم المزاج:", "تقليل التوتر المستمر المرتبط بصورة الجسم."], ["إشراف طبي:", "يُستخدم تحت إشراف طبي فقط حسب الحالة."]] },
+    { icon: "✨", en: "Integrated Treatment", title: "٣. العلاج المتكامل", color: "#d68cb9", badge: "الأفضل", pts: [["المعيار الذهبي:", "الجمع بين النفسي والغذائي والدوائي هو الأفضل."], ["دعم التغذية:", "متابعة مع أخصائي تغذية متخصص في اضطرابات الأكل."], ["إشراك العائلة:", "بناء بيئة داعمة وآمنة في المنزل خاصة للشباب."]] },
     { icon: "🌿", en: "Lifestyle", title: "٤. نمط الحياة والدعم", color: "#3a6e4f", pts: [["روتين غذائي:", "تناول وجبات في أوقات ثابتة لتنظيم إشارات الجوع."], ["نشاط معتدل:", "التمارين يجب أن تكون للصحة لا للعقاب الجسدي."], ["تواصل اجتماعي:", "تقليل التعرض للمحتوى الذي يعزز صوراً غير واقعية."]] },
 ];
 
@@ -476,9 +475,9 @@ function Treatment() {
                                 {t.badge && <span style={{ display: "inline-block", background: `${t.color}14`, border: `1px solid ${t.color}40`, color: t.color, borderRadius: 50, padding: "4px 14px", fontSize: 12, marginBottom: 14, fontWeight: "bold" }}>✦ {t.badge}</span>}
                                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                                     {t.pts.map(([bold, rest], j, a) => (
-                                        <li key={j} style={{ fontSize: "0.875rem", color: "#5d5c5d", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
+                                        <li key={j} style={{ fontSize: "0.875rem", color: "#493054", padding: "0.55rem 0", borderBottom: j < a.length - 1 ? `1px solid ${COLORS.border}` : "none", display: "flex", gap: 10, lineHeight: 1.7, alignItems: "flex-start", fontWeight: "600", fontFamily: "'Tajawal', sans-serif" }}>
                                             <span style={{ color: t.color, fontSize: "0.5rem", marginTop: 7, flexShrink: 0 }}>●</span>
-                                            <span>{bold && <strong style={{ color: "#5d5c5d", fontFamily: "'Tajawal', sans-serif" }}>{bold}</strong>} {rest}</span>
+                                            <span>{bold && <strong style={{ color: "#493054", fontWeight: "800" }}>{bold}</strong>} {rest}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -498,9 +497,16 @@ export default function EatingDisorderDetail() {
         link.rel = "stylesheet";
         link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
         document.head.appendChild(link);
+        
         const style = document.createElement("style");
-        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#7a4d68; border-radius:2px }`;
+        style.id = "disorder-scrollbar-style";
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:6px } ::-webkit-scrollbar-thumb { background:#7a4d68; border-radius:10px }`;
         document.head.appendChild(style);
+
+        return () => {
+            const el = document.getElementById("disorder-scrollbar-style");
+            if (el) el.remove();
+        };
     }, []);
 
     return (
