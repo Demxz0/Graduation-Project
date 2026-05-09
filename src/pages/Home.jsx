@@ -630,12 +630,12 @@ function Home() {
             fontWeight: '500',
             color: '#3a2555',
             marginBottom: '16px',
-            fontFamily: "'Reem Kufi', sans-serif",
-            fontSize: isMobile ? '48px' : '100px', 
+            fontFamily: "'Aref Ruqaa', serif",
+            fontSize: isMobile ? '48px' : '130px', 
             letterSpacing: '-1px',
             textShadow: '0 4px 16px rgba(155, 127, 199, 0.1)', 
           }}>
-           أُجْلِيك
+           أُجْلِيكَ
           </h1>
 
           <p style={{
