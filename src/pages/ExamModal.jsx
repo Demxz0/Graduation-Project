@@ -482,11 +482,7 @@ function ExamModal({ disorderId, onClose }) {
             </>
           )}
 
-          {phase === 'result' && (
-            <p style={{ fontSize: '13px', color: '#9586b0', textAlign: 'center', margin: '8px 0 0' }}>
-              نتيجة اختبارك
-            </p>
-          )}
+          
         </div>
 
         <style>{`
@@ -837,6 +833,7 @@ function ExamModal({ disorderId, onClose }) {
                 flexDirection: isMobile ? 'column' : 'row',
                 gap: '10px',
                 justifyContent: 'center',
+                marginBottom: '10px',
               }}>
                 <button
                   onClick={onClose}
@@ -867,7 +864,7 @@ function ExamModal({ disorderId, onClose }) {
                     padding: '11px 20px',
                     borderRadius: '50px',
                     border: 'none',
-                    background: 'linear-gradient(135deg, #9b7fc7, #7c6fcd)',
+                    background:'linear-gradient(135deg,  #b66b8e , #6a4f96f1)',
                     color: 'white',
                     fontSize: '14px',
                     fontFamily: "'Tajawal', sans-serif",

@@ -513,49 +513,37 @@ function RiskFactors() {
             </div>
           )}
 
-          {/* ===== زر الرئيسية ===== */}
-          <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <button
-              onClick={() => navigate('/')}
-              style={{
-                padding: '13px 36px',
-                fontSize: '16px',
-                fontWeight: '700',
-                fontFamily: "'Tajawal', sans-serif",
-                background: 'linear-gradient(135deg, #9b7fc7, #7c6fcd)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '50px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 4px 20px rgba(124,111,205,0.4)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'scale(1.06)';
-                e.currentTarget.style.boxShadow = '0 8px 28px rgba(124,111,205,0.55)';
-                e.currentTarget.querySelector('.icon-arrow').style.transform = 'translateX(-5px)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,111,205,0.4)';
-                e.currentTarget.querySelector('.icon-arrow').style.transform = 'translateX(0)';
-              }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
-                <span 
-                  className="icon-arrow" 
-                  style={{ 
-                    fontSize: '18px', 
-                    display: 'inline-block', 
-                    transition: 'transform 0.3s ease' 
-                  }}
-                >
-                  ➔
-                </span>
-                <span>الذهاب إلى الرئيسية</span>
-              </span>
-            </button>
-          </div>
+        {/* ===== زر الرئيسية ===== */}
+<div style={{ textAlign: 'center', marginTop: '60px' }}>
+  <button
+    onClick={() => navigate('/')}
+    style={{
+      padding: '13px 36px',
+      fontSize: '16px',
+      fontWeight: '700',
+      fontFamily: "'Tajawal', sans-serif",
+      background: 'linear-gradient(135deg, #b66b8e, #6a4f96f1)', 
+      color: 'white',
+      border: 'none',
+      borderRadius: '50px',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 4px 20px rgba(106, 79, 150, 0.4)', 
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.transform = 'scale(1.06)';
+      e.currentTarget.style.boxShadow = '0 8px 28px rgba(106, 79, 150, 0.55)';
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.transform = 'scale(1)';
+      e.currentTarget.style.boxShadow = '0 4px 20px rgba(106, 79, 150, 0.4)';
+    }}
+  >
+    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <span>الذهاب إلى الرئيسية</span>
+    </span>
+  </button>
+</div>
         </div>
       </div>
     </>

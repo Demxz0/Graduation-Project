@@ -422,10 +422,10 @@ function SectionCard({ card, navigate, index }) {
           }}/>
 
           <div style={{
-            width: isMobile ? '110px' : '140px', // حجم الصورة بالنسبة للبوكس
+            width: isMobile ? '110px' : '140px', 
             height: isMobile ? '110px' : '140px',
             zIndex: 1,
-            transform: hovered ? 'scale(1.15) rotate(-5deg)' : 'scale(1) rotate(0deg)', // حركة التكبير والميلان
+            transform: hovered ? 'scale(1.15) rotate(-5deg)' : 'scale(1) rotate(0deg)',
             transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
             filter: hovered ? `drop-shadow(0 15px 25px ${card.accentColor}40)` : 'drop-shadow(0 8px 15px rgba(0,0,0,0.1))'
           }}>
@@ -478,7 +478,7 @@ function MagneticButton({ children, onClick, style, primary }) {
       onMouseEnter={(e) => {
         if(primary) {
           e.currentTarget.style.boxShadow = '0 12px 24px rgba(155, 127, 199, 0.4)';
-          e.currentTarget.style.background = '#8a6bb5'; 
+          e.currentTarget.style.background = 'linear-gradient(135deg, #8f78b4f1, #543c72)';
         } else {
           e.currentTarget.style.background = 'rgba(155, 127, 199, 0.08)';
         }
@@ -627,15 +627,15 @@ function Home() {
         }}>
           
           <h1 style={{
-            fontWeight: '900',
+            fontWeight: '500',
             color: '#3a2555',
             marginBottom: '16px',
-            fontFamily: "'Tajawal', sans-serif",
-            fontSize: isMobile ? '48px' : '80px', 
+            fontFamily: "'Reem Kufi', sans-serif",
+            fontSize: isMobile ? '48px' : '100px', 
             letterSpacing: '-1px',
             textShadow: '0 4px 16px rgba(155, 127, 199, 0.1)', 
           }}>
-           أُجْلِيكَ
+           أُجْلِيك
           </h1>
 
           <p style={{
@@ -663,7 +663,7 @@ function Home() {
                 fontSize: '16px',
                 fontWeight: '700',
                 fontFamily: "'Tajawal', sans-serif",
-                background: '#9b7fc7',
+                background:'linear-gradient(135deg, #8f78b4f1, #543c72)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '30px',
@@ -689,8 +689,8 @@ function Home() {
                 fontWeight: '700',
                 fontFamily: "'Tajawal', sans-serif",
                 background: 'rgba(255, 255, 255, 0.8)',
-                color: '#9b7fc7',
-                border: '2px solid #9b7fc7',
+                color: '#6a4f96', 
+                border: '2px solid #6a4f96', 
                 borderRadius: '30px',
                 cursor: 'pointer',
                 display: 'flex',
