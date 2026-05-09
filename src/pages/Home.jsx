@@ -1,5 +1,4 @@
 import '../App.css';
-import image from '../image.png';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 
@@ -686,13 +685,13 @@ function Home() {
         `}</style>
       </div>
 
-      {/* ===== سيكشن تعرف أكثر ===== */}
-      <div id="learnMore" style={{
+       {/* ===== سيكشن تعرف أكثر ===== */}
+       <div id="learnMore" style={{
         background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)',
         padding: isMobile ? '40px 16px' : '72px 24px 60px',
         direction: 'rtl',
         fontFamily: "'Tajawal', sans-serif",
-      }}>
+       }}>
 
         {/* ===== هيدر من هو جيل Z (موحد) ===== */}
         <div
@@ -1014,35 +1013,17 @@ function Home() {
             <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة</div>
           </div>
         </div>
-      </div>
+     
 
-      {/* ===== أقسام أُجليك ===== */}
-      <div style={{ 
-        background: 'linear-gradient(160deg, #faf8ff 0%, #f0ecff 50%, #fdf6ff 100%)', 
-        width: '100%',
-        padding: isMobile ? '60px 20px' : '100px 60px',
-        position: 'relative', 
-      }}>
-        
-        {/* فاصل جمالي بين الإحصائيات والأقسام */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '200px',
-          height: '4px',
-          background: 'linear-gradient(90deg, transparent, #9b7fc7, transparent)',
-          borderRadius: '2px',
-          opacity: 0.6,
-        }} />
+       {/* ===== أقسام أُجليك ===== */}
+
 
         {/* ===== هيدر أقسام أُجليك (موحد) ===== */}
         <div
           ref={sectionsHeaderRef}
           style={{
             textAlign: 'center',
-            padding: '20px 32px 52px',
+            padding: '160px 32px 52px',
             position: 'relative',
             overflow: 'hidden',
             marginBottom: isMobile ? '40px' : '60px',
@@ -1084,7 +1065,7 @@ function Home() {
               fontFamily: "'Tajawal', sans-serif",
             }}
           >
-            أقسام أُجليك
+           رحلة في أُجليك
           </h1>
           
           <div style={{
@@ -1098,7 +1079,7 @@ function Home() {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: isMobile ? '60px' : '100px', 
+          gap: isMobile ? '120px' : '250px', 
           maxWidth: '1100px',
           margin: '0 auto',
         }}>
