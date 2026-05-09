@@ -257,6 +257,99 @@ function AnimatedNumber({ endValue, suffix = '', isArabic = false }) {
 }
 
 // ----------------------------------------------------
+// بطاقة الإحصائيات (Glassmorphism)
+// ----------------------------------------------------
+function StatCard({ num, suffix, label, icon, delay, isArabic, isMobile }) {
+  const [hovered, setHovered] = useState(false);
+  const [ref, visible] = useRevealOnScroll();
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: 'rgba(255, 255, 255, 0.7)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.5)',
+        borderRadius: '32px',
+        padding: isMobile ? '28px 20px' : '40px 24px',
+        textAlign: 'center',
+        transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: visible 
+          ? (hovered ? 'translateY(-12px) scale(1.03)' : 'translateY(0) scale(1)') 
+          : 'translateY(40px)',
+        opacity: visible ? 1 : 0,
+        boxShadow: hovered 
+          ? '0 24px 48px rgba(155, 127, 199, 0.15), inset 0 0 0 1px rgba(155, 127, 199, 0.1)'
+          : '0 10px 30px rgba(0, 0, 0, 0.04)',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        minWidth: isMobile ? '100%' : '280px',
+        transitionDelay: `${delay}ms`,
+        cursor: 'default',
+      }}
+    >
+      {/* Glow Effect */}
+      <div style={{
+        position: 'absolute',
+        top: '-50%',
+        left: '-50%',
+        width: '200%',
+        height: '200%',
+        background: 'radial-gradient(circle, rgba(155, 127, 199, 0.08), transparent 70%)',
+        opacity: hovered ? 1 : 0.4,
+        transition: 'opacity 0.8s ease',
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{
+        fontSize: isMobile ? '40px' : '48px',
+        marginBottom: '16px',
+        transform: hovered ? 'scale(1.15) rotate(5deg)' : 'scale(1) rotate(0deg)',
+        transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+      }}>
+        {icon}
+      </div>
+
+      <div style={{
+        fontSize: isMobile ? '34px' : '42px',
+        fontWeight: '900',
+        color: '#3a2555',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '4px',
+        fontFamily: "'Tajawal', sans-serif",
+        lineHeight: 1,
+      }}>
+        <AnimatedNumber endValue={num} suffix={suffix} isArabic={isArabic} />
+      </div>
+
+      <p style={{
+        fontSize: isMobile ? '14px' : '15px',
+        color: '#7a6b9a',
+        lineHeight: '1.7',
+        marginTop: '12px',
+        fontWeight: '700',
+        fontFamily: "'Tajawal', sans-serif",
+        maxWidth: '240px',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }}>
+        {label}
+      </p>
+    </div>
+  );
+}
+
+// ----------------------------------------------------
 // بطاقة التايملاين
 // ----------------------------------------------------
 function TimelineCard({ item, width, isActive, onCardClick, hasActiveSelection }) {
@@ -1233,52 +1326,120 @@ function Home() {
 
       </div>
 
-      {/* الإحصائيات */}
-      <div className="reveal" style={{
-        background: 'white', border: '2px solid #ebe6f7', borderRadius: '24px',
-        padding: isMobile ? '24px 16px' : '36px 32px',
-        maxWidth: '1100px', margin: '0 auto 60px',
+      {/* سيكشن الإحصائيات المطور */}
+      <div id="stats-section" style={{
+        position: 'relative',
+        padding: isMobile ? '60px 20px' : '100px 4%',
+        background: '#faf8ff',
+        overflow: 'hidden',
+        zIndex: 1,
       }}>
-        <div style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '800', color: '#665a78', textAlign: 'center', marginBottom: '28px', fontFamily: "'Tajawal', sans-serif" }}>
-          📊 معلومات موثّقة عن الصحة النفسية لجيل Z
-        </div>
+        {/* الخلفية المزخرفة (Blobs) */}
         <div style={{
-          display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: '16px', marginBottom: '16px',
-        }}>
-          {[
-            { num: 75, suffix: '%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
-            { num: 55, suffix: '%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
-            { num: 46, suffix: '%', label: 'من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية' },
-          ].map((s, i) => (
-            <div
-              key={i}
-              style={{
-                background: 'linear-gradient(160deg, #faf8ff, #f0ecff)',
-                border: '2px solid #ebe6f7', borderRadius: '16px',
-                padding: '22px 16px', textAlign: 'center', transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={e => { if (!isMobile) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.12)'; } }}
-              onMouseLeave={e => { if (!isMobile) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; } }}
-            >
-              <div style={{ fontSize: '32px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
-                <AnimatedNumber endValue={s.num} suffix={s.suffix} />
-              </div>
-              <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px', fontFamily: "'Tajawal', sans-serif" }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
+          position: 'absolute',
+          top: '10%',
+          right: '-5%',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(155, 127, 199, 0.08), transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          zIndex: -1,
+          animation: 'float-blob 20s infinite alternate ease-in-out',
+        }} />
         <div style={{
-          background: 'linear-gradient(160deg, #faf8ff, #f0ecff)',
-          border: '2px solid #ebe6f7', borderRadius: '16px', padding: '20px', textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
-            <AnimatedNumber endValue={9} suffix=" ساعات" isArabic={true} />
+          position: 'absolute',
+          bottom: '10%',
+          left: '-5%',
+          width: '350px',
+          height: '350px',
+          background: 'radial-gradient(circle, rgba(124, 111, 205, 0.08), transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          zIndex: -1,
+          animation: 'float-blob 15s infinite alternate-reverse ease-in-out',
+        }} />
+
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* عنوان السكشن */}
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{
+              fontSize: isMobile ? '28px' : '38px',
+              fontWeight: '900',
+              color: '#3a2555',
+              fontFamily: "'Tajawal', sans-serif",
+              marginBottom: '16px',
+            }}>
+              📊 لغة الأرقام في حياة جيل Z
+            </h2>
+            <p style={{
+              fontSize: isMobile ? '15px' : '17px',
+              color: '#8070a8',
+              maxWidth: '600px',
+              margin: '0 auto',
+              fontFamily: "'Tajawal', sans-serif",
+              lineHeight: '1.8',
+            }}>
+              إحصائيات وحقائق موثقة تبرز حجم التحديات النفسية التي يواجهها هذا الجيل في عالمنا الرقمي المتسارع.
+            </p>
+            <div style={{
+              width: '80px', height: '3px', borderRadius: '10px', margin: '24px auto 0',
+              background: 'linear-gradient(90deg, transparent, #9b7fc7, #c97099, transparent)',
+              animation: 'shimmer-line 3s infinite',
+            }} />
           </div>
-          <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px', fontFamily: "'Tajawal', sans-serif" }}>
-            متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة
+
+          {/* شبكة الإحصائيات */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: isMobile ? '20px' : '30px',
+            justifyContent: 'center',
+          }}>
+            <StatCard 
+              icon="🧠" 
+              num={75} 
+              suffix="%" 
+              label="من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة" 
+              delay={100}
+              isMobile={isMobile}
+            />
+            <StatCard 
+              icon="🌪️" 
+              num={55} 
+              suffix="%" 
+              label="يعانون من قلق أو ضغط مستمر معظم الوقت" 
+              delay={200}
+              isMobile={isMobile}
+            />
+            <StatCard 
+              icon="🩺" 
+              num={46} 
+              suffix="%" 
+              label="من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية" 
+              delay={300}
+              isMobile={isMobile}
+            />
+            <StatCard 
+              icon="📱" 
+              num={9} 
+              suffix=" ساعات" 
+              label="متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة" 
+              delay={400}
+              isArabic={true}
+              isMobile={isMobile}
+            />
           </div>
         </div>
+
+        <style>{`
+          @keyframes float-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+          }
+        `}</style>
       </div>
 
       {/* ===== Footer ===== */}
