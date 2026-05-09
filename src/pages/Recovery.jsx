@@ -597,13 +597,13 @@ function Recovery() {
                   fontSize: '16px',
                   fontWeight: '700',
                   fontFamily: "'Tajawal', sans-serif",
-                  background: 'linear-gradient(135deg, #9b7fc7, #7c6fcd)',
+                  background: 'linear-gradient(135deg,  #b66b8e , #6a4f96f1)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '50px',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 20px rgba(124,111,205,0.4)',
+                  boxShadow: '0 4px 20px hsla(248, 49%, 62%, 0.40)',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = 'scale(1.06)';

@@ -1085,14 +1085,14 @@ function Home() {
           }} />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '60px' : '100px', maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '60px' : '300px', maxWidth: '1100px', margin: '0 auto 200px' }}>
             {[
-              { imageSrc: examImg, iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc:'يحتوي قسم اختبر نفسك على خمسة انواع من الإضطرابات يمكنك اختيار الاضطراب الذي تريد...' },
-              { imageSrc: diseaseImg, iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف على أهم خمس إضطرابات نفسية يعاني منها جيل Z...' },
-              { imageSrc: brainImg, iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:'بطلك المخفي هو دماغك ... استكشف كيفية عمله بطريقة ممتعه!' },
-              { imageSrc: recoveryImg, iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية! تعرف على المفهوم الحقيقي للتعافي...'},
-              { imageSrc: khattarImg, iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc:'تعرف اكثر على المخاطر المحيطة بجيل Z و التحديات النفسية والسلوكية...' },
-              { imageSrc: gameImg, iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc:'رحلة في عالم القلق ! لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة...' },
+              { imageSrc: examImg, iconBg: '#eae6fa', accentColor: '#7c6fcd', borderColor: '#c4b5fd', sectionId: 'exam-section', route: '/ikhtbar', title: 'اختبر نفسك', desc:'يحتوي قسم اختبر نفسك على خمسة انواع من الإضطرابات يمكنك اختيار الاضطراب الذي تريد , و إجراء إختباره لتعرف نسبة اصابتك به... كل إضطراب يحتوي على عشرة أسئلة , أجب على كلٍ منها ب (دائماً | أحياناً | نادراً) لتحصل في النهاية على نتيجة الإختبار و تتأكد من حاجتك لمساعدة نفسية.' },
+              { imageSrc: diseaseImg, iconBg: '#fce8e8', accentColor: '#e07b7b', borderColor: '#f4c0c0', sectionId: 'disorders-section', route: '/disease', title: 'الإضطرابات', desc:'تعرف على أهم خمس إضطرابات نفسية يعاني منها جيل Z و تعلم أكثرعن كلٍ منهم من حيث المفهوم و الأنواع و الأسباب و كيفية التعافي و غيرها الكثير... هذا القسم هو ملجأك الصحيح اذا كنت تعاني احد هذه الإضطرابات.' },
+              { imageSrc: brainImg, iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:'بطلك المخفي هو دماغك ... استكشف كيفية عمله و خد جولة بين تركيباته بطريقة ممتعه و ملهمه لذهنك!' },
+              { imageSrc: recoveryImg, iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية! تعرف على المفهوم الحقيقي للتعافي و أركانه و السلوكيات المتبعة للتعافي من جميع الاضطرابات النفسية.'},
+              { imageSrc: khattarImg, iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc:'تعرف اكثر على المخاطر المحيطة بجيل Z و التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية لهذا الجيل لتستطيع الوقاية منها.' },
+              { imageSrc: gameImg, iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc:'رحلة في عالم القلق ! لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة للتعامل مع إضطراب القلق ... في هذا القسم ستخوض تجربة جديدة كلياً في التعلم.' },
             ].map((card, i) => (
               <SectionCard key={i} card={card} navigate={navigate} index={i} />
             ))}
@@ -1101,61 +1101,181 @@ function Home() {
       </div>
 
 
-  {/* الإحصائيات */}
-        <div className="reveal" style={{
-          background: 'white',
-          border: '2px solid #ebe6f7',
-          borderRadius: '24px',
-          padding: isMobile ? '24px 16px' : '36px 32px',
-          maxWidth: '1100px',
-          margin: '0 auto',
+ {/* ===== الإحصائيات===== */}
+      <div className="reveal" style={{
+        maxWidth: '1100px',
+        margin: '0 auto 100px', 
+        padding: '0 20px', 
+      }}>
+        <style>{`
+          @keyframes fillProgress {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+          }
+          @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; text-shadow: 0 4px 20px rgba(155, 127, 199, 0.3); }
+          }
+        `}</style>
+
+        {/* الكاردز الثلاثة العلوية */}
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: '24px', 
+          marginBottom: '24px' 
         }}>
-        
-          <div style={{ 
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: '16px', 
-            marginBottom: '16px' 
-          }}>
-            {[
-              { num: 75, suffix: '%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
-              { num: 55, suffix: '%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
-              { num: 46, suffix: '%', label: 'من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية' },
-            ].map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  background: 'linear-gradient(160deg, #faf8ff, #f0ecff)',
-                  border: '2px solid #ebe6f7',
-                  borderRadius: '16px',
-                  padding: '22px 16px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(107,79,160,0.12)'; } }}
-                onMouseLeave={e => { if(!isMobile) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; } }}
-              >
-                <div style={{ fontSize: '32px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
-                  <AnimatedNumber endValue={s.num} suffix={s.suffix} />
-                </div>
-                <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>{s.label}</div>
+          {[
+            { num: 75, suffix: '%', label: 'من الاضطرابات النفسية تظهر بين عمر ١٠ و٢٤ سنة' },
+            { num: 55, suffix: '%', label: 'يعانون من قلق أو ضغط مستمر معظم الوقت' },
+            { num: 46, suffix: '%', label: 'من جيل Z تلقّوا تشخيصًا رسميًا لحالة نفسية' },
+          ].map((s, i) => (
+            <div
+              key={i}
+              style={{
+                background: '#ffffff',
+                border: '1px solid #ebe6f7',
+                borderRadius: '20px',
+                padding: '36px 24px',
+                textAlign: 'right',
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                boxShadow: '0 10px 30px rgba(107,79,160,0.04)',
+                position: 'relative',
+              }}
+              onMouseEnter={e => { 
+                if(!isMobile) { 
+                  e.currentTarget.style.transform = 'translateY(-8px)'; 
+                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(107,79,160,0.08)'; 
+                  e.currentTarget.style.borderColor = '#d4bfee';
+                } 
+              }}
+              onMouseLeave={e => { 
+                if(!isMobile) { 
+                  e.currentTarget.style.transform = 'translateY(0)'; 
+                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(107,79,160,0.04)'; 
+                  e.currentTarget.style.borderColor = '#ebe6f7';
+                } 
+              }}
+            >
+              {/* الرقم*/}
+              <div style={{ 
+                fontSize: '44px', 
+                fontWeight: '900', 
+                color: '#3a2555', 
+                marginBottom: '16px',
+                animation: 'subtlePulse 3s infinite ease-in-out',
+                display: 'inline-block'
+              }}>
+                <AnimatedNumber endValue={s.num} suffix={s.suffix} />
               </div>
-            ))}
-          </div>
-          <div style={{
-            background: 'linear-gradient(160deg, #faf8ff, #f0ecff)',
-            border: '2px solid #ebe6f7',
-            borderRadius: '16px',
-            padding: '20px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '28px', fontWeight: '800', color: '#6b4fa0', display: 'flex', justifyContent: 'center' }}>
+
+              {/* شريط */}
+              <div style={{ 
+                width: '100%', 
+                height: '5px', 
+                background: '#f4f0ff', 
+                borderRadius: '10px',
+                marginBottom: '20px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  width: `${s.num}%`,
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #7c6fcd, #9b7fc7)',
+                  borderRadius: '10px',
+                  transformOrigin: 'right',
+                  animation: 'fillProgress 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                }} />
+              </div>
+              
+              <div style={{ 
+                fontSize: '15px', 
+                color: '#665a78', 
+                lineHeight: '1.8', 
+                fontWeight: '600' 
+              }}>
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div 
+          style={{
+            background: '#ffffff',
+            border: '1px solid #ebe6f7',
+            borderRadius: '20px',
+            padding: isMobile ? '32px 24px' : '40px 48px',
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '24px',
+            transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            boxShadow: '0 10px 30px rgba(107,79,160,0.04)',
+          }}
+          onMouseEnter={e => { 
+            if(!isMobile) { 
+              e.currentTarget.style.transform = 'translateY(-6px)'; 
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(107,79,160,0.08)'; 
+              e.currentTarget.style.borderColor = '#d4bfee';
+            } 
+          }}
+          onMouseLeave={e => { 
+            if(!isMobile) { 
+              e.currentTarget.style.transform = 'translateY(0)'; 
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(107,79,160,0.04)'; 
+              e.currentTarget.style.borderColor = '#ebe6f7';
+            } 
+          }}
+        >
+          <div style={{ textAlign: isMobile ? 'center' : 'right', flex: 1 }}>
+            <div style={{ 
+              fontSize: '44px', 
+              fontWeight: '900', 
+              color: '#3a2555',
+              animation: 'subtlePulse 3s infinite ease-in-out',
+              display: 'inline-block',
+              marginBottom: '12px'
+            }}>
               <AnimatedNumber endValue={9} suffix=" ساعات" isArabic={true} />
             </div>
-            <div style={{ fontSize: '13px', color: '#9586b0', lineHeight: '1.5', marginTop: '6px' }}>متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة</div>
+            
+            <div style={{ 
+              width: '100%', 
+              height: '5px', 
+              background: '#f4f0ff', 
+              borderRadius: '10px',
+              marginBottom: '16px',
+              overflow: 'hidden',
+              maxWidth: '400px',
+              margin: isMobile ? '0 auto 16px' : '0 0 16px 0'
+            }}>
+              <div style={{
+                width: '37.5%', 
+                height: '100%',
+                background: 'linear-gradient(90deg, #7c6fcd, #9b7fc7)',
+                borderRadius: '10px',
+                transformOrigin: 'right',
+                animation: 'fillProgress 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+              }} />
+            </div>
+          </div>
+
+          <div style={{ 
+            fontSize: '16px', 
+            color: '#665a78', 
+            lineHeight: '1.8', 
+            fontWeight: '600',
+            textAlign: isMobile ? 'center' : 'right',
+            flex: 1,
+            borderRight: isMobile ? 'none' : '1px solid #ebe6f7',
+            paddingRight: isMobile ? '0' : '32px'
+          }}>
+            متوسط وقت الشاشة اليومي لجيل Z عبر جميع الأجهزة الذكية، مما يساهم في زيادة معدلات الضغط الرقمي والعزلة.
           </div>
         </div>
-     
+      </div>
 
       {/* ===== Footer ===== */}
       <footer style={{
