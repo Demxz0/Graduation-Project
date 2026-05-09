@@ -276,7 +276,7 @@ function Recovery() {
             </div>
           </RevealCard>
 
-          {/* ===== ما هو التعافي النفسي ===== */}
+          {/* ===== انواع التعافي ===== */}
           <RevealCard delay={200} style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <div style={{
@@ -291,7 +291,6 @@ function Recovery() {
            
           </RevealCard>
 
-          {/* ===== انواع التعافي ===== */}
           <div
             className="recovery-types-grid"
             style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '52px' ,}}
@@ -397,7 +396,7 @@ function Recovery() {
               <div style={{ fontSize: '28px', flexShrink: 0, animation: 'float-anim 3.5s ease-in-out infinite' }}>💡</div>
               <div>
                 <p style={{ fontSize: '15px', color: '#6b5a8a', lineHeight: '1.85', margin: 0 }}>
-التعافي ليس مجرد اختفاء الأعراض. قد تنخفض الأعراض لفترة (هدأة)، لكن التعافي الحقيقي أعمق من ذلك — هو بناء مرونة نفسية تساعد على مواجهة الضغوط، تقليل الانتكاسات، والاستمرار في الحياة بشكل طبيعي.
+التعافي ليس مجرد اختفاء الأعراض. قد تنخفض الأعراض لفترة (Remission)، لكن التعافي الحقيقي أعمق من ذلك — هو بناء مرونة نفسية تساعد على مواجهة الضغوط، تقليل الانتكاسات، والاستمرار في الحياة بشكل طبيعي.
                 </p>
               </div>
             </div>
