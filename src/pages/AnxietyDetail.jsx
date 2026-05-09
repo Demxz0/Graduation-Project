@@ -79,7 +79,7 @@ function Definition() {
             <h2 style={{ ...s.h2, color: "#3d1f4b" }}><span style={{ color: "#3d1f4b" }}>ما هو </span><span style={{ color: COLORS.coral }}>اضطراب القلق؟</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 16 }}>
                 {[
-                    { title: "القلق الطبيعي", color: "#3d1f4b", text: "هو نظام إنذار مبكر في الدماغ يحميك من الأخطار المحتملة، يجعلك أكثر تركيزاً ويقظةً لكي تستطيع التخطيط، تجنب الأخطاء واكتساب الخبرة للمواقف المستقبلية." },
+                    { title: "القلق الطبيعي", color: "#3d1f4b", text: "هو شعور طبيعي متواجد عند الجميع يمثل نظام إنذار مبكر في الدماغ يحميك من الأخطار المحتملة، يجعلك أكثر تركيزاً ويقظةً لكي تستطيع التخطيط، تجنب الأخطاء واكتساب الخبرة للمواقف المستقبلية." },
                     { title: "اضطراب القلق", color: "#E67E22", text: "هو عُطل في هذا النظام، يجعله يرسل إشعارات طوارئ مزيفة باستمرار حتى في أوقات الأمان، مما يسبب ضغطاً كبيراً وتعطلاً في الحياة اليومية." },
                 ].map(({ title, color, text }) => (
                     <div key={title}
@@ -395,8 +395,7 @@ function BrainStep({ step, index }) {
             <div style={{ ...s.card, marginBottom: 12, borderColor: COLORS.coral }}>
                 <div style={{ fontSize: 12, color: "#552269", letterSpacing: "0.1em", marginBottom: 6, fontWeight: "900", fontFamily: "'Tajawal', sans-serif" }}>{step.label}</div>
                 <p style={{ fontSize: "0.875rem", color: "#552269", lineHeight: 1.8, margin: 0, fontWeight: "700" }}>
-                    {step.text.split('،')[0]}، 
-                    <span style={{ color: "#5d5c5d", fontWeight: "600" }}>{step.text.split('،').slice(1).join('،')}</span>
+                    {step.text}
                 </p>
             </div>
         </div>
@@ -438,7 +437,7 @@ function BrainJourney() {
 const TREATMENTS = [
     { icon: "🧩", en: "Cognitive Behavioral Therapy", title: "١. العلاج السلوكي المعرفي (CBT)", color: "#552269", pts: [["التثقيف النفسي:", "فهم أن نوبات الهلع والأعراض الجسدية المخيفة ليست خطيرة، بل إنذار كاذب من الدماغ."], ["إعادة الهيكلة المعرفية:", "ملاحظة الأفكار الكارثية وتحديها بالمنطق والأدلة بدل تصديقها تلقائياً."], ["العلاج بالتعرض:", "مواجهة المواقف المخيفة تدريجياً لمنع الهروب والتجنب، حتى يتعلم الدماغ عدم وجود خطر حقيقي."], ["الإدارة الجسدية:", "تمارين التنفس الحجابي والاسترخاء العضلي لخفض الأدرينالين وتهدئة الجهاز العصبي."]] },
     { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#5c7f94", pts: [["SSRIs وSNRIs:", "الخيار الأول لعلاج معظم اضطرابات القلق، تعمل تدريجياً على تنظيم السيروتونين والنورإبينفرين وتهدئة دائرة الخوف. يُنصح بالاستمرار عليها ٦–١٢ شهراً بعد التحسن."], ["البنزوديازيبينات:", "مهدئات سريعة لنوبات الهلع الحادة، تُستخدم لفترة قصيرة جداً لتجنب التعود."], ["حاصرات بيتا:", "مثل بروبرانولول للتحكم في الأعراض الجسدية كالخفقان والارتعاش، خاصة في قلق الأداء."], ["خيارات أخرى:", "بوسبيرون لعلاج القلق العام، وهيدروكسيزين للتهدئة المؤقتة، وبريجابالين في بعض الحالات."]] },
-    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المدمج", color: "#e1844a", badge: "الأفضل نتائج", pts: [["", "دمج CBT مع الأدوية يعطي أفضل النتائج؛ فالأدوية تُهدئ الاستجابة الجسدية للخوف، مما يساعد المريض على الاستفادة من العلاج السلوكي وتغيير أفكاره وسلوكياته."]] },
+    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المدمج", color: "#e1844a", badge: "الأفضل", pts: [["", "دمج CBT مع الأدوية يعطي أفضل النتائج؛ فالأدوية تُهدئ الاستجابة الجسدية للخوف، مما يساعد المريض على الاستفادة من العلاج السلوكي وتغيير أفكاره وسلوكياته."]] },
     { icon: "🌿", en: "Lifestyle & Support", title: "٤. تعديل نمط الحياة والدعم", color: "#3b6e4f", pts: [["تفريغ التوتر:", "ممارسة الرياضة بانتظام، تنظيم النوم، وتقليل الكافيين."], ["تهدئة العقل:", "الاسترخاء، اليوغا، التأمل، والتنفس البطيء لتنشيط العصب المبهم وتهدئة الجسم."], ["الدعم الاجتماعي:", "الانضمام لمجموعات دعم، التحدث مع أشخاص داعمين، واستخدام أدوات المساعدة الذاتية."]] },
 ];
 
@@ -489,9 +488,16 @@ export default function App() {
         link.rel = "stylesheet";
         link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
         document.head.appendChild(link);
+        
         const style = document.createElement("style");
-        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#d6936a; border-radius:2px }`;
+        style.id = "disorder-scrollbar-style";
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:6px } ::-webkit-scrollbar-thumb { background:#d6936a; border-radius:10px }`;
         document.head.appendChild(style);
+
+        return () => {
+            const el = document.getElementById("disorder-scrollbar-style");
+            if (el) el.remove();
+        };
     }, []);
 
     return (

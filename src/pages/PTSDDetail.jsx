@@ -367,12 +367,12 @@ function Personality() {
 
 // ── BRAIN JOURNEY ─────────────────────────────────────────────────────────
 const BRAIN_STEPS = [
-    { n: "١", label: "AMYGDALA · اللوزة الدماغية", color: "#8a6366", text: "تصبح مفرطة النشاط، تُطلق إنذارات خوف بأدنى محفز يشبه الصدمة حتى ولو كان آمناً." },
-    { n: "٢", label: "HIPPOCAMPUS · الحُصين", color: "#8a6366", text: "ينكمش حجمه، فيفشل في تصنيف الذكريات زمنياً، مما يبقي ذكرى الصدمة 'طازجة' لا ماضية." },
-    { n: "٣", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: "#8a6366", text: "تضعف قدرتها على كبح ردود الفعل العصبية وإقناع الدماغ بأن الخطر قد انتهى فعلاً." },
-    { n: "٤", label: "MEDIAL PFC · القشرة الإنسية", color: "#8a6366", text: "يقل نشاطها، مما يُفسر صعوبة التعبير عن الصدمة وربط المشاعر بالكلمات بوضوح." },
-    { n: "٥", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: "#8a6366", text: "اختلال في الكورتيزول والأدرينالين ونقص السيروتونين، مما يُديم حالة التأهب." },
-    { n: "٦", label: "DEFAULT MODE NETWORK · الشبكة الافتراضية", color: "#8a6366", text: "تبقى نشطة بشكل غير منتظم، مما يجعل العقل يعود قسراً للحظات الصدمة بدل الهدوء." },
+    { n: "١", label: "AMYGDALA · اللوزة الدماغية", color: "#8a6366", text: "تصبح مفرطة النشاط — تُطلق إنذارات خوف بأدنى محفز يشبه الصدمة حتى ولو كان آمناً." },
+    { n: "٢", label: "HIPPOCAMPUS · الحُصين", color: "#8a6366", text: "ينكمش حجمه — فيفشل في تصنيف الذكريات زمنياً، مما يبقي ذكرى الصدمة 'طازجة' لا ماضية." },
+    { n: "٣", label: "PREFRONTAL CORTEX · قشرة الفص الجبهي", color: "#8a6366", text: "تضعف قدرتها على كبح ردود الفعل العصبية — وإقناع الدماغ بأن الخطر قد انتهى فعلاً." },
+    { n: "٤", label: "MEDIAL PFC · القشرة الإنسية", color: "#8a6366", text: "يقل نشاطها — مما يُفسر صعوبة التعبير عن الصدمة وربط المشاعر بالكلمات بوضوح." },
+    { n: "٥", label: "NEUROTRANSMITTERS · الناقلات العصبية", color: "#8a6366", text: "اختلال في الكورتيزول والأدرينالين ونقص السيروتونين — مما يُديم حالة التأهب." },
+    { n: "٦", label: "DEFAULT MODE NETWORK · الشبكة الافتراضية", color: "#8a6366", text: "تبقى نشطة بشكل غير منتظم — مما يجعل العقل يعود قسراً للحظات الصدمة بدل الهدوء." },
 ];
 
 function BrainStep({ step, index }) {
@@ -386,8 +386,7 @@ function BrainStep({ step, index }) {
             <div style={{ ...s.card, marginBottom: 12, borderColor: COLORS.accent }}>
                 <div style={{ fontSize: 12, color: "#3d1f4b", letterSpacing: "0.1em", marginBottom: 6, fontWeight: "900", fontFamily: "'Tajawal', sans-serif" }}>{step.label}</div>
                 <p style={{ fontSize: "0.875rem", color: "#3d1f4b", lineHeight: 1.8, margin: 0, fontWeight: "700" }}>
-                    {step.text.split('،')[0]}، 
-                    <span style={{ color: "#5d5c5d", fontWeight: "600" }}>{step.text.split('،').slice(1).join('،')}</span>
+                    {step.text}
                 </p>
             </div>
         </div>
@@ -426,9 +425,9 @@ function BrainJourney() {
 
 // ── TREATMENT ─────────────────────────────────────────────────────────────
 const TREATMENTS = [
-    { icon: "🧩", en: "Trauma-Focused Therapy", title: "١. العلاج النفسي التخصصي (EMDR/CBT)", color: "#3d1f4b", pts: [["EMDR:", "إعادة معالجة الذكرى لتصنيفها كـ'ماضٍ' لا كحاضر جارٍ."], ["TF-CBT:", "مواجهة الذكريات تدريجياً مع تحدي الأفكار المشوهة."], ["علاج PE:", "التعامل المنهجي مع المواقف المتجنبة لتعلم الأمان."], ["معالجة المعرفة:", "تغيير الأفكار الصلبة التي تلوّن رؤية العالم."]] },
+    { icon: "🧩", en: "Trauma-Focused Therapy", title: "١. العلاج النفسي التخصصي ", color: "#3d1f4b", pts: [["EMDR:", "إعادة معالجة الذكرى لتصنيفها كـ'ماضٍ' لا كحاضر جارٍ."], ["TF-CBT:", "مواجهة الذكريات تدريجياً مع تحدي الأفكار المشوهة."], ["علاج PE:", "التعامل المنهجي مع المواقف المتجنبة لتعلم الأمان."], ["معالجة المعرفة:", "تغيير الأفكار الصلبة التي تلوّن رؤية العالم."]] },
     { icon: "💊", en: "Pharmacotherapy", title: "٢. العلاج الدوائي", color: "#8a6366", pts: [["SSRIs/SNRIs:", "لتنظيم السيروتونين وتخفيف أعراض الاقتحام والقلق."], ["Prazosin:", "لعلاج الكوابيس تحديداً وتحسين جودة النوم."], ["المثبتات المزاجية:", "للمساعدة في تنظيم ردود الأفعال العاطفية المكثفة."]] },
-    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المتكامل", color: "#8a6366", badge: "الأفضل نتائج", pts: [["دمج المسارين:", "الأدوية تهدئ اللوزة لتتيح الاستفادة من الجلسات النفسية."], ["الدعم المستمر:", "تحسين قدرة الجهاز العصبي على الاسترخاء التدريجي."]] },
+    { icon: "⚡", en: "Combined Treatment", title: "٣. العلاج المتكامل", color: "#8a6366", badge: "الأفضل ", pts: [["دمج المسارين:", "الأدوية تهدئ اللوزة لتتيح الاستفادة من الجلسات النفسية."], ["الدعم المستمر:", "تحسين قدرة الجهاز العصبي على الاسترخاء التدريجي."]] },
     { icon: "🌿", en: "Lifestyle", title: "٤. نمط الحياة والدعم", color: "#3a6e4f", pts: [["تقنيات التأريض:", "قاعدة 5-4-3-2-1 الحسية لإيقاف الفلاشباك."], ["الاستقرار الجسدي:", "اليوغا والمشي لخفض الكورتيزول طبيعياً."], ["الأمان الاجتماعي:", "بناء شبكة دعم تتيح التعبير دون حكم مسبق."]] },
 ];
 
@@ -479,9 +478,16 @@ export default function PTSDDetail() {
         link.rel = "stylesheet";
         link.href = "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap";
         document.head.appendChild(link);
+        
         const style = document.createElement("style");
-        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:4px } ::-webkit-scrollbar-thumb { background:#8a6366; border-radius:2px }`;
+        style.id = "disorder-scrollbar-style";
+        style.textContent = `@keyframes fadeIn { from { opacity:0 } to { opacity:1 } } ::-webkit-scrollbar { width:6px } ::-webkit-scrollbar-thumb { background:#8a6366; border-radius:10px }`;
         document.head.appendChild(style);
+
+        return () => {
+            const el = document.getElementById("disorder-scrollbar-style");
+            if (el) el.remove();
+        };
     }, []);
 
     return (
