@@ -936,7 +936,7 @@ function Home() {
                 gap: '8px',
               }}
             >
-              <span>لعبة القلق</span>
+              <span>إلعب و تعلّم</span>
               <span style={{ fontSize: '18px' }}>🎮</span>
             </MagneticButton>
           </div>
@@ -1332,7 +1332,7 @@ function Home() {
               { imageSrc: brainImg, iconBg: '#e8f5e9', accentColor: '#4aab72', borderColor: '#a0ddb5', sectionId: 'brain-section', route: '/dimagh', title: 'أكتشف دماغك', desc:'بطلك المخفي هو دماغك ... استكشف كيفية عمله و خد جولة بين تركيباته بطريقة ممتعه و ملهمه لذهنك!' },
               { imageSrc: recoveryImg, iconBg: '#e8f4ff', accentColor: '#6e91a7', borderColor: '#b0cedd', sectionId: 'recovery-section', route: '/recovery', title: 'التعافي', desc:'طلب المساعدة هو علامة قوة حقيقية! تعرف على المفهوم الحقيقي للتعافي و أركانه و السلوكيات المتبعة للتعافي من جميع الاضطرابات النفسية.'},
               { imageSrc: khattarImg, iconBg: '#fff3e0', accentColor: '#d4870a', borderColor: '#f4c870', sectionId: 'khattar-section', route: '/khattar', title: 'مخاطر جيل Z', desc:'تعرف اكثر على المخاطر المحيطة بجيل Z و التحديات النفسية والسلوكية التي تؤثر على الصحة العقلية لهذا الجيل لتستطيع الوقاية منها.' },
-              { imageSrc: gameImg, iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: 'لعبة القلق', desc:'رحلة في عالم القلق ! لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة للتعامل مع إضطراب القلق ... في هذا القسم ستخوض تجربة جديدة كلياً في التعلم.' },
+              { imageSrc: gameImg, iconBg: '#fce0ff', accentColor: '#cd0ad4', borderColor: '#e970f4', sectionId: 'game-section', route: '/game', title: ' إلعب و تعلّم', desc:'رحلة في عالم القلق ! لعبة تفاعلية تعلمك كيفية التعافي والأساليب الصحيحة للتعامل مع إضطراب القلق ... في هذا القسم ستخوض تجربة جديدة كلياً في التعلم.' },
             ].map((card, i) => (
               <SectionCard key={i} card={card} navigate={navigate} index={i} />
             ))}

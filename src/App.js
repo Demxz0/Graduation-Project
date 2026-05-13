@@ -68,7 +68,7 @@ function App() {
     { name: "الدماغ",      path: "/",         scrollTo: "brain-section",     directRoute: "/dimagh" },
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
     { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section",   directRoute: "/khattar" },
-    { name: "لعبة القلق", path: "/",         scrollTo: "game-section",   directRoute: "/game" },
+    { name: "إلعب و تعلّم", path: "/",         scrollTo: "game-section",   directRoute: "/game" },
   ];
 
   function handleNavClick(link) {
