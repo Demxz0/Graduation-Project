@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import img1 from '../game-images/g-img1.png';
+import img2 from '../game-images/g-img2.png';
+import img3 from '../game-images/g-img3.png';
+import img4 from '../game-images/g-img4.png';
+import img5 from '../game-images/g-img5.png';
+
+const gameScreenshots = [img1, img2, img3, img4, img5];
+
 // ===== Hook للـ Scroll Reveal =====
 function useReveal(delay = 0) {
   const ref = useRef(null);
@@ -51,35 +59,19 @@ const gameFeatures = [
 export default function Game() {
   const navigate = useNavigate();
   const [headerRef, headerVisible] = useReveal();
-  
-  const [gameStarted, setGameStarted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false); 
-  const gameContainerRef = useRef(null);
-  const iframeRef = useRef(null);
 
-  function handleStartGame() {
-    setGameStarted(true);
-  }
+  const [activeImg, setActiveImg] = useState(0);
+  const sliderRef = useRef(null);
 
-  function handleFullscreen() {
-    const container = gameContainerRef.current;
-    if (!container) return;
-    if (!document.fullscreenElement) {
-      container.requestFullscreen && container.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen && document.exitFullscreen();
-      setIsFullscreen(false);
+  function goTo(idx) {
+    setActiveImg(idx);
+    if (sliderRef.current) {
+      const child = sliderRef.current.children[idx];
+      if (child) child.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
   }
-
-  useEffect(() => {
-    const handleFSChange = () => {
-      if (!document.fullscreenElement) setIsFullscreen(false);
-    };
-    document.addEventListener('fullscreenchange', handleFSChange);
-    return () => document.removeEventListener('fullscreenchange', handleFSChange);
-  }, []);
+  function prevImg() { goTo((activeImg - 1 + gameScreenshots.length) % gameScreenshots.length); }
+  function nextImg() { goTo((activeImg + 1) % gameScreenshots.length); }
 
   return (
     <>
@@ -99,15 +91,33 @@ export default function Game() {
         .game-feature-tag:hover {
           transform: translateY(-2px) scale(1.04);
         }
-        .game-container:-webkit-full-screen {
-          width: 100vw !important;
-          height: 100vh !important;
-          background: #000;
+        .screenshot-slider {
+          display: flex;
+          gap: 12px;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          padding: 4px 2px 8px;
         }
-        .game-container:fullscreen {
-          width: 100vw !important;
-          height: 100vh !important;
-          background: #000;
+        .screenshot-slider::-webkit-scrollbar { display: none; }
+        .screenshot-thumb {
+          flex-shrink: 0;
+          scroll-snap-align: center;
+          border-radius: 10px;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          border: 2.5px solid transparent;
+        }
+        .screenshot-thumb:hover { transform: scale(1.03); }
+        .screenshot-thumb.active { border-color: #5c3a7a; }
+        .slider-arrow:hover {
+          background: rgba(92,58,122,0.15) !important;
+        }
+        .download-btn:hover {
+          transform: scale(1.04) !important;
+          box-shadow: 0 10px 30px rgba(92,58,122,0.55) !important;
         }
       `}</style>
 
@@ -257,104 +267,157 @@ export default function Game() {
                  </p>
               </div>
 
-              {/* منطقة اللعبة */}
-              <div
-                ref={gameContainerRef}
-                className="game-container"
-                style={{
+              {/* =====  صور اللعبة ===== */}
+              <div style={{ marginTop: '8px' }}>
+
+                {/* الصورة الرئيسية */}
+                <div style={{
                   position: 'relative',
-                  border: '2px solid #5c3a7a',
-                  borderRadius: '12px',
-                  background: '#f0eaff',
+                  borderRadius: '14px',
                   overflow: 'hidden',
-                  minHeight: '320px',
+                  border: '2px solid #d4bfee',
+                  background: '#1a0a2e',
+                  marginBottom: '12px',
+                  aspectRatio: '16/9',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}
-              >
-                {!gameStarted ? (
-                  /* شاشة البداية */
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '60px 20px',
-                    width: '100%',
-                    minHeight: '320px',
-                  }}>
-                    <button
-                      onClick={handleStartGame}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '13px 32px',
-                        borderRadius: '50px',
-                        border: 'none',
-                        background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
-                        color: 'white',
-                        fontSize: '16px',
-                        fontWeight: '700',
-                        fontFamily: "'Tajawal', sans-serif",
-                        cursor: 'pointer',
-                        transition: 'all 0.25s ease',
-                        boxShadow: '0 6px 20px rgba(92,58,122,0.4)',
-                      }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.transform = 'scale(1.06)';
-                        e.currentTarget.style.boxShadow = '0 10px 28px rgba(92,58,122,0.55)';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(92,58,122,0.4)';
-                      }}
-                    >
-                      <span>◄</span>
-                      <span>ابدأ اللعبة</span>
-                    </button>
-                  </div>
-                ) : (
-                  /* منطقة اللعبة عند البدء */
-                  <iframe
-                    ref={iframeRef}
-                    src="https://demxz0.github.io/AnxietyRecoverBuild/"
-                    style={{ width: '100%', height: '100%', minHeight: '320px', border: 'none' }}
-                    title="Mental Health Game"
+                }}>
+                  <img
+                    src={gameScreenshots[activeImg]}
+                    alt={`لقطة شاشة ${activeImg + 1}`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'opacity 0.3s ease',
+                    }}
                   />
-                )}
 
-                {/* زر التكبير */}
-                <button
-                  onClick={handleFullscreen}
-                  title="تكبير اللعبة"
-                  style={{
-                    position: 'absolute',
-                    bottom: '10px',
-                    right: '10px',
-                    width: '32px',
-                    height: '32px',
-                    background: 'rgba(255,255,255,0.15)',
-                    backdropFilter: 'blur(8px)',
-                    border: '1.5px solid rgba(255,255,255,0.3)',
-                    borderRadius: '7px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s ease',
-                    zIndex: 10,
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.3)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
-                >
-                  {/* أيقونة التكبير */}
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#5c3a7a' }}>
-                    <path d="M1 1h4M1 1v4M15 1h-4M15 1v4M1 15h4M1 15v-4M15 15h-4M15 15v-4"
-                      stroke="#5c3a7a" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
+                  {/* سهم يمين */}
+                  <button
+                    className="slider-arrow"
+                    onClick={nextImg}
+                    style={{
+                      position: 'absolute', right: '10px', top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '36px', height: '36px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.18)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1.5px solid rgba(255,255,255,0.3)',
+                      color: 'white', fontSize: '16px',
+                      cursor: 'pointer', display: 'flex',
+                      alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s ease', zIndex: 2,
+                    }}
+                  >›</button>
+                  
+                  {/* سهم يسار */}
+                  <button
+                    className="slider-arrow"
+                    onClick={prevImg}
+                    style={{
+                      position: 'absolute', left: '10px', top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '36px', height: '36px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.18)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1.5px solid rgba(255,255,255,0.3)',
+                      color: 'white', fontSize: '16px',
+                      cursor: 'pointer', display: 'flex',
+                      alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s ease', zIndex: 2,
+                    }}
+                  >‹</button>
+
+                  {/* عداد الصور */}
+                  <div style={{
+                    position: 'absolute', bottom: '10px', left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(0,0,0,0.45)',
+                    backdropFilter: 'blur(6px)',
+                    borderRadius: '20px',
+                    padding: '3px 12px',
+                    fontSize: '12px', color: 'rgba(255,255,255,0.9)',
+                    fontWeight: '600',
+                  }}>
+                    {activeImg + 1} / {gameScreenshots.length}
+                  </div>
+                </div>
+
+                {/* الصور المصغرة */}
+                <div ref={sliderRef} className="screenshot-slider">
+                  {gameScreenshots.map((src, i) => (
+                    <div
+                      key={i}
+                      className={`screenshot-thumb${activeImg === i ? ' active' : ''}`}
+                      onClick={() => goTo(i)}
+                      style={{ width: '100px', height: '62px' }}
+                    >
+                      <img
+                        src={src}
+                        alt={`مصغرة ${i + 1}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* نقاط التنقل */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '10px' }}>
+                  {gameScreenshots.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goTo(i)}
+                      style={{
+                        width: activeImg === i ? '20px' : '7px',
+                        height: '7px',
+                        borderRadius: '10px',
+                        border: 'none',
+                        background: activeImg === i ? '#5c3a7a' : '#c8b8e8',
+                        cursor: 'pointer',
+                        padding: 0,
+                        transition: 'all 0.3s ease',
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* زر التحميل */}
+                <div style={{ textAlign: 'center', marginTop: '28px' }}>
+                  <a
+                    href="https://demxz0.github.io/AnxietyRecoverBuild/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="download-btn"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '14px 36px',
+                      borderRadius: '50px',
+                      background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
+                      color: 'white',
+                      fontSize: '16px',
+                      fontWeight: '700',
+                      fontFamily: "'Tajawal', sans-serif",
+                      textDecoration: 'none',
+                      boxShadow: '0 6px 22px rgba(92,58,122,0.4)',
+                      transition: 'all 0.25s ease',
+                    }}
+                  >
+                    {/* أيقونة تحميل */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"
+                        stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>تحميل اللعبة</span>
+                  </a>
+                </div>
+
               </div>
             </div>
           </RevealCard>
