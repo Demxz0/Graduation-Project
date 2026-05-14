@@ -17,6 +17,8 @@ import PTSDDetail from './pages/PTSDDetail';
 import DepressionDetail from './pages/DepressionDetail';
 
 import ChatBot from './pages/ChatBot';
+import AboutUs from './pages/AboutUs';
+
 
 
 function useGlobalScrollReveal() {
@@ -62,6 +64,27 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const currentPath = location.pathname;
+    if (currentPath === '/') {
+      setActiveLink("الرئيسية");
+    } else if (currentPath === '/about-us') {
+      setActiveLink("من نحن");
+    } else if (currentPath === '/ikhtbar') {
+      setActiveLink("اختبر نفسك");
+    } else if (currentPath === '/disease' || currentPath.startsWith('/disease/')) {
+      setActiveLink("الإضطرابات");
+    } else if (currentPath === '/dimagh') {
+      setActiveLink("الدماغ");
+    } else if (currentPath === '/recovery') {
+      setActiveLink("التعافي");
+    } else if (currentPath === '/khattar') {
+      setActiveLink("عوامل الخطر");
+    } else if (currentPath === '/game') {
+      setActiveLink("لعبة القلق");
+    }
+  }, [location.pathname]);
+
   const navLinks = [
     { name: "الرئيسية",    path: "/",         scrollTo: null,                directRoute: null },
     { name: "الإضطرابات",  path: "/",         scrollTo: "disorders-section", directRoute: "/disease" },
@@ -69,7 +92,9 @@ function App() {
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
     { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section",   directRoute: "/khattar" },
     { name: "لعبة القلق", path: "/",         scrollTo: "game-section",   directRoute: "/game" },
+    { name: "من نحن",     path: "/about-us", scrollTo: null,             directRoute: null },
   ];
+
 
   function handleNavClick(link) {
     setActiveLink(link.name); 
@@ -284,7 +309,9 @@ function App() {
         <Route path="/disease/eating-disorder" element={<EatingDisorderDetail />} />
         <Route path="/disease/ptsd" element={<PTSDDetail />} />
         <Route path="/disease/depression" element={<DepressionDetail />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
+
        <ChatBot />
     </div>
   );
