@@ -140,8 +140,8 @@ function AboutUs() {
 
   const team = [
     { name: "ديمة الجندي", role: "Project Lead & Game Developer" },
-    { name: "دعاء الفليح", role: "Frontend Developer" },
-    { name: "زين السوده", role: "Frontend Developer" },
+    { name: "دعاء الفليح", role: "Web Application Developer" },
+    { name: "زين السوده", role: "Web Application Developer" },
     { name: "راية العمايرة", role: "UI/UX Designer" },
     { name: "مها الحياري", role: "UI/UX Designer" },
   ];
@@ -229,6 +229,7 @@ function AboutUs() {
         margin: "60px auto",
         padding: "0 20px"
       }}>
+        <SectionTitle title="قصتنا | لماذا أجليك؟" centered={true} />
         <div style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
@@ -236,7 +237,6 @@ function AboutUs() {
           alignItems: "center"
         }}>
           <div style={{ flex: 1 }}>
-            <SectionTitle title="قصتنا | لماذا أجليك؟" centered={false} />
             <p style={{ fontSize: "17px", color: "#493054", lineHeight: "1.9", textAlign: "justify" }}>
               الأرقام كانت مؤلمة جداً لنتجاهلها. معدلات الانتحار ترتفع، واضطرابات القلق والاكتئاب تنتشر بين المراهقين والشباب بشكل مقلق — وفي الوقت ذاته، يبقى الحديث عن الصحة النفسية محاطاً بالوصمة والصمت.
             </p>
@@ -346,12 +346,12 @@ function AboutUs() {
             width: "100%", 
             borderCollapse: "collapse", 
             minWidth: "500px",
-            textAlign: "right"
+            textAlign: "center"
           }}>
             <thead>
               <tr style={{ borderBottom: "2px solid #f0f0ff" }}>
-                <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900" }}>الاسم</th>
-                <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900" }}>الدور</th>
+                <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900", textAlign: "center" }}>الاسم</th>
+                <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900", textAlign: "center" }}>الدور</th>
               </tr>
             </thead>
             <tbody>
@@ -363,8 +363,8 @@ function AboutUs() {
                 onMouseEnter={(e) => e.currentTarget.style.background = "#fafaff"}
                 onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
                 >
-                  <td style={{ padding: "20px", color: "#493054", fontWeight: "700" }}>{member.name}</td>
-                  <td style={{ padding: "20px", color: "#6b5a8a" }}>
+                  <td style={{ padding: "20px", color: "#493054", fontWeight: "700", textAlign: "center" }}>{member.name}</td>
+                  <td style={{ padding: "20px", color: "#6b5a8a", textAlign: "center" }}>
                     <span style={{ 
                       background: "#f0efff", 
                       padding: "6px 15px", 
@@ -393,7 +393,7 @@ function AboutUs() {
         borderRadius: isMobile ? "0" : "60px 60px 0 0"
       }}>
         <h2 style={{ fontSize: isMobile ? "24px" : "36px", fontWeight: "900", marginBottom: "20px" }}>
-          إذا كنت هنا، فأنت في المكان الصح.
+          إذا كنت هنا، فأنت في المكان الصحيح.
         </h2>
         <p style={{ fontSize: "18px", opacity: 0.9, maxWidth: "700px", margin: "0 auto 40px", lineHeight: "1.8" }}>
           سواء كنت تبحث عن مساعدة، أو تريد أن تفهم أكثر، أو تسعى لدعم شخص تحبه — أجليك موجود.
