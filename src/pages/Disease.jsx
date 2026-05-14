@@ -253,7 +253,7 @@ function Disease() {
             zIndex: 100,
           }}
         >
-          <span>العودة للرئيسية</span>
+          <span>الذهاب الى الرئيسية</span>
           <span style={{ fontSize: "18px" }}></span>
         </motion.button>
       </div>

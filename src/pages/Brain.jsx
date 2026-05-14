@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 // ===== Hook للـ Scroll Reveal =====
 function useReveal(delay = 0) {
@@ -714,6 +716,7 @@ const tabContents = [Tab0, Tab1, Tab2, Tab3, Tab4];
 
 // ===== الصفحة الرئيسية =====
 function Dimagh() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
   const [visitedTabs, setVisitedTabs] = useState(new Set([0]));
   const [animating, setAnimating] = useState(false);
@@ -994,6 +997,35 @@ function Dimagh() {
           </div>
         </div>
       </div>
+
+      {/* 🔙 Floating Back Button */}
+      <motion.button
+        onClick={() => navigate("/")}
+        whileHover={{ scale: 1.1, x: -5 }}
+        whileTap={{ scale: 0.9 }}
+        style={{
+          position: "fixed",
+          bottom: "30px",
+          right: "30px",
+          padding: "12px 24px",
+          background: 'linear-gradient(135deg,  #b66b8e , #6a4f96f1)',
+          color: "white",
+          border: "none",
+          borderRadius: "50px",
+          fontSize: "16px",
+          fontWeight: "700",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          boxShadow: "0 10px 25px rgba(59, 59, 107, 0.3)",
+          fontFamily: "'Tajawal', sans-serif",
+          zIndex: 100,
+        }}
+      >
+        <span>الذهاب الى الرئيسية</span>
+        <span style={{ fontSize: "18px" }}></span>
+      </motion.button>
     </>
   );
 }

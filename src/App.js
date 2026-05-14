@@ -81,7 +81,7 @@ function App() {
     } else if (currentPath === '/khattar') {
       setActiveLink("عوامل الخطر");
     } else if (currentPath === '/game') {
-      setActiveLink("لعبة القلق");
+      setActiveLink("إلعب و تعلّم");
     }
   }, [location.pathname]);
 
