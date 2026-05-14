@@ -141,8 +141,8 @@ function AboutUs() {
 
   const team = [
     { name: "ديمة الجندي", role: "Project Lead & Game Developer", link: "https://www.linkedin.com/in/dema-aljundi" },
-    { name: "دعاء الفليح", role: "Web Application Developer", link: "https://www.linkedin.com/in/doaa-faris" },
-    { name: "زين السوده", role: "Web Application Developer", link: "https://www.linkedin.com/in/zain-alswadeh-928977318?trk=contact-info" },
+    { name: "دعاء الفليّح", role: "Web Application Developer", link: "https://www.linkedin.com/in/doaa-faris" },
+    { name: "زين السُوَّده", role: "Web Application Developer", link: "https://www.linkedin.com/in/zain-alswadeh-928977318?trk=contact-info" },
     { name: "راية العمايرة", role: "UI/UX Designer", link: "https://www.linkedin.com/in/raya-alamayerh-986899359" },
     { name: "مها الحيارات", role: "UI/UX Designer", link: "https://www.linkedin.com/in/maha-hyarat-852133305" },
   ];
