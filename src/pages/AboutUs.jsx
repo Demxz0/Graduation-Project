@@ -139,11 +139,11 @@ function AboutUs() {
   ];
 
   const team = [
-    { name: "ديمة الجندي", role: "Project Lead & Game Developer" },
-    { name: "دعاء الفليح", role: "Web Application Developer" },
-    { name: "زين السوده", role: "Web Application Developer" },
-    { name: "راية العمايرة", role: "UI/UX Designer" },
-    { name: "مها الحياري", role: "UI/UX Designer" },
+    { name: "ديمة الجندي", role: "Project Lead & Game Developer", link: "https://www.linkedin.com/in/dema-aljundi" },
+    { name: "دعاء الفليح", role: "Web Application Developer", link: "https://www.linkedin.com/in/doaa-faris" },
+    { name: "زين السوده", role: "Web Application Developer", link: "https://www.linkedin.com/in/zain-alswadeh-928977318?trk=contact-info" },
+    { name: "راية العمايرة", role: "UI/UX Designer", link: "https://www.linkedin.com/in/raya-alamayerh-986899359" },
+    { name: "مها الحيارات", role: "UI/UX Designer", link: "https://www.linkedin.com/in/maha-hyarat-852133305" },
   ];
 
   return (
@@ -171,12 +171,8 @@ function AboutUs() {
           animate={headerVisible ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8 }}
           style={{
-            background: "rgba(255, 255, 255, 0.7)",
-            backdropFilter: "blur(20px)",
-            borderRadius: "40px",
-            padding: isMobile ? "40px 20px" : "60px 40px",
-            boxShadow: "0 20px 50px rgba(155, 127, 199, 0.1)",
-            border: "1px solid rgba(255, 255, 255, 0.5)",
+            padding: isMobile ? "20px" : "40px",
+            textAlign: "center",
           }}
         >
           <h1 style={{
@@ -352,6 +348,7 @@ function AboutUs() {
               <tr style={{ borderBottom: "2px solid #f0f0ff" }}>
                 <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900", textAlign: "center" }}>الاسم</th>
                 <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900", textAlign: "center" }}>الدور</th>
+                <th style={{ padding: "20px", color: "#3a2555", fontSize: "18px", fontWeight: "900", textAlign: "center" }}>التواصل</th>
               </tr>
             </thead>
             <tbody>
@@ -375,6 +372,33 @@ function AboutUs() {
                     }}>
                       {member.role}
                     </span>
+                  </td>
+                  <td style={{ padding: "20px", textAlign: "center" }}>
+                    <a href={member.link} target="_blank" rel="noopener noreferrer" style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "36px",
+                      height: "36px",
+                      background: "#0077b5",
+                      borderRadius: "8px",
+                      color: "white",
+                      transition: "all 0.3s ease",
+                      boxShadow: "0 4px 10px rgba(0, 119, 181, 0.2)"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-3px)";
+                      e.currentTarget.style.boxShadow = "0 6px 15px rgba(0, 119, 181, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "0 4px 10px rgba(0, 119, 181, 0.2)";
+                    }}
+                    >
+                      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      </svg>
+                    </a>
                   </td>
                 </tr>
               ))}
