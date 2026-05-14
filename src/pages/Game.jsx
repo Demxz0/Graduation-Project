@@ -6,8 +6,12 @@ import img2 from '../game-images/g-img2.png';
 import img3 from '../game-images/g-img3.png';
 import img4 from '../game-images/g-img4.png';
 import img5 from '../game-images/g-img5.png';
-
-const gameScreenshots = [img1, img2, img3, img4, img5];
+import img6 from '../game-images/g-img6.png';
+import img7 from '../game-images/g-img7.png';
+import img8 from '../game-images/g-img8.png';
+import img9 from '../game-images/g-img9.png';
+import img10 from '../game-images/g-img10.png';
+const gameScreenshots = [img1, img2, img3, img4, img5 , img6, img7, img8, img9, img10];
 
 // ===== Hook للـ Scroll Reveal =====
 function useReveal(delay = 0) {
@@ -50,10 +54,10 @@ function RevealCard({ children, delay = 0, style = {} }) {
 
 // ===== بيانات اللعبة =====
 const gameFeatures = [
-  { icon: '🎵', label: 'موسيقى مدروسة' },
-  { icon: '🏠', label: 'بيت فيه عدة غرف' },
+  { icon: '☘️', label:'محتوى نفسي' },
+  { icon: '📚', label: 'محتوى تعليمي' },
   { icon: '🎮', label: 'أسلوب فني Low Poly' },
-  { icon: '⚡', label: 'الغاز وتوعية' },
+  { icon: '🧩', label: 'الغاز' },
 ];
 
 export default function Game() {
@@ -263,8 +267,11 @@ export default function Game() {
                  تقدم منطقة واحدة تركز على اضطراب القلق، داخل منزل يحتوي على عدة غرف، كل منها يمثل نوًعا من القلق.يتعين على اللاعب حل الألغاز، واستكشاف الملاحظات الصوتية والمكتوبة التي تقدم محتوى توعوًيا حول القلق وطرق التعامل معه.
                  </p>
                 <p style={{ fontSize: '14px', color: '#7a6a98', lineHeight: '1.85', margin: 0 }}>
-                 يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى الالعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع، وينخفض عبر اتخاذ قرارات صحيحة واستخدام تقنيات مثل التنفس السليم
+                 يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى الالعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع، وينخفض عبر اتخاذ قرارات صحيحة واستخدام تقنيات مثل التنفس السليم.
                  </p>
+                 <p style={{ fontSize: '14px', color: '#af3b7b', lineHeight: '1.85', margin: 0 }}>
+                ملاحظة: خصصنا محتوى مدعوم باللغة العربية بالكامل
+                </p>
               </div>
 
               {/* =====  صور اللعبة ===== */}
