@@ -92,6 +92,7 @@ function App() {
     { name: "التعافي",     path: "/",         scrollTo: "recovery-section",  directRoute: "/recovery" },
     { name: "عوامل الخطر", path: "/",         scrollTo: "khattar-section",   directRoute: "/khattar" },
     { name: "إلعب و تعلّم", path: "/",         scrollTo: "game-section",   directRoute: "/game" },
+    { name: "من نحن",     path: "/about-us", scrollTo: null,             directRoute: null },
   ];
 
 
