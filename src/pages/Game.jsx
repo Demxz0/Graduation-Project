@@ -215,7 +215,6 @@ export default function Game() {
           }} />
         </div>
 
-        {/* تم تعديل maxWidth ليكون أوسع ويمتد على الشاشة بشكل أفضل */}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
           
           {/* ===== بطاقة اللعبة ===== */}
@@ -299,7 +298,7 @@ export default function Game() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  maxHeight: '550px' // تحديد أقصى ارتفاع عشان ما تاخد كل الشاشة
+                  maxHeight: '550px' 
                 }}>
                   <img
                     src={gameScreenshots[activeImg]}
@@ -494,7 +493,6 @@ export default function Game() {
                       </svg>
                     </div>
 
-                    {/* التعديل الجوهري هنا: زيادة المسافات بين الأعمدة والأرواح الداخلية */}
                     <div style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
