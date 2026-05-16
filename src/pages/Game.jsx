@@ -56,10 +56,14 @@ function RevealCard({ children, delay = 0, style = {} }) {
 
 // ===== بيانات اللعبة =====
 const gameFeatures = [
-  { icon: '☘️', label:'محتوى نفسي' },
-  { icon: '📚', label: 'محتوى تعليمي' },
-  { icon: '🎮', label: 'أسلوب فني Low Poly' },
+  { icon: '☘️', label:'نفسي' },
+  { icon: '📚', label: 'تعليمي' },
+  { icon: '🎮', label: 'Low Poly' },
   { icon: '🧩', label: 'الغاز' },
+  { icon: '👩🏻‍💻', label: ' منظور الشخص الأول' },
+  { icon: '🗺️', label: 'استكشاف' },
+  { icon: '☠️', label: 'رعب نفسي' },
+  { icon: '👂', label: 'رواية بصرية وصوتية' },
 ];
 
 export default function Game() {
@@ -227,7 +231,7 @@ export default function Game() {
               boxShadow: '0 4px 20px rgba(107,79,160,0.08)',
             }}>
               <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#3a2555', textAlign: 'right', marginBottom: '16px' }}>
-                لعبة نفسية من منظور الشخص الأول
+                لعبة نفسية عن التعافي من الإضطرابات النفسية
               </h3>
               <p style={{ fontSize: '15px', color: '#7a6a98', lineHeight: '1.9', textAlign: 'right', marginBottom: '28px' }}>
               تأخذك في رحلة داخل عالم رمزي واسع، حيث تمثل كل منطقة اضطرابًا نفسيًا مختلفًا. يتقدم اللاعب عبر تجاوز تحديات مستوحاة من الواقع، باستخدام أساليب مثبتة علميًا للتعامل مع هذه الاضطرابات والتخفيف منها. 
@@ -294,6 +298,7 @@ export default function Game() {
                   border: '2px solid #d4bfee',
                   background: '#1a0a2e',
                   marginBottom: '16px',
+                  marginRight: '50px' ,
                   aspectRatio: '16/9',
                   display: 'flex',
                   alignItems: 'center',
