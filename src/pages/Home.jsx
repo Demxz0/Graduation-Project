@@ -23,7 +23,6 @@ import imgMusic    from '../images/music.png';
 import imgPaint    from '../images/paint.png';
 import imgGarden   from '../images/garden.png';
 import imgWww      from '../images/www.png';
-import imgSpider   from '../images/spider.png';
 import imgXp       from '../images/xp.png';
 import imgTea      from '../images/tea.png';
 import imgSmile    from '../images/smile.png';
@@ -78,7 +77,7 @@ import imgUu       from '../images/uu.png';
 
 const ALL_SLIDER_IMAGES = [
   imgLazy, imgCat, imgChild, imgDd, imgCol,
-  imgMusic, imgPaint, imgGarden, imgWww, imgSpider,
+  imgMusic, imgPaint, imgGarden, imgWww, 
   imgXp, imgTea, imgSmile, imgRedd,
   imgBallon, imgCandy, imgGraund, imgHome, imgPaper,
   imgCard, imgDvd, imgHair, imgTots, imgSpong,
