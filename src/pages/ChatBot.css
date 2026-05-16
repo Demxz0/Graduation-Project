@@ -292,7 +292,7 @@
 @media (max-width: 480px) {
   .chatbot-wrapper {
     position: fixed;
-    bottom: 29px;
+    bottom: 35px;
     left: 20px;
     right: auto;
     width: auto;
