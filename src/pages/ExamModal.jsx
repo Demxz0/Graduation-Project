@@ -853,8 +853,8 @@ function ExamModal({ disorderId, onClose }) {
                     transition: 'all 0.2s',
                     WebkitTapHighlightColor: 'transparent',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#f8f5ff'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'white'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#f8f5ff'; e.currentTarget.style.transform = 'scale(1.04)';}}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'white';e.currentTarget.style.transform = 'scale(1)'; }}
                 >
                   🔄 رجوع لصفحة الاختبار
                 </button>
