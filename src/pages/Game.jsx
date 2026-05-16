@@ -11,6 +11,8 @@ import img7 from '../game-images/g-img7.png';
 import img8 from '../game-images/g-img8.png';
 import img9 from '../game-images/g-img9.png';
 import img10 from '../game-images/g-img10.png';
+import instructionImg from '../game-images/g-instruction.jpeg'; 
+
 const gameScreenshots = [img1, img2, img3, img4, img5 , img6, img7, img8, img9, img10];
 
 // ===== Hook للـ Scroll Reveal =====
@@ -270,7 +272,7 @@ export default function Game() {
                  يعتمد نظام اللعب على مقياس يظهر مستوى القلق لدى الالعب، والذي يرتفع بسبب المحفزات داخل البيئة وقد يصل إلى نوبة هلع، وينخفض عبر اتخاذ قرارات صحيحة واستخدام تقنيات مثل التنفس السليم.
                  </p>
                  <p style={{ fontSize: '14px', color: '#af3b7b', lineHeight: '1.85', margin: 0 }}>
-                ملاحظة: خصصنا محتوى مدعوم باللغة العربية بالكامل
+                ملاحظة: خصصنا محتوى مدعوم باللغة العربية بالكامل.<br/> للحصول على أفضل تجربة لسماع الأصوات استخدم سماعات الرأس.
                 </p>
               </div>
 
@@ -393,36 +395,230 @@ export default function Game() {
                   ))}
                 </div>
 
-                {/* زر التحميل */}
-                <div style={{ textAlign: 'center', marginTop: '28px' }}>
-                  <a
-                    href="https://demxz0.github.io/AnxietyRecoverBuild/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="download-btn"
-                    style={{
-                      display: 'inline-flex',
+                {/* صورة التعليمات + زر التحميل */}
+                <div style={{ marginTop: '28px' }}>
+                  
+                  {/* صورة التعليمات */}
+                  <div style={{
+                    borderRadius: '14px',
+                    overflow: 'hidden',
+                    border: '2px solid #d4bfee',
+                    marginBottom: '20px',
+                    boxShadow: '0 4px 16px rgba(92,58,122,0.12)',
+                  }}>
+                    <div style={{
+                      background: 'linear-gradient(135deg, #3a2555, #5c3a7a)',
+                      padding: '10px 16px',
+                      display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
-                      padding: '14px 36px',
-                      borderRadius: '50px',
-                      background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
-                      color: 'white',
-                      fontSize: '16px',
-                      fontWeight: '700',
-                      fontFamily: "'Tajawal', sans-serif",
-                      textDecoration: 'none',
-                      boxShadow: '0 6px 22px rgba(92,58,122,0.4)',
-                      transition: 'all 0.25s ease',
-                    }}
-                  >
-                    {/* أيقونة تحميل */}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"
-                        stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>تحميل اللعبة</span>
-                  </a>
+                      gap: '8px',
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.8)" strokeWidth="2"/>
+                        <path d="M12 8v4M12 16h.01" stroke="rgba(255,255,255,0.9)" strokeWidth="2.2" strokeLinecap="round"/>
+                      </svg>
+                      <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', fontWeight: '600' }}>
+                        تعليمات التحميل والتشغيل
+                      </span>
+                    </div>
+                    <img
+                      src={instructionImg}
+                      alt="تعليمات تحميل اللعبة"
+                      style={{
+                        width: '100%',
+                        display: 'block',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  </div>
+
+                  {/* زر التحميل */}
+                  <div style={{ textAlign: 'center' }}>
+                    <a
+                      href="https://demxz0.github.io/AnxietyRecoverBuild/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="download-btn"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        padding: '14px 36px',
+                        borderRadius: '50px',
+                        background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
+                        color: 'white',
+                        fontSize: '16px',
+                        fontWeight: '700',
+                        fontFamily: "'Tajawal', sans-serif",
+                        textDecoration: 'none',
+                        boxShadow: '0 6px 22px rgba(92,58,122,0.4)',
+                        transition: 'all 0.25s ease',
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"
+                          stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span>تحميل اللعبة</span>
+                    </a>
+                  </div>
+
+                  {/* متطلبات اللعبة */}
+                  <div style={{ marginTop: '28px' }}>
+                    
+                    {/* العنوان */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      justifyContent: 'flex-start',
+                      marginBottom: '16px',
+                    }}>
+                      <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#3a2555', margin: 0 }}>
+                        متطلبات تشغيل اللعبة
+                      </h4>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="3" width="20" height="14" rx="2" stroke="#5c3a7a" strokeWidth="2"/>
+                        <path d="M8 21h8M12 17v4" stroke="#5c3a7a" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+
+                    {/* الجدولان جانباً لبعض على الشاشات الكبيرة */}
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                      gap: '14px',
+                    }}>
+
+                      {/* المواصفات الدنيا */}
+                      <div style={{
+                        background: 'linear-gradient(135deg, #faf8ff, #f5f0ff)',
+                        border: '1.5px solid #d4bfee',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
+                          padding: '12px 16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          justifyContent: 'flex-start',
+                        }}>
+                          <span style={{ color: 'white', fontSize: '14px', fontWeight: '700' }}>
+                            💻 المواصفات الدنيا
+                          </span>
+                        </div>
+                        <div style={{ padding: '4px 0 8px' }}>
+                          <p style={{
+                            fontSize: '11px',
+                            color: '#8070a8',
+                            textAlign: 'right',
+                            padding: '8px 14px 6px',
+                            margin: 0,
+                            lineHeight: '1.5',
+                            borderBottom: '1px solid #ebe6f7',
+                          }}>
+                           هذه هي المواصفات الأساسية المطلوبة لتشغيل اللعبة بسلاسة على إعدادات منخفضة
+                          </p>
+                          {[
+                            { label: 'نظام التشغيل (OS)', value: 'ويندوز 10 (64-بت)' },
+                            { label: 'المعالج (CPU)', value: 'Intel Core i3-4130 / AMD Ryzen 3 1200 أو ما يعادلها' },
+                            { label: 'الذاكرة العشوائية (RAM)', value: '4 جيجابايت' },
+                            { label: 'بطاقة الشاشة (GPU)', value: 'Intel UHD Graphics 620 / NVIDIA GeForce GTX 750 / AMD Radeon R7 260X (يجب أن تدعم DirectX 11)' },
+                            { label: 'إصدار DirectX', value: 'النسخة 11' },
+                            { label: 'مساحة التخزين', value: '1 جيجابايت مساحة متوفرة' },
+                          ].map((item, i) => (
+                            <div key={i} style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '9px 14px',
+                              borderBottom: i < 5 ? '1px solid #ebe6f7' : 'none',
+                              gap: '8px',
+                            }}>
+                              <span style={{
+                                fontSize: '12px',
+                                color: '#6b4fa0',
+                                fontWeight: '700',
+                                flexShrink: 0,
+                              }}>{item.label}</span>
+                              <span style={{
+                                fontSize: '12px',
+                                color: '#8070a8',
+                                textAlign: 'left',
+                              }}>{item.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* المواصفات الموصى بها */}
+                      <div style={{
+                        background: 'linear-gradient(135deg, #fff8f0, #fff3fa)',
+                        border: '1.5px solid #e8c5d8',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                      }}>
+                        <div style={{
+                          background: 'linear-gradient(135deg, #b66b8e, #8e5aab)',
+                          padding: '12px 16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          justifyContent: 'flex-start',
+                        }}>
+                          <span style={{ color: 'white', fontSize: '14px', fontWeight: '700' }}>
+                            🚀 المواصفات الموصى بها
+                          </span>
+                        </div>
+                        <div style={{ padding: '4px 0 8px' }}>
+                          <p style={{
+                            fontSize: '11px',
+                            color: '#9a6880',
+                            textAlign: 'right',
+                            padding: '8px 14px 6px',
+                            margin: 0,
+                            lineHeight: '1.5',
+                            borderBottom: '1px solid #f0d8e8',
+                          }}>
+                           هذه هي المواصفات المفضلة للحصول على أفضل تجربة للعبة مع أقصى جودة للظلال والإضاءة
+                          </p>
+                          {[
+                            { label: 'نظام التشغيل (OS)', value: 'ويندوز 10 أو ويندوز 11 (64-بت)' },
+                            { label: 'المعالج (CPU)', value: 'Intel Core i5-8400 / AMD Ryzen 5 2600 أو أفضل' },
+                            { label: 'الذاكرة العشوائية (RAM)', value: '8 جيجابايت أو أعلى' },
+                            { label: 'بطاقة الشاشة (GPU)', value: 'NVIDIA GeForce GTX 1060 (3GB) / AMD Radeon RX 580 أو أفضل' },
+                            { label: 'إصدار DirectX', value: 'النسخة 11 أو 12' },
+                            { label: 'مساحة التخزين', value: '1 جيجابايت مساحة متوفرة' },
+                          ].map((item, i) => (
+                            <div key={i} style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '9px 14px',
+                              borderBottom: i < 5 ? '1px solid #f0d8e8' : 'none',
+                              gap: '8px',
+                            }}>
+                              <span style={{
+                                fontSize: '12px',
+                                color: '#b66b8e',
+                                fontWeight: '700',
+                                flexShrink: 0,
+                              }}>{item.label}</span>
+                              <span style={{
+                                fontSize: '12px',
+                                color: '#9a6880',
+                                textAlign: 'left',
+                              }}>{item.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
