@@ -11,7 +11,7 @@ import img7 from '../game-images/g-img7.png';
 import img8 from '../game-images/g-img8.png';
 import img9 from '../game-images/g-img9.png';
 import img10 from '../game-images/g-img10.png';
-import instructionImg from '../game-images/g-instruction.jpeg'; 
+import instructionImg from '../game-images/g-instruction.jpg'; 
 
 const gameScreenshots = [img1, img2, img3, img4, img5 , img6, img7, img8, img9, img10];
 
@@ -447,36 +447,35 @@ export default function Game() {
                     />
                   </div>
 
-                  {/* زر التحميل */}
-                  <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <a
-                      href="https://demxz0.github.io/AnxietyRecoverBuild/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="download-btn"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        padding: '16px 44px',
-                        borderRadius: '50px',
-                        background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
-                        color: 'white',
-                        fontSize: '18px',
-                        fontWeight: '700',
-                        fontFamily: "'Tajawal', sans-serif",
-                        textDecoration: 'none',
-                        boxShadow: '0 6px 22px rgba(92,58,122,0.4)',
-                        transition: 'all 0.25s ease',
-                      }}
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"
-                          stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span>تحميل اللعبة</span>
-                    </a>
-                  </div>
+                {/* زر التحميل */}
+<div style={{ textAlign: 'center', marginBottom: '40px' }}>
+  <a
+    href="./Pc_build1.zip"
+    download="Pc_build1.zip"
+    className="download-btn"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '12px',
+      padding: '16px 44px',
+      borderRadius: '50px',
+      background: 'linear-gradient(135deg, #5c3a7a, #7c6fcd)',
+      color: 'white',
+      fontSize: '18px',
+      fontWeight: '700',
+      fontFamily: "'Tajawal', sans-serif",
+      textDecoration: 'none',
+      boxShadow: '0 6px 22px rgba(92,58,122,0.4)',
+      transition: 'all 0.25s ease',
+    }}
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5M4 17v1a2 2 0 002 2h12a2 2 0 002-2v-1"
+        stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+    <span>تحميل اللعبة</span>
+  </a>
+</div>
 
                   {/* متطلبات اللعبة */}
                   <div style={{ marginTop: '40px' }}>
