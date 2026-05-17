@@ -48,19 +48,15 @@ const ChatBot = () => {
 
 5. نبرة الصوت (Tone of Voice): استخدم لغة عربية فصحى مبسطة، قريبة من لغة الشباب، خالية من التعقيدات والمصطلحات الطبية الجافة. كن دافئاً، محترفاً، وحكيماً.`;
 
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      // Call Netlify Function instead of Groq API directly
+      const response = await fetch("/.netlify/functions/chatbot", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-         "Authorization": `Bearer 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`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
-          max_tokens: 1000,
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userMessage }
-          ]
+          userMessage: userMessage,
+          systemPrompt: systemPrompt
         })
       });
 
@@ -68,10 +64,10 @@ const ChatBot = () => {
       
       if (!response.ok) {
         console.error("API Error:", data);
-        throw new Error(data.error?.message || "API request failed");
+        throw new Error(data.error || "API request failed");
       }
       
-      const botReply = data.choices[0].message.content;
+      const botReply = data.message;
 
       setMessages(prev => [...prev, { text: botReply, isBot: true }]);
     } catch (error) {
